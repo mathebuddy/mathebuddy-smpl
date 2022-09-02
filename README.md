@@ -90,7 +90,7 @@ abs(x:REAL):REAL -> _absReal;
 abs(x:COMPLEX): REAL -> _absComplex;
 ```
 
-Since the function is overloaded with two different types (and JavaScript does not support function overloading), use must map it to two different function IDs (`_absReal` and `_absComplex`).
+Since the function is overloaded with two different types (and JavaScript does not support function overloading), each must be mapped onto a different function ID (`_absReal` and `_absComplex`).
 
 2. Add two private methods to class `SMPL_Interpreter` in file `src/interpret.ts`:
 
