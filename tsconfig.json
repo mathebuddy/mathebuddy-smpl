@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "declaration": true,
+    //"forceConsistentCasingInFileNames": true,   // TODO: was false!!
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": false, // TODO: should be true
+    "target": "ES2020",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "js-dist",
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "lib": ["DOM", "ES2020"]
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

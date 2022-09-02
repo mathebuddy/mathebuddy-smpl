@@ -1,0 +1,28 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "cSpell.words": [
+    "Andreas",
+    "eine",
+    "esbuild",
+    "FREIRAUM",
+    "gamifizierte",
+    "Hochschullehre",
+    "Hoehere",
+    "IMAG",
+    "Koeln",
+    "Köln",
+    "LEARNINGOUTCOMES",
+    "Lern",
+    "mathe",
+    "mathebuddy",
+    "Mathematik",
+    "multila",
+    "outfile",
+    "Schwenk",
+    "SMPL",
+    "Stiftung"
+  ]
+}
