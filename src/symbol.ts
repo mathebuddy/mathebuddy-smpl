@@ -6,22 +6,7 @@
  * License: GPL-3.0-or-later
  */
 
-export class Matrix {
-  rows = 1;
-  cols = 1;
-  values: number[] = [];
-  constructor(rows: number, cols: number) {
-    this.rows = rows;
-    this.cols = cols;
-    this.values = new Array(rows * cols).fill(0);
-  }
-  setValue(row: number, col: number, v: number): void {
-    this.values[row * this.cols + col] = v;
-  }
-  getValue(row: number, col: number): number {
-    return this.values[row * this.cols + col];
-  }
-}
+import { Matrix } from './matrix';
 
 export enum BaseType {
   BOOL = 'BOOL',
