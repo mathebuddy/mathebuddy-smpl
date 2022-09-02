@@ -12,7 +12,8 @@
 
 import * as mathjs from 'mathjs';
 
-import { BaseType, Matrix, SymTabEntry } from './symbol';
+import { BaseType, SymTabEntry } from './symbol';
+import { Matrix } from './matrix';
 
 export class RunError extends Error {
   constructor(srcRow: number, srcCol: number, msg: string) {
@@ -63,8 +64,10 @@ export class SMPL_Interpreter {
 
   private _mathjsMatrix2Matrix(m: mathjs.Matrix): Matrix {
     const r = new Matrix(m.size()[0], m.size()[1]);
-    for (let i = 0; i < r.rows; i++) {
-      for (let j = 0; j < r.cols; j++) {
+    const rows = r.getRows();
+    const cols = r.getCols();
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
         r.setValue(i, j, m.get([i, j]));
       }
     }
