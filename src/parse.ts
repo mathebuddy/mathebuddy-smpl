@@ -6,7 +6,7 @@
  * License: GPL-3.0-or-later
  */
 
-import { Lexer } from 'multila-lexer/src/lex';
+import { Lexer } from '@multila/multila-lexer';
 
 import { createFunctionPrototypes } from './prototypes';
 import { BaseType, Code, SymbolKind, SymTabEntry, TypedCode } from './symbol';

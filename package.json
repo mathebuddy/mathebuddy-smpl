@@ -2,9 +2,9 @@
   "name": "mathebuddy-smpl",
   "version": "0.0.1",
   "description": "Simple Math Programming Language (SMPL) for the Web",
-  "main": "build.js",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "tsc -noEmit && node ./build.js"
+    "build": "tsc && node ./build.js"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "mathjs": "^11.0.1",
-    "multila-lexer": "file:../../github-multila/multila-lexer"
+    "@multila/multila-lexer": "^0.9.0",
+    "mathjs": "^11.0.1"
   }
 }

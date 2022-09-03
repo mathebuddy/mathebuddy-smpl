@@ -11,7 +11,8 @@
  * Each function must be implemented in file codeRun.ts.
  */
 
-import { Lexer } from 'multila-lexer/src/lex';
+import { Lexer } from '@multila/multila-lexer';
+
 import { BaseType, SymbolKind, SymTabEntry, Type } from './symbol';
 
 // TODO: write documentation for each function + extract it
