@@ -7,69 +7,38 @@
  */
 
 import { Lexer } from '@multila/multila-lexer';
+import { functionPrototypes } from './prototypes';
 
-import { createFunctionPrototypes } from './prototypes';
-import { BaseType, Code, SymbolKind, SymTabEntry, TypedCode } from './symbol';
+import {
+  BaseType,
+  Code,
+  createFunctionPrototypes,
+  SymbolKind,
+  SymTabEntry,
+  TypedCode,
+} from './symbol';
 
-/*
- 2 + 3i
- mathjs.add(2, mathjs.complex(0,3))
+/* TODO:
 
- use APIS:
- - MathJS
- - TensorFlow (e.g. for eigenvalues, automatic differentiation: https://www.tensorflow.org/guide/autodiff, ...)
+let f(x) = x*x;
+let g(x) = derivate(f, x);
+let h(x,y) = 2*x*y;
 
+let a = rand(2, 3);
+let A = rand<2,a>(-5,5);
+let B = rand<a,1>(-5,5);
+let C = A * B;
+let Z = zeros<2,3>;
+let O = ones<2,3>;
 
- TODO:
-     statically typed base types
-     dynamic typed dimensions (e.g. matrix dims)
-     support for function overloading (not the case for vanilla JS)
+let b = randZ(-3, 3);   // without zero
+let x = 3 + 1i;         // "1i" != "i", since "i" is a valid variable name
 
- TODO:
-     let f(x) = x*x;
-     let g(x) = derivate(f, x);
-     let h(x,y) = 2*x*y;
-
-     let a = rand(2, 3);
-     let A = rand<2,a>(-5,5);
-     let B = rand<a,1>(-5,5);
-     let C = A * B;
-     let Z = zeros<2,3>;
-     let O = ones<2,3>;
-
-     let b = randZ(-3, 3);   // without zero
-     let x = 3 + 1i;         // "1i" != "i", since "i" is a valid variable name
-
-     ---
-     Plot
-     curve f(x)
-     ---
-
- grammar of new SELL (JS-like; translated to JS)
- ----------------------
- */
-
-/*
- types
- -----
- BOOL
- INT
- REAL
- COMPLEX
- MATRIX
- FUNCTION
-
- functions
- ---------
- rand(max)
- rand(min,max)
- rand<rows,cols>(min,max)
- ...
- floor(x)
- ceil(x)
- sin(x), cos, tan, atan, acos, asin
- exp(x)
- */
+---
+Plot
+curve f(x)
+---
+*/
 
 export class SMPL_Parser {
   private lexer: Lexer = null;
@@ -100,7 +69,7 @@ export class SMPL_Parser {
   public parse(src: string): string {
     this.loopLevel = 0;
     this.scope = 0;
-    this.symTab = createFunctionPrototypes();
+    this.symTab = createFunctionPrototypes(functionPrototypes);
 
     this.lexer = new Lexer();
     this.lexer.configureSingleLineComments('//');
@@ -110,7 +79,7 @@ export class SMPL_Parser {
     this.lexer.enableBackslashLineBreaks(false);
     this.lexer.pushSource('FILE', src);
     const c = this.parseProgram();
-    console.log(c.str);
+    //console.log(c.str);
     return c.str;
   }
 
@@ -161,10 +130,10 @@ export class SMPL_Parser {
       const s = new SymTabEntry(id, SymbolKind.Local, e.type, this.scope, []);
       this.symTab.push(s);
       c.str += 'let ' + id + ' = ' + e.code.str;
+      c.str += ';';
     }
     // "," ...
     this.lexer.EOS();
-    c.str += ';';
     return c;
   }
 
@@ -176,7 +145,10 @@ export class SMPL_Parser {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseOr();
-      if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
+      if (
+        (x.type.base == BaseType.INT || x.type.base == BaseType.REAL) &&
+        (y.type.base == BaseType.INT || y.type.base == BaseType.REAL)
+      ) {
         x.type.base = BaseType.INT;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
       } else
@@ -192,7 +164,7 @@ export class SMPL_Parser {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseAnd();
-      if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
+      if (x.type.base == BaseType.BOOL && y.type.base == BaseType.BOOL) {
         x.type.base = BaseType.BOOL;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
       } else
@@ -208,7 +180,7 @@ export class SMPL_Parser {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseEqual();
-      if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
+      if (x.type.base == BaseType.BOOL && y.type.base == BaseType.BOOL) {
         x.type.base = BaseType.BOOL;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
       } else
@@ -245,7 +217,10 @@ export class SMPL_Parser {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseAdd();
-      if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
+      if (
+        (x.type.base == BaseType.INT || x.type.base == BaseType.REAL) &&
+        (y.type.base == BaseType.INT || y.type.base == BaseType.REAL)
+      ) {
         x.type.base = BaseType.BOOL;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
       } else
@@ -256,32 +231,24 @@ export class SMPL_Parser {
 
   //G add = mul { ("+"|"-") mul };
   private parseAdd(): TypedCode {
-    const x = this.parseMul();
+    let x = this.parseMul();
     while (this.lexer.isTER('+') || this.lexer.isTER('-')) {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseMul();
-      if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
-        x.type.base = BaseType.INT;
-        x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
-      } else
-        this.lexer.errorTypesInBinaryOperation(op, x.type.base, y.type.base);
+      x = this.call(this.getSymbol(op === '+' ? '_add' : '_sub'), [], [x, y]);
     }
     return x;
   }
 
   //G mul = unary { ("*"|"/") unary };
   private parseMul(): TypedCode {
-    const x = this.parseUnary();
+    let x = this.parseUnary();
     while (this.lexer.isTER('*') || this.lexer.isTER('/')) {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseUnary();
-      if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
-        x.type.base = op === '*' ? BaseType.INT : BaseType.REAL;
-        x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
-      } else
-        this.lexer.errorTypesInBinaryOperation(op, x.type.base, y.type.base);
+      x = this.call(this.getSymbol(op === '*' ? '_mul' : '_div'), [], [x, y]);
     }
     return x;
   }
@@ -292,13 +259,15 @@ export class SMPL_Parser {
     if (
       tc.sym != null &&
       tc.sym.kind === SymbolKind.Function &&
-      this.lexer.isNotTER('(')
+      this.lexer.isNotTER('(') &&
+      this.lexer.isNotTER('<')
     ) {
-      this.lexer.errorExpected(['(']);
+      this.lexer.errorExpected(['(', '<']);
     }
     if (
       this.lexer.isTER('++') ||
       this.lexer.isTER('--') ||
+      this.lexer.isTER('<') ||
       this.lexer.isTER('(') ||
       this.lexer.isTER('[')
     ) {
@@ -307,9 +276,9 @@ export class SMPL_Parser {
     return tc;
   }
 
-  //G unaryExpression = INT | IMAG | REAL | "(" expr ")" | ID;
+  //G unaryExpression = INT | IMAG | REAL | "(" expr ")" | ID | "-" unary;
   private parseUnaryExpression(): TypedCode {
-    const tc = new TypedCode();
+    let tc = new TypedCode();
     // TODO: IMAG
     if (this.lexer.isINT()) {
       tc.code.str = ' ' + this.lexer.INT() + ' ';
@@ -329,65 +298,137 @@ export class SMPL_Parser {
       if (tc.sym == null) this.lexer.errorUnknownSymbol(id);
       tc.type = tc.sym.type;
       tc.code.str = ' ' + id;
+    } else if (this.lexer.isTER('-')) {
+      this.lexer.next();
+      const x = this.parseUnary();
+      tc = this.call(this.getSymbol('_unaryMinus'), [], [x]);
     } else this.lexer.errorExpected(['INT', 'IMAG', 'REAL', '(', 'ID']);
     return tc;
   }
 
-  //G unaryPostfix = "++" | "--" | "(" [ expr { "," expr } ] ")" | "[" expr "]";
-  // TODO: dimensions via "<" ">"
+  //G unaryPostfix = "++" | "--" | [ "<" [ unary { "," unary } ] ">" ] "(" [ expr { "," expr } ] ")" | "[" expr "]";
   private parseUnaryPostfix(tc: TypedCode): TypedCode {
     if (this.lexer.isTER('++')) {
+      // TODO: only for INT|REAL!
       this.lexer.next();
       tc.code.str += ' ++ ';
     } else if (this.lexer.isTER('--')) {
+      // TODO: only for INT|REAL!
       this.lexer.next();
       tc.code.str += ' -- ';
-    } else if (this.lexer.isTER('(')) {
+    } else if (this.lexer.isTER('<') || this.lexer.isTER('(')) {
       // function call
-      this.lexer.next();
+      const dims: TypedCode[] = [];
+      const params: TypedCode[] = [];
+      // (a) dimensions (if applicable)
+      if (this.lexer.isTER('<')) {
+        this.lexer.next();
+        let i = 0;
+        while (this.lexer.isNotTER('>')) {
+          if (i > 0) this.lexer.TER(',');
+          dims.push(this.parseUnary());
+          i++;
+        }
+        this.lexer.TER('>');
+      }
+      // (b) parameters (required)
+      this.lexer.TER('(');
       if (tc.sym == null || tc.sym.kind != SymbolKind.Function)
         this.lexer.errorNotAFunction();
       let i = 0;
-      const params: TypedCode[] = [];
       while (this.lexer.isNotTER(')')) {
         if (i > 0) this.lexer.TER(',');
         params.push(this.parseExpression());
         i++;
       }
       this.lexer.TER(')');
-      // find matching function prototype (overloading)
-      let prototype = tc.sym;
-      while (prototype != null) {
-        if (prototype.subSymbols.length == params.length) {
-          const formalParams = prototype.subSymbols;
-          let match = true;
-          for (let k = 0; k < formalParams.length; k++) {
-            if (formalParams[k].type.base !== params[k].type.base) {
-              match = false;
-              break;
-            }
-          }
-          if (match) {
-            tc.type = prototype.type;
-            tc.code.str = 'runtime.' + prototype.runtimeId + '(';
-            for (let k = 0; k < formalParams.length; k++) {
-              if (k > 0) tc.code.str += ', ';
-              tc.code.str += params[k].code.str;
-            }
-            tc.code.str += ')';
-            tc.sym = null;
+      // (c) call
+      tc = this.call(tc.sym, dims, params);
+    } else this.lexer.errorExpected(['++', '--', '(', '[']);
+    return tc;
+  }
+
+  private call(
+    functionSym: SymTabEntry,
+    dims: TypedCode[],
+    params: TypedCode[],
+  ): TypedCode {
+    const tc = new TypedCode();
+    tc.sym = functionSym;
+    tc.type = functionSym.type;
+    let prototype = functionSym;
+    // find matching function prototype (overloading)
+    while (prototype != null) {
+      // get lists of prototype dimensions and formal parameters
+      const prototypeDims: SymTabEntry[] = [];
+      const prototypeParams: SymTabEntry[] = [];
+      for (const subSymbol of prototype.subSymbols) {
+        if (subSymbol.kind == SymbolKind.Dimension)
+          prototypeDims.push(subSymbol);
+        else if (subSymbol.kind === SymbolKind.Parameter)
+          prototypeParams.push(subSymbol);
+      }
+      // check
+      if (
+        prototypeDims.length == dims.length &&
+        prototypeParams.length == params.length
+      ) {
+        let match = true;
+        //check dimension types
+        for (let k = 0; k < prototypeDims.length; k++) {
+          if (prototypeDims[k].type.base !== dims[k].type.base) {
+            match = false;
             break;
           }
         }
-        // try next
-        prototype = prototype.functionOverloadSuccessor;
+        // check parameter types
+        for (let k = 0; k < prototypeParams.length; k++) {
+          if (prototypeParams[k].type.base !== params[k].type.base) {
+            match = false;
+            break;
+          }
+        }
+        // generate code in case of matching dimension and parameter types
+        if (match) {
+          tc.type = prototype.type;
+          tc.code.str = 'runtime.' + prototype.runtimeId + '(';
+          // put dimensions first
+          let pos = 0;
+          for (let k = 0; k < prototypeDims.length; k++) {
+            if (pos > 0) tc.code.str += ', ';
+            tc.code.str += dims[k].code.str;
+            pos++;
+          }
+          // then put actual parameter
+          for (let k = 0; k < prototypeParams.length; k++) {
+            if (pos > 0) tc.code.str += ', ';
+            tc.code.str += params[k].code.str;
+            pos++;
+          }
+          // finally put lexer position (if applicable)
+          if (prototype.runtimeExceptions) {
+            if (pos > 0) tc.code.str += ', ';
+            tc.code.str +=
+              "'" +
+              this.lexer.getToken().row +
+              ':' +
+              this.lexer.getToken().col +
+              "'";
+            pos++;
+          }
+          tc.code.str += ')';
+          tc.sym = null;
+          break;
+        }
       }
-      if (prototype == null) {
-        this.lexer.error(
-          'no matching function prototype for calling ' + tc.sym.id,
-        ); // TODO: create custom error method
-      }
-    } else this.lexer.errorExpected(['++', '--', '(', '[']);
+      // try next
+      prototype = prototype.functionOverloadSuccessor;
+    }
+    if (prototype == null) {
+      this.lexer.error(
+        'no matching function prototype for calling ' + tc.sym.id,
+      ); // TODO: create custom error method
+    }
     return tc;
   }
 
