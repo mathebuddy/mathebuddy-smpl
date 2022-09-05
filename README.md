@@ -18,27 +18,31 @@ SMPL has the following advantage:
 - simple syntax with intrinsic data types for math
 - no need to import math libraries explicitly
 
-## Usage
+## Example
 
-```
-npm install @mathebuddy/mathebuddy-smpl
-```
+Copy the following code to `https://npm.runkit.com/` and run it!
 
-```typescript
-import { SMPL } from 'mathebuddy-smpl';
+```javascript
+var SMPL = require('@mathebuddy/mathebuddy-smpl');
 
-const src = `
+let src = `
 // create two (3x3)-matrices A and B, with random
 // (integral) entries in range [-5,5] without zero.
 let A:B = randZ<3,3>(-5,5);
 let C = A * B;
 `;
 
-const variables = SMPL.interpret();
+let variables = SMPL.interpret(src);
 
-for (const v of variables) {
+for (let v of variables) {
   console.log(v.id + ' = ' + v.value.toString());
 }
+```
+
+## Installation
+
+```
+npm install @mathebuddy/mathebuddy-smpl
 ```
 
 ## Syntax

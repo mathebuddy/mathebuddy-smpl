@@ -10,20 +10,18 @@ import { SMPL_Interpreter } from './interpret';
 import { SMPL_Parser } from './parse';
 import { SymTabEntry } from './symbol';
 
-export class SMPL {
-  public static interpret(src: string, printCode = false): SymTabEntry[] {
-    // parse code
-    const parser = new SMPL_Parser();
-    const code = parser.parse(src);
-    const locals = parser.getLocalSymbols();
-    // print code
-    if (printCode) {
-      console.log(code);
-    }
-    // interpret code
-    const interpreter = new SMPL_Interpreter();
-    interpreter.interpret(code, locals);
-    // return locals
-    return locals;
+export function interpret(src: string, printCode = false): SymTabEntry[] {
+  // parse code
+  const parser = new SMPL_Parser();
+  const code = parser.parse(src);
+  const locals = parser.getLocalSymbols();
+  // print code
+  if (printCode) {
+    console.log(code);
   }
+  // interpret code
+  const interpreter = new SMPL_Interpreter();
+  interpreter.interpret(code, locals);
+  // return locals
+  return locals;
 }
