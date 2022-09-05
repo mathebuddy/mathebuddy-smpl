@@ -6,6 +6,8 @@
  * License: GPL-3.0-or-later
  */
 
+import * as mathjs from 'mathjs';
+
 export class Matrix {
   private rows = 1;
   private cols = 1;
@@ -31,5 +33,48 @@ export class Matrix {
 
   getValue(row: number, col: number): number {
     return this.values[row * this.cols + col];
+  }
+
+  clone(): Matrix {
+    const m = new Matrix(this.rows, this.cols);
+    m.values = [...this.values];
+    return m;
+  }
+
+  toString(): string {
+    let s = '[';
+    for (let i = 0; i < this.rows; i++) {
+      if (i > 0) s += ',';
+      s += '[';
+      for (let j = 0; j < this.cols; j++) {
+        if (j > 0) s += ',';
+        s += this.getValue(i, j);
+      }
+      s += ']';
+    }
+    s += ']';
+    return s;
+  }
+
+  static mathjs2matrix(m: mathjs.Matrix): Matrix {
+    const r = new Matrix(m.size()[0], m.size()[1]);
+    const rows = r.getRows();
+    const cols = r.getCols();
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        r.setValue(i, j, m.get([i, j]));
+      }
+    }
+    return r;
+  }
+
+  static matrix2mathjs(m: Matrix): mathjs.Matrix {
+    const r = mathjs.zeros(m.rows, m.cols) as mathjs.Matrix;
+    for (let i = 0; i < m.rows; i++) {
+      for (let j = 0; j < m.cols; j++) {
+        r.set([i, j], m.getValue(i, j));
+      }
+    }
+    return r;
   }
 }
