@@ -24,7 +24,7 @@ SMPL has the following advantage:
 npm install @mathebuddy/mathebuddy-smpl
 ```
 
-```
+```typescript
 import { SMPL } from 'mathebuddy-smpl';
 
 const src = `
@@ -49,7 +49,7 @@ Detailed description: work-in-progress
 
 TODO: yet incomplete!
 
-```
+```ebnf
 program = { statement };
 statement = declaration | if | for | do | while | switch | function | return | break | continue | expression EOS;
 declaration = "let" ID { ":" ID } "=" expr { "," ID { ":" ID } "=" expr } EOS;
@@ -92,7 +92,7 @@ Since the function is overloaded with two different types (and JavaScript does n
 
 2. Add two private methods to class `SMPL_Interpreter` in file `src/interpret.ts`:
 
-```
+```typescript
 private _absReal(x: number): number {
   return Math.abs(x);
 }
