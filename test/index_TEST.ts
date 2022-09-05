@@ -8,11 +8,27 @@
 
 import { SMPL } from '../src';
 
-const variables = SMPL.interpret(`// Hello, world!
+// --- hello world
+
+let variables = SMPL.interpret(
+  `// Hello, world!
 let z = rand(3);
 let x = 3 + 4*5;
-let y = x + 1;
-`);
+let y = x + 1;`,
+  true,
+);
+
+for (const v of variables) {
+  console.log(v.id + ' = ' + v.value.toString());
+}
+
+// --- matrix operations
+
+variables = SMPL.interpret(
+  `let A:B = randZ<2,2>(-5,5);
+let C = A * B;`,
+  true,
+);
 
 for (const v of variables) {
   console.log(v.id + ' = ' + v.value.toString());
