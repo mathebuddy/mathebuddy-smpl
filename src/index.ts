@@ -11,11 +11,15 @@ import { SMPL_Parser } from './parse';
 import { SymTabEntry } from './symbol';
 
 export class SMPL {
-  public static interpret(src: string): SymTabEntry[] {
+  public static interpret(src: string, printCode = false): SymTabEntry[] {
     // parse code
     const parser = new SMPL_Parser();
     const code = parser.parse(src);
     const locals = parser.getLocalSymbols();
+    // print code
+    if (printCode) {
+      console.log(code);
+    }
     // interpret code
     const interpreter = new SMPL_Interpreter();
     interpreter.interpret(code, locals);
