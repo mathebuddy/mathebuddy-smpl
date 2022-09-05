@@ -11,16 +11,46 @@
  * Each function must be implemented in file codeRun.ts.
  */
 
-import { Lexer } from '@multila/multila-lexer';
-
-import { BaseType, SymbolKind, SymTabEntry, Type } from './symbol';
-
 // TODO: write documentation for each function + extract it
 
-//G prototype = ID [ "<" params ">" ] "(" [ params ] ")" ":" type "->" ID ";";
+//G prototype = ID [ "?" ] [ "<" params ">" ] "(" [ params ] ")" ":" type "->" ID ";";
 //G params = "ID" ":" type { "," "ID" ":" type };
 //G type = "INT" | "REAL" | "COMPLEX" | "MATRIX";
-const functions = `
+
+export const functionPrototypes = `
+
+  _add(x:INT,y:INT):INT -> _add;
+  _add(X:INT,y:REAL):REAL -> _add;
+  _add(X:INT,y:REAL):REAL -> _add;
+  _add(X:REAL,y:REAL):REAL -> _add;
+  _add?(X:MATRIX,y:MATRIX):MATRIX -> _addMatrices;
+
+  _sub(x:INT,y:INT):INT -> _add;
+  _sub(X:INT,y:REAL):REAL -> _add;
+  _sub(X:INT,y:REAL):REAL -> _add;
+  _sub(X:REAL,y:REAL):REAL -> _add;
+
+  _unaryMinus(x:INT):INT -> _unaryMinus;
+  _unaryMinus(x:REAL):REAL -> _unaryMinus;
+
+  _mul(x:INT,y:INT):INT -> _mul;
+  _mul(X:INT,y:REAL):REAL -> _mul;
+  _mul(X:INT,y:REAL):REAL -> _mul;
+  _mul(X:REAL,y:REAL):REAL -> _mul;
+  _mul?(X:MATRIX,y:MATRIX):MATRIX -> _mulMatrices;
+
+  _div(x:INT,y:INT):REAL -> _mul;
+  _div(X:INT,y:REAL):REAL -> _mul;
+  _div(X:INT,y:REAL):REAL -> _mul;
+  _div(X:REAL,y:REAL):REAL -> _mul;
+
+  rand(max:INT): INT -> _randIntMax;
+  rand(min:INT,max:INT): INT -> _randIntMinMax;
+  randZ(max:INT): INT -> _randZIntMax;
+  randZ(min:INT,max:INT): INT -> _randZIntMinMax;
+  rand<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randMatrix;
+  randZ<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randZMatrix;
+
   abs(x:INT):INT -> _absInt;
   abs(x:REAL):REAL -> _absReal;
   abs(x:COMPLEX): REAL -> _absComplex;
@@ -50,116 +80,8 @@ const functions = `
   round(x:REAL): INT -> _round;
   sign(x:INT): INT -> _sign;
   sign(x:REAL): INT -> _sign;
-  rand(max:INT): INT -> _randIntMax;
-  rand(min:INT,max:INT): INT -> _randIntMinMax;
-  randZ(max:INT): INT -> _randZIntMax;
-  randZ(min:INT,max:INT): INT -> _randZIntMinMax;
-  rand<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randMatrix;
-  randZ<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randZMatrix;
+
   binomial(n:INT,k:INT): INT -> _binomial;
   min(x:MATRIX): REAL -> _minMatrix;
   max(x:MATRIX): REAL -> _maxMatrix;
 `;
-
-function getBaseType(lex: Lexer, str: string): BaseType {
-  if (str === 'BOOL') return BaseType.BOOL;
-  else if (str === 'INT') return BaseType.INT;
-  else if (str === 'REAL') return BaseType.REAL;
-  else if (str === 'COMPLEX') return BaseType.COMPLEX;
-  else if (str === 'MATRIX') return BaseType.MATRIX;
-  else lex.error('unknown base type ' + str);
-}
-
-export function createFunctionPrototypes(): SymTabEntry[] {
-  // set up lexer
-  const lex = new Lexer();
-  lex.configureSingleLineComments('#');
-  lex.configureMultiLineComments('', '');
-  lex.enableEmitNewlines(false);
-  lex.enableEmitIndentation(false);
-  lex.enableBackslashLineBreaks(false);
-  lex.setTerminals(['->']);
-  lex.pushSource('INTERNAL', functions);
-  // parse
-  const symTab: SymTabEntry[] = [];
-  while (lex.isNotEND()) {
-    // (a) read properties
-    const funID = lex.ID();
-    const dimIDs: string[] = [];
-    const dimTypes: BaseType[] = [];
-    if (lex.isTER('<')) {
-      lex.next();
-      let i = 0;
-      while (lex.isNotTER('>')) {
-        if (i > 0) lex.TER(',');
-        dimIDs.push(lex.ID());
-        lex.TER(':');
-        dimTypes.push(getBaseType(lex, lex.ID()));
-        i++;
-      }
-      lex.TER('>');
-    }
-    const paramIDs: string[] = [];
-    const paramTypes: BaseType[] = [];
-    lex.TER('(');
-    let i = 0;
-    while (lex.isNotTER(')')) {
-      if (i > 0) lex.TER(',');
-      paramIDs.push(lex.ID());
-      lex.TER(':');
-      paramTypes.push(getBaseType(lex, lex.ID()));
-      i++;
-    }
-    lex.TER(')');
-    lex.TER(':');
-    const returnType = getBaseType(lex, lex.ID());
-    lex.TER('->');
-    const runtimeID = lex.ID();
-    lex.TER(';');
-    // (b) populate symbol table
-    const subSymbols: SymTabEntry[] = [];
-    for (let i = 0; i < dimIDs.length; i++) {
-      const dim = new SymTabEntry(
-        dimIDs[i],
-        SymbolKind.Parameter,
-        new Type(dimTypes[i]),
-        1,
-        [],
-      );
-      subSymbols.push(dim);
-    }
-    for (let i = 0; i < paramIDs.length; i++) {
-      const param = new SymTabEntry(
-        paramIDs[i],
-        SymbolKind.Parameter,
-        new Type(paramTypes[i]),
-        1,
-        [],
-      );
-      subSymbols.push(param);
-    }
-    const s = new SymTabEntry(
-      funID,
-      SymbolKind.Function,
-      new Type(returnType),
-      0,
-      subSymbols,
-    );
-    s.runtimeId = runtimeID;
-    // function overloading?
-    for (let i = symTab.length - 1; i >= 0; i--) {
-      // TODO: this is slow: use a dictionary with ref to last entry for every id
-      if (symTab[i].id === funID) {
-        symTab[i].functionOverloadSuccessor = s;
-        break;
-      }
-    }
-    // finally push symbol to symbol table
-    symTab.push(s);
-  }
-
-  //for (const sym of symTab) console.log(sym.toString());
-
-  // return result
-  return symTab;
-}
