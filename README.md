@@ -20,10 +20,8 @@ SMPL has the following advantage:
 
 ## Usage
 
-**attention: not yet working!**
-
 ```
-npm install mathebuddy-smpl
+npm install @mathebuddy/mathebuddy-smpl
 ```
 
 ```
@@ -63,8 +61,8 @@ relational = add [ ("<="|">="|"<"|">") add ];
 add = mul { ("+"|"-") mul };
 mul = unary { ("*"|"/") unary };
 unary = unaryExpression [ unaryPostfix ];
-unaryExpression = INT | IMAG | REAL | "(" expr ")" | ID;
-unaryPostfix = "++" | "--" | "(" [ expr { "," expr } ] ")" | "[" expr "]";
+unaryExpression = INT | IMAG | REAL | "(" expr ")" | ID | "-" unary;
+unaryPostfix = "++" | "--" | [ "<" [ unary { "," unary } ] ">" ] "(" [ expr { "," expr } ] ")" | "[" expr "]";
 for = "for" "(" expression ";" expression ";" expression ")" block;
 if = "if" "(" expression ")" block [ "else" block ];
 block = statement | "{" { statement } "}";
