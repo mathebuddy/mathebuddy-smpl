@@ -1,10 +1,10 @@
 {
-  "name": "mathebuddy-smpl",
+  "name": "@mathebuddy/mathebuddy-smpl",
   "version": "0.0.1",
   "description": "Simple Math Programming Language (SMPL) for the Web",
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc && node ./build.js"
+    "build": "tsc --project tsconfig.build.json && node ./build.mjs"
   },
   "repository": {
     "type": "git",

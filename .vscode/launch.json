@@ -8,7 +8,7 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/test/test.ts",
+      "program": "${workspaceFolder}/test/_test_all.ts",
       "args": [""],
       "sourceMaps": true,
       "preLaunchTask": "tsc: build - tsconfig.json",

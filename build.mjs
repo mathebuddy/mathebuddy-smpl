@@ -5,7 +5,8 @@
  * Funded by: FREIRAUM 2022, Stiftung Innovation in der Hochschullehre
  * License: GPL-3.0-or-later
  */
-const esbuild = require('esbuild');
+
+import * as esbuild from 'esbuild';
 
 esbuild.buildSync({
   platform: 'node',
