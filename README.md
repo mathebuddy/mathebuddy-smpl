@@ -1,8 +1,8 @@
-# Simple Math Programming Language (SMPL) for the web
+# Simple Math Programming Language (SMPL) for the Web
 
 SMPL is a math-oriented programming language that can be interpreted in the browser. Its primary use is for the **mathe:buddy** app.
 
-SMPL's syntax is basically a subset of JavaScript, but extended with instrinsic mathematical data types (e.g. matrices) and operator overloading for these types. SMPL uses MathJS (and later on e.g. TensorFlow) for core calculations.
+SMPL's syntax is basically a subset of JavaScript, but extended with intrinsic mathematical data types (e.g. matrices) and operator overloading for these types. SMPL uses MathJS (and later on e.g. TensorFlow) for core calculations.
 
 Many concepts (and also parts of the source code) are taken from the **Simple E-Learning Language** (SELL) https://sell.f07-its.fh-koeln.de.
 
