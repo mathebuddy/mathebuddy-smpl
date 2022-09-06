@@ -71,13 +71,56 @@ let a : b = rand<3,3>(-2, 2);
 let c :/ d :/ e = rand<3,3>(-2, 2);
 ```
 
-- Variables `x` and `u` are integral. The value for `u` is randomly chosen from {0,1,2,3,4,5}.
+- Variables `x` and `u` are integral. The value for `u` is randomly chosen from set {0,1,2,3,4,5}.
 - Variable `z` is a real valued.
-- Variables `x` and `z` are declared together. The notation is equivalent to `let y=7; let y=9.1011;`
+- Variables `x` and `z` are declared together (without any semantical relation). The notation is equivalent to `let y=7; let y=9.1011;`
 - Variables `v`, `a`, `b`, `c` and `d` are matrices. `v` is a zero matrix with two rows and three columns.
 - Matrices `a` and `b` consist of randomly chosen, integral elements in range [-2,2].
 - The colon separator `:` evaluates the right-hand side to each of the variables: `let a = rand<3,3>(-2, 2); let b = rand<3,3>(-2, 2);`. Accordingly, elements for `a` and `b` are drawn individually.
 - Separator `:/` guarantees that no pair of matrices `c`, `d` and `e` is equal.
+
+### Expressions
+
+List of operators, ordered by increasing precedence:
+
+| Operator  | Description              |
+| --------- | ------------------------ |
+| `\|\|`    | Logical Or               |
+| `&&`      | Logical And              |
+| `==`,`!=` | Equal, Unequal           |
+| `+`, `-`  | Addition, Subtraction    |
+| `*`, `/`  | Multiplication, Division |
+| `^`       | Potency                  |
+
+Base data types are evaluated at compile-time. Properties like e.g. matrix dimensions are evaluated at runtime.
+Thus, a `RuntimeError` is thrown if e.g. two matrices with a different number of rows are added.
+
+> Example
+
+```
+let x = 1.23 * sin(y) + exp(u + 2*w);
+let C = A * B^T;
+let d = det(C);
+```
+
+- The examples assumes, that variables `y`, `u`, `w`, `A`, `B`, `C` have been declared before usage.
+
+### Conditions
+
+> Example
+
+```
+let s = 0;
+if (x > 0) {
+  s=1;
+}
+else if (x < 0) {
+  s = -1;
+}
+else {
+  x=0;
+}
+```
 
 ### Loops
 
@@ -99,12 +142,19 @@ for (let i = 0; i < 5; i++) {
 
 ### Functions
 
+A function consists of a **header** and a **body**:
+
+- The **header** declared the name of the function, its parameter names and types and the return type.
+- The **body** is represented by a list of statements and returns a result that is compatible to the return type.
+
 > Example
 
 ```
 function f(x: INT, y: INT): INT {
   return x + y;
 }
+
+let y = f(3, 4);
 ```
 
 ## Grammar
