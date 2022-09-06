@@ -4,7 +4,7 @@ SMPL is a math-oriented programming language that can be interpreted in the brow
 
 SMPL's syntax is basically a subset of JavaScript, but extended with intrinsic mathematical data types (e.g. matrices) and operator overloading for these types. SMPL uses MathJS (and later on e.g. TensorFlow) for core calculations.
 
-Many concepts (and also parts of the source code) are taken from the **Simple E-Learning Language** (SELL) https://sell.f07-its.fh-koeln.de.
+Many concepts (and also parts of the source code) are taken from the **Simple E-Learning Language** [SELL](https://sell.f07-its.fh-koeln.de).
 
 Compared to SELL, SMPL is Turing Complete: It allows e.g. loops and conditions.
 
@@ -22,7 +22,7 @@ SMPL has the following advantage:
 
 ## Example
 
-Copy the following code to `https://npm.runkit.com/` and run it!
+Copy the following code to [https://npm.runkit.com/](https://npm.runkit.com/) and run it!
 
 ```javascript
 var SMPL = require('@mathebuddy/mathebuddy-smpl');
@@ -193,7 +193,7 @@ continue = "continue" EOS;
 
 ## Developer Notes
 
-File `src/prototypes.ts` declares function prototypes. These must be implemented for the interpreter in file `src/interpret.ts`.
+File [`src/prototypes.ts`](https://github.com/mathebuddy/mathebuddy-smpl/blob/main/src/prototypes.ts) declares function prototypes. These must be implemented for the interpreter in file [`src/interpret.ts`](https://github.com/mathebuddy/mathebuddy-smpl/blob/main/src/interpret.ts).
 
 Example: Create support for a function `abs(..)` for real and complex numbers.
 
