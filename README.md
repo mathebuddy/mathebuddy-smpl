@@ -14,9 +14,9 @@ We will also support writing code for random questions in Python, Octave, Maxima
 
 SMPL has the following advantage:
 
-- NO server is required. Code is executed at client-side. There is no need to install anything
-- simple syntax with intrinsic data types for math
-- no need to import math libraries explicitly
+- **No** server is required. Code is executed at client-side. There is no need to install anything
+- Simple syntax with intrinsic data types for math
+- No need to import math libraries explicitly
 
 ## Example
 
@@ -193,27 +193,29 @@ File `src/prototypes.ts` declares function prototypes. These must be implemented
 
 Example: Create support for a function `abs(..)` for real and complex numbers.
 
-1. Insert the following lines into `const functions` in file `src/prototypes.ts`:
+- Insert the following lines into `const functions` in file `src/prototypes.ts`:
 
-```
-abs(x:REAL):REAL -> _absReal;
-abs(x:COMPLEX): REAL -> _absComplex;
-```
+  ```
+  abs(x:REAL):REAL -> _absReal;
+  abs(x:COMPLEX):REAL -> _absComplex;
+  ```
 
 Since the function is overloaded with two different types (and JavaScript does not support function overloading), each must be mapped onto a different function ID (`_absReal` and `_absComplex`).
 
-2. Add two private methods to class `SMPL_Interpreter` in file `src/interpret.ts`:
+- Add two private methods to class `SMPL_Interpreter` in file `src/interpret.ts`:
 
-```typescript
-private _absReal(x: number): number {
-  return Math.abs(x); // direct implementation: return x < 0 ? -x : x;
-}
+  ```typescript
+  private _absReal(x: number): number {
+    return Math.abs(x);
+    // direct implementation: return x < 0 ? -x : x;
+  }
 
-private _absComplex(x: Complex): number {
-  const x_mathjs = x.toMathjs();
-  return mathjs.abs(x_mathjs) as number;
-}
-```
+  private _absComplex(x: Complex): number {
+    const x_mathjs = x.toMathjs();
+    return mathjs.abs(x_mathjs) as number;
+    // direct implementation: return Math.sqrt(x.real*x.real + x.imag*x.imag);
+  }
+  ```
 
 The first method uses Vanilla JavaScript function `Math.abs(..)` to calculate the absolute values of a real number.
 
