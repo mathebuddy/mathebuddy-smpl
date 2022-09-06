@@ -15,6 +15,7 @@ import * as mathjs from 'mathjs';
 import { BaseType, SymTabEntry } from './symbol';
 import { Matrix } from './matrix';
 import { Term } from './term';
+import { Complex } from './complex';
 
 export class RunError extends Error {
   constructor(srcPos: string, msg: string) {
@@ -66,12 +67,20 @@ export class SMPL_Interpreter {
     return x + y;
   }
 
+  private _addComplex(x: Complex, y: Complex): Complex {
+    return Complex.mathjs2complex(mathjs.add(x.toMathJs(), y.toMathJs()));
+  }
+
   private _unaryMinus(x: number): number {
     return -x;
   }
 
   private _sub(x: number, y: number): number {
     return x - y;
+  }
+
+  private _subComplex(x: Complex, y: Complex): Complex {
+    return Complex.mathjs2complex(mathjs.subtract(x.toMathJs(), y.toMathJs()));
   }
 
   private _mul(x: number, y: number): number {
@@ -86,6 +95,16 @@ export class SMPL_Interpreter {
     let z: mathjs.Matrix;
     try {
       z = mathjs.add(Matrix.matrix2mathjs(x), Matrix.matrix2mathjs(y));
+    } catch (e) {
+      throw new RunError(ERR_POS, 'dimensions do not match');
+    }
+    return Matrix.mathjs2matrix(z);
+  }
+
+  private _subMatrices(x: Matrix, y: Matrix, ERR_POS: string): Matrix {
+    let z: mathjs.Matrix;
+    try {
+      z = mathjs.subtract(Matrix.matrix2mathjs(x), Matrix.matrix2mathjs(y));
     } catch (e) {
       throw new RunError(ERR_POS, 'dimensions do not match');
     }

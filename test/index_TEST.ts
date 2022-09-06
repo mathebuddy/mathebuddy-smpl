@@ -6,7 +6,7 @@
  * License: GPL-3.0-or-later
  */
 
-import { SMPL } from '../src';
+import * as SMPL from '../src/index';
 
 // --- hello world
 

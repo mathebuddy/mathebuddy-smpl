@@ -23,12 +23,15 @@ export const functionPrototypes = `
   _add(X:INT,y:REAL):REAL -> _add;
   _add(X:INT,y:REAL):REAL -> _add;
   _add(X:REAL,y:REAL):REAL -> _add;
+  _add(x:COMPLEX,y:COMPLEX):COMPLEX -> _addComplex;
   _add?(X:MATRIX,y:MATRIX):MATRIX -> _addMatrices;
 
   _sub(x:INT,y:INT):INT -> _add;
   _sub(X:INT,y:REAL):REAL -> _add;
   _sub(X:INT,y:REAL):REAL -> _add;
   _sub(X:REAL,y:REAL):REAL -> _add;
+  _sub(x:COMPLEX,y:COMPLEX):COMPLEX -> _subComplex;
+  _sub?(X:MATRIX,y:MATRIX):MATRIX -> _subMatrices;
 
   _unaryMinus(x:INT):INT -> _unaryMinus;
   _unaryMinus(x:REAL):REAL -> _unaryMinus;

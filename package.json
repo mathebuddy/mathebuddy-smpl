@@ -1,6 +1,6 @@
 {
   "name": "@mathebuddy/mathebuddy-smpl",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple Math Programming Language (SMPL) for the Web",
   "main": "lib/index.js",
   "scripts": {

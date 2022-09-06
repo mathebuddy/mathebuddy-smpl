@@ -55,7 +55,7 @@ SMPL is (mostly) an imperative, typed language. Its base syntax is derived from 
 
 ### Data Types
 
-boolean (`BOOL`), integer (`INT`), real (`REAL`), term (`TERM`), matrix (`MATRIX`), vector (`VECTOR`), set (`SET`), complex (`COMPLEX`).
+boolean (`BOOL`), integer (`INT`), rational (`RATIONAL`), real (`REAL`), term (`TERM`), matrix (`MATRIX`), vector (`VECTOR`), set (`SET`), complex (`COMPLEX`).
 
 ### Declarations
 
@@ -134,6 +134,14 @@ else {
 while (x > 0) {
   // body
 }
+```
+
+> Example
+
+```
+do {
+  // body
+} while (x > 0);
 ```
 
 > Example
