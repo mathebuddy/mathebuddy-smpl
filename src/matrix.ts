@@ -57,24 +57,24 @@ export class Matrix {
   }
 
   static mathjs2matrix(m: mathjs.Matrix): Matrix {
-    const r = new Matrix(m.size()[0], m.size()[1]);
-    const rows = r.getRows();
-    const cols = r.getCols();
+    const result = new Matrix(m.size()[0], m.size()[1]);
+    const rows = result.getRows();
+    const cols = result.getCols();
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        r.setValue(i, j, m.get([i, j]));
+        result.setValue(i, j, m.get([i, j]));
       }
     }
-    return r;
+    return result;
   }
 
   static matrix2mathjs(m: Matrix): mathjs.Matrix {
-    const r = mathjs.zeros(m.rows, m.cols) as mathjs.Matrix;
+    const result = mathjs.zeros(m.rows, m.cols) as mathjs.Matrix;
     for (let i = 0; i < m.rows; i++) {
       for (let j = 0; j < m.cols; j++) {
-        r.set([i, j], m.getValue(i, j));
+        result.set([i, j], m.getValue(i, j));
       }
     }
-    return r;
+    return result;
   }
 }
