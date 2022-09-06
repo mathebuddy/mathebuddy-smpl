@@ -8,6 +8,8 @@ Many concepts (and also parts of the source code) are taken from the **Simple E-
 
 Compared to SELL, SMPL is Turing Complete: It allows e.g. loops and conditions.
 
+SMPL is easily **extendible**. Refer to the _Developer Notes_ below.
+
 ## Notes related to the "mathe:buddy" project
 
 We will also support writing code for random questions in Python, Octave, Maxima and SageMath.
@@ -83,14 +85,16 @@ let c :/ d :/ e = rand<3,3>(-2, 2);
 
 List of operators, ordered by increasing precedence:
 
-| Operator  | Description              |
-| --------- | ------------------------ |
-| `\|\|`    | Logical Or               |
-| `&&`      | Logical And              |
-| `==`,`!=` | Equal, Unequal           |
-| `+`, `-`  | Addition, Subtraction    |
-| `*`, `/`  | Multiplication, Division |
-| `^`       | Potency                  |
+| Operator           | Description                                              |
+| ------------------ | -------------------------------------------------------- |
+| `\|\|`             | Logical Or                                               |
+| `&&`               | Logical And                                              |
+| `==`,`!=`          | Equal, Unequal                                           |
+| `<`, `<=`,`>`,`>=` | Less than, Less or equal, Greater than, Greater or equal |
+| `+`, `-`           | Addition, Subtraction                                    |
+| `*`, `/`           | Multiplication, Division                                 |
+| `^`                | Potency                                                  |
+| `++`, `--`         | Postfix Incrementation, Decrementation                   |
 
 Base data types are evaluated at compile-time. Properties like e.g. matrix dimensions are evaluated at runtime.
 Thus, a `RuntimeError` is thrown if e.g. two matrices with a different number of rows are added.
@@ -221,4 +225,4 @@ The first method uses Vanilla JavaScript function `Math.abs(..)` to calculate th
 
 The second method uses MathJS to calculate the absolute value of a complex number. Classes `Complex`, `Matrix`, ... provide type conversion methods.
 
-Any third party math library written (or compiled to) JavaScript may be included.
+Any third party math library written (or compiled to) JavaScript may be included, but increases the download size of the library (currently less than 200 kiB).
