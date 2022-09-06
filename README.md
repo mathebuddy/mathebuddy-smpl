@@ -45,13 +45,71 @@ for (let v of variables) {
 npm install @mathebuddy/mathebuddy-smpl
 ```
 
-## Syntax
+## Language Definition
 
-Detailed description: work-in-progress
+SMPL is (mostly) an imperative, typed language. Its base syntax is derived from JavaScript.
+
+### Programs
+
+### Data Types
+
+boolean (`BOOL`), integer (`INT`), real (`REAL`), term (`TERM`), matrix (`MATRIX`), vector (`VECTOR`), set (`SET`), complex (`COMPLEX`).
+
+### Declarations
+
+Declarations are initiated with keyword `let`, followed by an identifier and finally assigned expression by `=`.
+The expression in the right-hand side is mandatory to derive the data type.
+
+> Example
+
+```
+let x = 5;
+let y = 7, z = 9.1011;
+let u = rand(5);
+let v = zeros<2,3>();
+let a : b = rand<3,3>(-2, 2);
+let c :/ d :/ e = rand<3,3>(-2, 2);
+```
+
+- Variables `x` and `u` are integral. The value for `u` is randomly chosen from {0,1,2,3,4,5}.
+- Variable `z` is a real valued.
+- Variables `x` and `z` are declared together. The notation is equivalent to `let y=7; let y=9.1011;`
+- Variables `v`, `a`, `b`, `c` and `d` are matrices. `v` is a zero matrix with two rows and three columns.
+- Matrices `a` and `b` consist of randomly chosen, integral elements in range [-2,2].
+- The colon separator `:` evaluates the right-hand side to each of the variables: `let a = rand<3,3>(-2, 2); let b = rand<3,3>(-2, 2);`. Accordingly, elements for `a` and `b` are drawn individually.
+- Separator `:/` guarantees that no pair of matrices `c`, `d` and `e` is equal.
+
+### Loops
+
+> Example
+
+```
+while (x > 0) {
+  // body
+}
+```
+
+> Example
+
+```
+for (let i = 0; i < 5; i++) {
+  // body
+}
+```
+
+### Functions
+
+> Example
+
+```
+function f(x: INT, y: INT): INT {
+  return x + y;
+}
+```
 
 ## Grammar
 
-TODO: yet incomplete!
+The following formal grammar (denoted in EBNF) is currently implemented.
 
 ```ebnf
 program = { statement };
@@ -98,16 +156,17 @@ Since the function is overloaded with two different types (and JavaScript does n
 
 ```typescript
 private _absReal(x: number): number {
-  return Math.abs(x);
+  return Math.abs(x); // direct implementation: return x < 0 ? -x : x;
 }
 
-private _absComplex(x: mathjs.MathCollection): number {
-  return mathjs.abs(x) as number;
+private _absComplex(x: Complex): number {
+  const x_mathjs = x.toMathjs();
+  return mathjs.abs(x_mathjs) as number;
 }
 ```
 
 The first method uses Vanilla JavaScript function `Math.abs(..)` to calculate the absolute values of a real number.
 
-the second method uses MathJS to calculate the absolute value of a complex number.
+The second method uses MathJS to calculate the absolute value of a complex number. Classes `Complex`, `Matrix`, ... provide type conversion methods.
 
 Any third party math library written (or compiled to) JavaScript may be included.
