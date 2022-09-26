@@ -78,6 +78,7 @@ export class SMPL_Parser {
     this.lexer.enableEmitIndentation(false);
     this.lexer.enableBackslashLineBreaks(false);
     this.lexer.pushSource('FILE', src);
+    this.lexer.setTerminals(['&&', '||', '==', '!=', '>=', '<=', '++', '--']);
     const c = this.parseProgram();
     //console.log(c.str);
     return c.str;
@@ -108,32 +109,49 @@ export class SMPL_Parser {
     else {
       const c = this.parseExpression();
       this.lexer.EOS();
-      return new Code(c.code.str);
+      return new Code(c.code.str + ';');
     }
   }
 
-  //G declaration = "let" ID { ":" ID } "=" expr { "," ID { ":" ID } "=" expr } EOS;
+  //G declaration = "let" id_list "=" expr EOS | "let" ID "(" ID { "," ID } ")" "=" expr EOS";
+  //G id_list = ID { ":" ID };
+  // TODO: continue declaration after "," (e.g. "let x=4, y=6;")
   private parseDeclaration(): Code {
     // e.g. "let a:b = rand(5);" -> "let a=rand(5), b=rand(5);"
     const c = new Code();
     this.lexer.TER('let');
     const ids: string[] = [];
     ids.push(this.lexer.ID());
-    while (this.lexer.isTER(':')) {
+    if (this.lexer.isTER('(')) {
+      // function declaration
+      const id = ids[0];
       this.lexer.next();
-      ids.push(this.lexer.ID());
+      this.lexer.ID();
+      while (this.lexer.isTER(',')) {
+        this.lexer.next();
+        this.lexer.ID();
+      }
+      this.lexer.TER(')');
+      this.lexer.TER('=');
+      this.parseExpression();
+      this.lexer.EOS();
+    } else {
+      // non-function declaration
+      while (this.lexer.isTER(':')) {
+        this.lexer.next();
+        ids.push(this.lexer.ID());
+      }
+      this.lexer.TER('=');
+      const e = this.parseExpression();
+      for (const id of ids) {
+        // TODO: check if symbol with same name is available at same scope
+        const s = new SymTabEntry(id, SymbolKind.Local, e.type, this.scope, []);
+        this.symTab.push(s);
+        c.str += 'let ' + id + ' = ' + e.code.str;
+        c.str += ';';
+      }
+      this.lexer.EOS();
     }
-    this.lexer.TER('=');
-    const e = this.parseExpression();
-    for (const id of ids) {
-      // TODO: check if symbol with same name is available at same scope
-      const s = new SymTabEntry(id, SymbolKind.Local, e.type, this.scope, []);
-      this.symTab.push(s);
-      c.str += 'let ' + id + ' = ' + e.code.str;
-      c.str += ';';
-    }
-    // "," ...
-    this.lexer.EOS();
     return c;
   }
 
@@ -241,14 +259,25 @@ export class SMPL_Parser {
     return x;
   }
 
-  //G mul = unary { ("*"|"/") unary };
+  //G mul = pow { ("*"|"/") pow };
   private parseMul(): TypedCode {
-    let x = this.parseUnary();
+    let x = this.parsePow();
     while (this.lexer.isTER('*') || this.lexer.isTER('/')) {
       const op = this.lexer.getToken().token;
       this.lexer.next();
-      const y = this.parseUnary();
+      const y = this.parsePow();
       x = this.call(this.getSymbol(op === '*' ? '_mul' : '_div'), [], [x, y]);
+    }
+    return x;
+  }
+
+  //G pow = unary [ "^" unary ];
+  private parsePow(): TypedCode {
+    let x = this.parseUnary();
+    if (this.lexer.isTER('^')) {
+      this.lexer.next();
+      const y = this.parseUnary();
+      x = this.call(this.getSymbol('_pow'), [], [x, y]);
     }
     return x;
   }
@@ -267,7 +296,9 @@ export class SMPL_Parser {
     if (
       this.lexer.isTER('++') ||
       this.lexer.isTER('--') ||
-      this.lexer.isTER('<') ||
+      (tc.sym != null &&
+        tc.sym.kind === SymbolKind.Function &&
+        this.lexer.isTER('<')) ||
       this.lexer.isTER('(') ||
       this.lexer.isTER('[')
     ) {
@@ -276,11 +307,19 @@ export class SMPL_Parser {
     return tc;
   }
 
-  //G unaryExpression = INT | IMAG | REAL | "(" expr ")" | ID | "-" unary;
+  //G unaryExpression = "true" | "false" | INT | IMAG | REAL | "(" expr ")" | ID | "-" unary | "!" unary;
   private parseUnaryExpression(): TypedCode {
     let tc = new TypedCode();
     // TODO: IMAG
-    if (this.lexer.isINT()) {
+    if (this.lexer.isTER('true')) {
+      tc.code.str = ' true ';
+      tc.type.base = BaseType.BOOL;
+      this.lexer.next();
+    } else if (this.lexer.isTER('false')) {
+      tc.code.str = ' false ';
+      tc.type.base = BaseType.BOOL;
+      this.lexer.next();
+    } else if (this.lexer.isINT()) {
       tc.code.str = ' ' + this.lexer.INT() + ' ';
       tc.type.base = BaseType.INT;
     } else if (this.lexer.isREAL()) {
@@ -290,18 +329,22 @@ export class SMPL_Parser {
       this.lexer.next();
       const e = this.parseExpression();
       this.lexer.TER(')');
-      tc.code.str = ' ( ' + e + ' ) ';
+      tc.code.str = ' ( ' + e.code.str + ' ) ';
       tc.type = e.type;
     } else if (this.lexer.isID()) {
       const id = this.lexer.ID();
       tc.sym = this.getSymbol(id);
       if (tc.sym == null) this.lexer.errorUnknownSymbol(id);
-      tc.type = tc.sym.type;
+      tc.type = tc.sym.type.clone();
       tc.code.str = ' ' + id;
     } else if (this.lexer.isTER('-')) {
       this.lexer.next();
       const x = this.parseUnary();
       tc = this.call(this.getSymbol('_unaryMinus'), [], [x]);
+    } else if (this.lexer.isTER('!')) {
+      this.lexer.next();
+      const x = this.parseUnary();
+      tc = this.call(this.getSymbol('_unaryNot'), [], [x]);
     } else this.lexer.errorExpected(['INT', 'IMAG', 'REAL', '(', 'ID']);
     return tc;
   }
@@ -443,7 +486,7 @@ export class SMPL_Parser {
     const e = this.parseExpression();
     if (e.type.base !== BaseType.BOOL) this.lexer.errorConditionNotBoolean();
     this.lexer.TER(')');
-    c.str = 'if (' + e.code + ')';
+    c.str = 'if (' + e.code.str + ')';
     const b1 = this.parseBlock();
     c.str += b1.str;
     if (this.lexer.isTER('else')) {
@@ -459,8 +502,11 @@ export class SMPL_Parser {
   private parseBlock(): Code {
     const c = new Code();
     if (this.lexer.isTER('{')) {
+      this.lexer.next();
       c.str += '{';
-      while (this.lexer.isNotTER('}')) c.str += this.parseStatement().str;
+      while (this.lexer.isNotTER('}')) {
+        c.str += this.parseStatement().str;
+      }
       this.lexer.TER('}');
       c.str += '}';
       return c;
@@ -474,9 +520,9 @@ export class SMPL_Parser {
     const b = this.parseBlock();
     this.loopLevel--;
     this.lexer.TER('while');
+    this.lexer.TER('(');
     const e = this.parseExpression();
     if (e.type.base !== BaseType.BOOL) this.lexer.errorConditionNotBoolean();
-    this.lexer.TER('(');
     this.lexer.TER(')');
     this.lexer.EOS();
     return new Code(' do ' + b.str + ' while( ' + e.code.str + ' ); ');
@@ -492,7 +538,7 @@ export class SMPL_Parser {
     this.loopLevel++;
     const b = this.parseBlock();
     this.loopLevel--;
-    const c = new Code(' while( ' + e.code + ' ) ' + b.str);
+    const c = new Code(' while( ' + e.code.str + ' ) ' + b.str);
     return c;
   }
 

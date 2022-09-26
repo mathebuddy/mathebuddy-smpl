@@ -75,6 +75,10 @@ export class SMPL_Interpreter {
     return -x;
   }
 
+  private _unaryNot(x: boolean): boolean {
+    return !x;
+  }
+
   private _sub(x: number, y: number): number {
     return x - y;
   }
@@ -89,6 +93,10 @@ export class SMPL_Interpreter {
 
   private _div(x: number, y: number): number {
     return x / y;
+  }
+
+  private _pow(x: number, y: number): number {
+    return Math.pow(x, y);
   }
 
   private _addMatrices(x: Matrix, y: Matrix, ERR_POS: string): Matrix {
@@ -165,6 +173,14 @@ export class SMPL_Interpreter {
     return m;
   }
 
+  private _det(x: Matrix, ERR_POS: string): number {
+    try {
+      return mathjs.det(Matrix.matrix2mathjs(x));
+    } catch (e) {
+      throw new RunError(ERR_POS, 'matrix is not square');
+    }
+  }
+
   private _sin(x: number): number {
     return Math.sin(x);
   }
@@ -197,11 +213,11 @@ export class SMPL_Interpreter {
     return Math.sqrt(x);
   }
 
-  private _zeros(rows: number, cols: number): mathjs.MathCollection {
+  /*private _zeros(rows: number, cols: number): mathjs.MathCollection {
     return mathjs.zeros([rows, cols]);
   }
 
   private _ones(rows: number, cols: number): mathjs.MathCollection {
     return mathjs.ones([rows, cols]);
-  }
+  }*/
 }

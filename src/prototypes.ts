@@ -20,32 +20,39 @@
 export const functionPrototypes = `
 
   _add(x:INT,y:INT):INT -> _add;
-  _add(X:INT,y:REAL):REAL -> _add;
-  _add(X:INT,y:REAL):REAL -> _add;
-  _add(X:REAL,y:REAL):REAL -> _add;
+  _add(x:INT,y:REAL):REAL -> _add;
+  _add(x:REAL,y:INT):REAL -> _add;
+  _add(x:REAL,y:REAL):REAL -> _add;
   _add(x:COMPLEX,y:COMPLEX):COMPLEX -> _addComplex;
-  _add?(X:MATRIX,y:MATRIX):MATRIX -> _addMatrices;
+  _add?(x:MATRIX,y:MATRIX):MATRIX -> _addMatrices;
 
-  _sub(x:INT,y:INT):INT -> _add;
-  _sub(X:INT,y:REAL):REAL -> _add;
-  _sub(X:INT,y:REAL):REAL -> _add;
-  _sub(X:REAL,y:REAL):REAL -> _add;
+  _sub(x:INT,y:INT):INT -> _sub;
+  _sub(X:INT,y:REAL):REAL -> _sub;
+  _sub(x:REAL,y:INT):REAL -> _sub;
+  _sub(x:REAL,y:REAL):REAL -> _sub;
   _sub(x:COMPLEX,y:COMPLEX):COMPLEX -> _subComplex;
-  _sub?(X:MATRIX,y:MATRIX):MATRIX -> _subMatrices;
+  _sub?(x:MATRIX,y:MATRIX):MATRIX -> _subMatrices;
 
   _unaryMinus(x:INT):INT -> _unaryMinus;
   _unaryMinus(x:REAL):REAL -> _unaryMinus;
 
-  _mul(x:INT,y:INT):INT -> _mul;
-  _mul(X:INT,y:REAL):REAL -> _mul;
-  _mul(X:INT,y:REAL):REAL -> _mul;
-  _mul(X:REAL,y:REAL):REAL -> _mul;
-  _mul?(X:MATRIX,y:MATRIX):MATRIX -> _mulMatrices;
+  _unaryNot(x:BOOL):BOOL -> _unaryNot;
 
-  _div(x:INT,y:INT):REAL -> _mul;
-  _div(X:INT,y:REAL):REAL -> _mul;
-  _div(X:INT,y:REAL):REAL -> _mul;
-  _div(X:REAL,y:REAL):REAL -> _mul;
+  _mul(x:INT,y:INT):INT -> _mul;
+  _mul(x:INT,y:REAL):REAL -> _mul;
+  _mul(x:REAL,y:INT):REAL -> _mul;
+  _mul(x:REAL,y:REAL):REAL -> _mul;
+  _mul?(x:MATRIX,y:MATRIX):MATRIX -> _mulMatrices;
+
+  _div(x:INT,y:INT):REAL -> _div;
+  _div(x:INT,y:REAL):REAL -> _div;
+  _div(x:REAL,y:INT):REAL -> _div;
+  _div(x:REAL,y:REAL):REAL -> _div;
+
+  _pow(x:INT,y:INT):INT -> _pow;
+  _pow(x:INT,y:REAL):REAL -> _pow;
+  _pow(x:REAL,y:INT):REAL -> _pow;
+  _pow(x:REAL,y:REAL):REAL -> _pow;
 
   rand(max:INT): INT -> _randIntMax;
   rand(min:INT,max:INT): INT -> _randIntMinMax;
@@ -87,4 +94,5 @@ export const functionPrototypes = `
   binomial(n:INT,k:INT): INT -> _binomial;
   min(x:MATRIX): REAL -> _minMatrix;
   max(x:MATRIX): REAL -> _maxMatrix;
+  det?(x:MATRIX): REAL -> _det;
 `;
