@@ -14,7 +14,21 @@ let variables = SMPL.interpret(
   `// Hello, world!
 let z = rand(3);
 let x = 3 + 4*5;
-let y = x + 1;`,
+let y = x + 1;
+let w = y^2;
+let b = (true && false) || !true;
+while (x > 0) {
+  x = x - 1;
+}
+do {
+  x = x + 1;
+} while(x < 5);
+if (x == 5) {
+  y = 666;
+} else {
+  y = 7;
+}
+`,
   true,
 );
 
@@ -26,7 +40,22 @@ for (const v of variables) {
 
 variables = SMPL.interpret(
   `let A:B = randZ<2,2>(-5,5);
-let C = A * B;`,
+let C = A * B;
+let D = randZ<3,2>(-5,5);
+//let E = A + D;
+`,
+  true,
+);
+
+for (const v of variables) {
+  console.log(v.id + ' = ' + v.value.toString());
+}
+
+// ---
+
+variables = SMPL.interpret(
+  `let f(x) = x^2;
+`,
   true,
 );
 
