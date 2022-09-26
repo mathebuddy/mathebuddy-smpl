@@ -10,10 +10,12 @@ import { SMPL_Interpreter } from './interpret';
 import { SMPL_Parser } from './parse';
 import { SymTabEntry } from './symbol';
 
+export let code = '';
+
 export function interpret(src: string, printCode = false): SymTabEntry[] {
   // parse code
   const parser = new SMPL_Parser();
-  const code = parser.parse(src);
+  code = parser.parse(src);
   const locals = parser.getLocalSymbols();
   // print code
   if (printCode) {
