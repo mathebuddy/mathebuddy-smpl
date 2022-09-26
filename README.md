@@ -20,7 +20,11 @@ SMPL has the following advantage:
 - Simple syntax with intrinsic data types for math
 - No need to import math libraries explicitly
 
-## Example
+## Playground
+
+Visit [https://mathebuddy.github.io/mathebuddy-smpl/](https://mathebuddy.github.io/mathebuddy-smpl/) and have fun!
+
+## NodeJS Example
 
 Copy the following code to [https://npm.runkit.com/](https://npm.runkit.com/) and run it!
 
