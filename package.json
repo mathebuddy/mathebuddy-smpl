@@ -4,7 +4,7 @@
   "description": "Simple Math Programming Language (SMPL) for the Web",
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc --project tsconfig.build.json && node ./build.mjs"
+    "build": "tsc --project tsconfig.build.json && node ./build.mjs && cd web-test && node ./build.mjs"
   },
   "repository": {
     "type": "git",
