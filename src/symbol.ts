@@ -26,6 +26,11 @@ export class Type {
   constructor(base = BaseType.INT) {
     this.base = base;
   }
+  clone(): Type {
+    const t = new Type();
+    t.base = this.base;
+    return t;
+  }
   public base = BaseType.INT;
   toString(): string {
     return '' + this.base;
