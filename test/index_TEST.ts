@@ -10,7 +10,7 @@ import * as SMPL from '../src/index';
 
 // --- hello world
 
-let variables = SMPL.interpret(
+/*let variables = SMPL.interpret(
   `// Hello, world!
 let z = rand(3);
 let x = 3 + 4*5;
@@ -49,15 +49,11 @@ let D = randZ<3,2>(-5,5);
 
 for (const v of variables) {
   console.log(v.id + ' = ' + v.value.toString());
-}
+}*/
 
 // ---
 
-variables = SMPL.interpret(
-  `let f(x) = x^2;
-`,
-  true,
-);
+const variables = SMPL.interpret(`let f(x) = x^2;`, true);
 
 for (const v of variables) {
   console.log(v.id + ' = ' + v.value.toString());

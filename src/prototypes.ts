@@ -54,6 +54,9 @@ export const functionPrototypes = `
   _pow(x:REAL,y:INT):REAL -> _pow;
   _pow(x:REAL,y:REAL):REAL -> _pow;
 
+  _pow(x:TERM_VAR,y:INT):TERM -> _powTermVarReal;
+  _pow(x:TERM_VAR,y:REAL):TERM -> _powTermVarReal;
+
   rand(max:INT): INT -> _randIntMax;
   rand(min:INT,max:INT): INT -> _randIntMinMax;
   randZ(max:INT): INT -> _randZIntMax;

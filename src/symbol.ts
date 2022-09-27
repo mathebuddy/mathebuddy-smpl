@@ -18,6 +18,7 @@ export enum BaseType {
   IMAG = 'IMAG',
   COMPLEX = 'COMPLEX',
   TERM = 'TERM',
+  TERM_VAR = 'TERM_VAR',
   MATRIX = 'MATRIX',
   FUNCTION_CALL = 'FUNCTION_CALL',
 }
@@ -107,6 +108,8 @@ function getBaseType(lex: Lexer, str: string): BaseType {
   else if (str === 'REAL') return BaseType.REAL;
   else if (str === 'COMPLEX') return BaseType.COMPLEX;
   else if (str === 'MATRIX') return BaseType.MATRIX;
+  else if (str === 'TERM') return BaseType.TERM;
+  else if (str === 'TERM_VAR') return BaseType.TERM_VAR;
   else lex.error('unknown base type ' + str);
 }
 

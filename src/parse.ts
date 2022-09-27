@@ -15,6 +15,7 @@ import {
   createFunctionPrototypes,
   SymbolKind,
   SymTabEntry,
+  Type,
   TypedCode,
 } from './symbol';
 
@@ -61,7 +62,10 @@ export class SMPL_Parser {
   public getLocalSymbols(): SymTabEntry[] {
     const locals: SymTabEntry[] = [];
     for (const s of this.symTab) {
-      if (s.kind === SymbolKind.Local) locals.push(s);
+      if (s.kind === SymbolKind.Local) {
+        if (s.type.base === BaseType.TERM_VAR) continue;
+        locals.push(s);
+      }
     }
     return locals;
   }
@@ -123,17 +127,37 @@ export class SMPL_Parser {
     const ids: string[] = [];
     ids.push(this.lexer.ID());
     if (this.lexer.isTER('(')) {
-      // function declaration
+      // function declaration; e.g. "let f(x) = x^2;"
       const id = ids[0];
       this.lexer.next();
-      this.lexer.ID();
+      const varIds: string[] = [];
+      varIds.push(this.lexer.ID());
       while (this.lexer.isTER(',')) {
         this.lexer.next();
-        this.lexer.ID();
+        varIds.push(this.lexer.ID());
+      }
+      for (const varId of varIds) {
+        const type = new Type(BaseType.TERM_VAR);
+        const symbol = new SymTabEntry(
+          varId,
+          SymbolKind.Local,
+          type,
+          this.scope,
+          [],
+        );
+        this.symTab.push(symbol);
+        // TODO: x in f(x) vs other variable named x
+        // TODO: define x only once!
+        c.str += 'let ' + varId + ' = Term.Var("' + varId + '");';
       }
       this.lexer.TER(')');
       this.lexer.TER('=');
-      this.parseExpression();
+      const e = this.parseExpression();
+      if (e.type.base !== BaseType.TERM) {
+        // TODO: create custom error
+        this.lexer.error('right-hand side is not a term');
+      }
+      c.str += 'let ' + id + ' = ' + e.code.str + ';';
       this.lexer.EOS();
     } else {
       // non-function declaration
@@ -145,10 +169,15 @@ export class SMPL_Parser {
       const e = this.parseExpression();
       for (const id of ids) {
         // TODO: check if symbol with same name is available at same scope
-        const s = new SymTabEntry(id, SymbolKind.Local, e.type, this.scope, []);
-        this.symTab.push(s);
-        c.str += 'let ' + id + ' = ' + e.code.str;
-        c.str += ';';
+        const symbol = new SymTabEntry(
+          id,
+          SymbolKind.Local,
+          e.type,
+          this.scope,
+          [],
+        );
+        this.symTab.push(symbol);
+        c.str += 'let ' + id + ' = ' + e.code.str + ';';
       }
       this.lexer.EOS();
     }

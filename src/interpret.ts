@@ -30,6 +30,7 @@ export class SMPL_Interpreter {
     code += 'return [';
     let i = 0;
     for (const local of locals) {
+      if (local.type.base == BaseType.TERM_VAR) continue;
       if (i > 0) code += ', ';
       code += local.id;
       i++;
@@ -50,6 +51,9 @@ export class SMPL_Interpreter {
             break;
           case BaseType.MATRIX:
             local.value = values[i] as Matrix;
+            break;
+          case BaseType.TERM_VAR:
+            // do nothing
             break;
           default:
             throw new RunError(
