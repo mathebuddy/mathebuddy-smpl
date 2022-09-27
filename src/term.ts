@@ -264,10 +264,12 @@ export class Term {
           s += ')';
         } else {
           // '+', '-', ...
+          s += '(';
           for (let i = 0; i < this.o.length; i++) {
             if (i > 0) s += this.op;
             s += this.o[i].toString();
           }
+          s += ')';
         }
         break;
     }
