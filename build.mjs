@@ -10,7 +10,7 @@ import * as esbuild from 'esbuild';
 
 esbuild.buildSync({
   platform: 'node',
-  minify: true,
+  minify: false, // TODO
   target: 'node11',
   entryPoints: ['src/index.ts'],
   bundle: true,
