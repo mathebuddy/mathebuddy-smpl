@@ -7,95 +7,105 @@
  */
 
 /**
- * This file populates the symbol table with function prototypes.
- * Each function must be implemented in file codeRun.ts.
+ * THIS FILE IS GENERATED AUTOMATICALLY BY RUNNING "python3 gen_prototypes.py > prototypes.ts"
  */
-
-// TODO: write documentation for each function + extract it
-
-//G prototype = ID [ "?" ] [ "<" params ">" ] "(" [ params ] ")" ":" type "->" ID ";";
-//G params = "ID" ":" type { "," "ID" ":" type };
-//G type = "INT" | "REAL" | "COMPLEX" | "MATRIX";
 
 export const functionPrototypes = `
 
-  _add(x:INT,y:INT):INT -> _add;
-  _add(x:INT,y:REAL):REAL -> _add;
-  _add(x:REAL,y:INT):REAL -> _add;
-  _add(x:REAL,y:REAL):REAL -> _add;
-  _add(x:COMPLEX,y:COMPLEX):COMPLEX -> _addComplex;
-  _add?(x:MATRIX,y:MATRIX):MATRIX -> _addMatrices;
+_add(x:INT,y:INT):INT -> interpret_basic._add;
+_add(x:INT,y:REAL):REAL -> interpret_basic._add;
+_add(x:REAL,y:INT):REAL -> interpret_basic._add;
+_add(x:REAL,y:REAL):REAL -> interpret_basic._add;
+_unaryMinus(x:INT):INT -> interpret_basic._unaryMinus;
+_unaryMinus(x:REAL):REAL -> interpret_basic._unaryMinus;
+_unaryNot(x:BOOL):BOOL -> interpret_basic._unaryNot;
+_sub(x:INT,y:INT):INT -> interpret_basic._sub;
+_sub(X:INT,y:REAL):REAL -> interpret_basic._sub;
+_sub(x:REAL,y:INT):REAL -> interpret_basic._sub;
+_sub(x:REAL,y:REAL):REAL -> interpret_basic._sub;
+_mul(x:INT,y:INT):INT -> interpret_basic._mul;
+_mul(x:INT,y:REAL):REAL -> interpret_basic._mul;
+_mul(x:REAL,y:INT):REAL -> interpret_basic._mul;
+_mul(x:REAL,y:REAL):REAL -> interpret_basic._mul;
+_div(x:INT,y:INT):REAL -> interpret_basic._div;
+_div(x:INT,y:REAL):REAL -> interpret_basic._div;
+_div(x:REAL,y:INT):REAL -> interpret_basic._div;
+_div(x:REAL,y:REAL):REAL -> interpret_basic._div;
+_pow(x:INT,y:INT):INT -> interpret_basic._pow;
+_pow(x:INT,y:REAL):REAL -> interpret_basic._pow;
+_pow(x:REAL,y:INT):REAL -> interpret_basic._pow;
+_pow(x:REAL,y:REAL):REAL -> interpret_basic._pow;
+rand(max:INT): INT -> interpret_basic._randIntMax;
+rand(min:INT,max:INT): INT -> interpret_basic._randIntMinMax;
+randZ(min:INT,max:INT): INT -> interpret_basic._randIntMinMaxZ;
+sin(x:INT): REAL -> interpret_basic._sin;
+sin(x:REAL): REAL -> interpret_basic._sin;
+cos(x:INT): REAL -> interpret_basic._cos;
+cos(x:REAL): REAL -> interpret_basic._cos;
+tan(x:INT): REAL -> interpret_basic._tan;
+tan(x:REAL): REAL -> interpret_basic._tan;
+asin(x:INT): REAL -> interpret_basic._asin;
+asin(x:REAL): REAL -> interpret_basic._asin;
+acos(x:INT): REAL -> interpret_basic._acos;
+acos(x:REAL): REAL -> interpret_basic._acos;
+atan(x:INT): REAL -> interpret_basic._atan;
+atan(x:REAL): REAL -> interpret_basic._atan;
+exp(x:INT):REAL -> interpret_basic._exp;
+exp(x:REAL):REAL -> interpret_basic._exp;
+sqrt(x:REAL): REAL -> interpret_basic._sqrt;
+abs(x:INT):INT -> interpret_basic._abs;
+abs(x:REAL):REAL -> interpret_basic._abs;
+floor(x:INT): INT -> interpret_basic._floor;
+floor(x:REAL): INT -> interpret_basic._floor;
+ceil(x:INT): INT -> interpret_basic._ceil;
+ceil(x:REAL): INT -> interpret_basic._ceil;
+round(x:INT): INT -> interpret_basic._round;
+round(x:REAL): INT -> interpret_basic._round;
+sign(x:INT): INT -> interpret_basic._sign;
+sign(x:REAL): INT -> interpret_basic._sign;
+binomial(n:INT,k:INT): INT -> interpret_basic._binomial;
+_add(x:COMPLEX,y:COMPLEX):COMPLEX -> interpret_complex._addComplex;
+_sub(x:COMPLEX,y:COMPLEX):COMPLEX -> interpret_complex._subComplex;
+exp(x:COMPLEX):COMPLEX -> interpret_complex._expComplex;
+sqrt(x:COMPLEX): COMPLEX -> interpret_complex._sqrtComplex;
+abs(x:COMPLEX): REAL -> interpret_complex._absComplex;
+_add(x:MATRIX,y:MATRIX):MATRIX -> interpret_matrix._addMatrices;
+_sub(x:MATRIX,y:MATRIX):MATRIX -> interpret_matrix._subMatrices;
+_mul(x:MATRIX,y:MATRIX):MATRIX -> interpret_matrix._mulMatrices;
+rand<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> interpret_matrix._randMatrix;
+randZ<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> interpret_matrix._randZMatrix;
+det(x:MATRIX): REAL -> interpret_matrix._det;
+min(x:MATRIX): REAL -> interpret_matrix._minMatrix;
+max(x:MATRIX): REAL -> interpret_matrix._maxMatrix;
+_add(x:TERM,y:INT):TERM -> interpret_term._addTermReal;
+_add(x:TERM,y:REAL):TERM -> interpret_term._addTermReal;
+_add(x:INT,y:TERM):TERM -> interpret_term._addRealTerm;
+_add(x:REAL,y:TERM):TERM -> interpret_term._addRealTerm;
+_add(x:TERM,y:TERM):TERM -> interpret_term._addTermTerm;
+_sub(x:TERM,y:INT):TERM -> interpret_term._subTermReal;
+_sub(x:TERM,y:REAL):TERM -> interpret_term._subTermReal;
+_sub(x:INT,y:TERM):TERM -> interpret_term._subRealTerm;
+_sub(x:REAL,y:TERM):TERM -> interpret_term._subRealTerm;
+_sub(x:TERM,y:TERM):TERM -> interpret_term._subTermTerm;
+_mul(x:TERM,y:INT):TERM -> interpret_term._mulTermReal;
+_mul(x:TERM,y:REAL):TERM -> interpret_term._mulTermReal;
+_mul(x:INT,y:TERM):TERM -> interpret_term._mulRealTerm;
+_mul(x:REAL,y:TERM):TERM -> interpret_term._mulRealTerm;
+_mul(x:TERM,y:TERM):TERM -> interpret_term._mulTermTerm;
+_div(x:TERM,y:INT):TERM -> interpret_term._divTermReal;
+_div(x:TERM,y:REAL):TERM -> interpret_term._divTermReal;
+_div(x:INT,y:TERM):TERM -> interpret_term._divRealTerm;
+_div(x:REAL,y:TERM):TERM -> interpret_term._divRealTerm;
+_div(x:TERM,y:TERM):TERM -> interpret_term._divTermTerm;
+_pow(x:TERM,y:INT):TERM -> interpret_term._powTermReal;
+_pow(x:TERM,y:REAL):TERM -> interpret_term._powTermReal;
+_pow(x:INT,y:TERM):TERM -> interpret_term._powRealTerm;
+_pow(x:REAL,y:TERM):TERM -> interpret_term._powRealTerm;
+_pow(x:TERM,y:TERM):TERM -> interpret_term._powTermTerm;
+sin(x:TERM): TERM -> interpret_term._sinTerm;
+cos(x:TERM): TERM -> interpret_term._cosTerm;
+tan(x:TERM): TERM -> interpret_term._tanTerm;
+exp(x:TERM): TERM -> interpret_term._expTerm;
 
-  _sub(x:INT,y:INT):INT -> _sub;
-  _sub(X:INT,y:REAL):REAL -> _sub;
-  _sub(x:REAL,y:INT):REAL -> _sub;
-  _sub(x:REAL,y:REAL):REAL -> _sub;
-  _sub(x:COMPLEX,y:COMPLEX):COMPLEX -> _subComplex;
-  _sub?(x:MATRIX,y:MATRIX):MATRIX -> _subMatrices;
-
-  _unaryMinus(x:INT):INT -> _unaryMinus;
-  _unaryMinus(x:REAL):REAL -> _unaryMinus;
-
-  _unaryNot(x:BOOL):BOOL -> _unaryNot;
-
-  _mul(x:INT,y:INT):INT -> _mul;
-  _mul(x:INT,y:REAL):REAL -> _mul;
-  _mul(x:REAL,y:INT):REAL -> _mul;
-  _mul(x:REAL,y:REAL):REAL -> _mul;
-  _mul?(x:MATRIX,y:MATRIX):MATRIX -> _mulMatrices;
-
-  _div(x:INT,y:INT):REAL -> _div;
-  _div(x:INT,y:REAL):REAL -> _div;
-  _div(x:REAL,y:INT):REAL -> _div;
-  _div(x:REAL,y:REAL):REAL -> _div;
-
-  _pow(x:INT,y:INT):INT -> _pow;
-  _pow(x:INT,y:REAL):REAL -> _pow;
-  _pow(x:REAL,y:INT):REAL -> _pow;
-  _pow(x:REAL,y:REAL):REAL -> _pow;
-
-  _pow(x:TERM_VAR,y:INT):TERM -> _powTermVarReal;
-  _pow(x:TERM_VAR,y:REAL):TERM -> _powTermVarReal;
-
-  rand(max:INT): INT -> _randIntMax;
-  rand(min:INT,max:INT): INT -> _randIntMinMax;
-  randZ(max:INT): INT -> _randZIntMax;
-  randZ(min:INT,max:INT): INT -> _randZIntMinMax;
-  rand<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randMatrix;
-  randZ<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randZMatrix;
-
-  abs(x:INT):INT -> _absInt;
-  abs(x:REAL):REAL -> _absReal;
-  abs(x:COMPLEX): REAL -> _absComplex;
-  # calculates the absolute value
-  exp(x:INT):REAL -> _exp;
-  exp(x:REAL):REAL -> _exp;
-  exp(x:COMPLEX):COMPLEX -> _expComplex;
-  sqrt(x:REAL): REAL -> _sqrt;
-  sqrt(x:COMPLEX): COMPLEX -> _sqrtComplex;
-  sin(x:INT): REAL -> _sin;
-  sin(x:REAL): REAL -> _sin;
-  cos(x:INT): REAL -> _cos;
-  cos(x:REAL): REAL -> _cos;
-  tan(x:INT): REAL -> _tan;
-  tan(x:REAL): REAL -> _tan;
-  asin(x:INT): REAL -> _asin;
-  asin(x:REAL): REAL -> _asin;
-  acos(x:INT): REAL -> _acos;
-  acos(x:REAL): REAL -> _acos;
-  atan(x:INT): REAL -> _atan;
-  atan(x:REAL): REAL -> _atan;
-  floor(x:INT): INT -> _floor;
-  floor(x:REAL): INT -> _floor;
-  ceil(x:INT): INT -> _ceil;
-  ceil(x:REAL): INT -> _ceil;
-  round(x:INT): INT -> _round;
-  round(x:REAL): INT -> _round;
-  sign(x:INT): INT -> _sign;
-  sign(x:REAL): INT -> _sign;
-
-  binomial(n:INT,k:INT): INT -> _binomial;
-  min(x:MATRIX): REAL -> _minMatrix;
-  max(x:MATRIX): REAL -> _maxMatrix;
-  det?(x:MATRIX): REAL -> _det;
 `;
+
