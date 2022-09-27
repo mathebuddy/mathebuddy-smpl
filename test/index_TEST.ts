@@ -53,7 +53,10 @@ for (const v of variables) {
 
 // ---
 
-const variables = SMPL.interpret(`let f(x) = x^2;`, true);
+const variables = SMPL.interpret(
+  `let f(x) = x^2 * (5+x) + sin(1) + sin(x);`,
+  true,
+);
 
 for (const v of variables) {
   console.log(v.id + ' = ' + v.value.toString());
