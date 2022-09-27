@@ -64,7 +64,7 @@ export class SymTabEntry {
   public type = new Type();
   public scope = 0;
   public runtimeId = '';
-  public runtimeExceptions = false;
+  //public runtimeExceptions = false;
   public subSymbols: SymTabEntry[] = [];
   public functionOverloadSuccessor: SymTabEntry = null;
   public value: boolean | number | Term | Matrix = null;
@@ -113,6 +113,9 @@ function getBaseType(lex: Lexer, str: string): BaseType {
   else lex.error('unknown base type ' + str);
 }
 
+//G prototype = ID [ "<" params ">" ] "(" [ params ] ")" ":" type "->" ID "." ID ";";
+//G params = "ID" ":" type { "," "ID" ":" type };
+//G type = "INT" | "REAL" | "COMPLEX" | "MATRIX";
 export function createFunctionPrototypes(prototypeDef: string): SymTabEntry[] {
   // set up lexer
   const lex = new Lexer();
@@ -128,11 +131,11 @@ export function createFunctionPrototypes(prototypeDef: string): SymTabEntry[] {
   while (lex.isNotEND()) {
     // (a) read properties
     const funID = lex.ID();
-    let runtimeExceptions = false;
+    /*let runtimeExceptions = false;
     if (lex.isTER('?')) {
       lex.next();
       runtimeExceptions = true;
-    }
+    }*/
     const dimIDs: string[] = [];
     const dimTypes: BaseType[] = [];
     if (lex.isTER('<')) {
@@ -162,7 +165,9 @@ export function createFunctionPrototypes(prototypeDef: string): SymTabEntry[] {
     lex.TER(':');
     const returnType = getBaseType(lex, lex.ID());
     lex.TER('->');
-    const runtimeID = lex.ID();
+    let runtimeID = lex.ID();
+    lex.TER('.');
+    runtimeID += '.' + lex.ID();
     lex.TER(';');
     // (b) populate symbol table
     const subSymbols: SymTabEntry[] = [];
@@ -194,7 +199,7 @@ export function createFunctionPrototypes(prototypeDef: string): SymTabEntry[] {
       subSymbols,
     );
     s.runtimeId = runtimeID;
-    s.runtimeExceptions = runtimeExceptions;
+    //s.runtimeExceptions = runtimeExceptions;
     // function overloading?
     for (let i = symTab.length - 1; i >= 0; i--) {
       // TODO: this is slow: use a dictionary with ref to last entry for every id
