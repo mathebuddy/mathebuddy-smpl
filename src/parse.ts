@@ -117,7 +117,7 @@ export class SMPL_Parser {
     }
   }
 
-  //G declaration = "let" id_list "=" expr EOS | "let" ID "(" ID { "," ID } ")" "=" expr EOS";
+  //G declaration = "let" id_list "=" expr EOS | "let" ID "(" ID { "," ID } ")" "=" expr EOS;
   //G id_list = ID { ":" ID };
   // TODO: continue declaration after "," (e.g. "let x=4, y=6;")
   private parseDeclaration(): Code {
@@ -137,7 +137,7 @@ export class SMPL_Parser {
         varIds.push(this.lexer.ID());
       }
       for (const varId of varIds) {
-        const type = new Type(BaseType.TERM_VAR);
+        const type = new Type(BaseType.TERM); // TODO: TERM_VAR???
         const symbol = new SymTabEntry(
           varId,
           SymbolKind.Local,
@@ -148,7 +148,8 @@ export class SMPL_Parser {
         this.symTab.push(symbol);
         // TODO: x in f(x) vs other variable named x
         // TODO: define x only once!
-        c.str += 'let ' + varId + ' = Term.Var("' + varId + '");';
+        c.str +=
+          'let ' + varId + ' = runtime.interpret_term.var("' + varId + '");';
       }
       this.lexer.TER(')');
       this.lexer.TER('=');
@@ -158,6 +159,17 @@ export class SMPL_Parser {
         this.lexer.error('right-hand side is not a term');
       }
       c.str += 'let ' + id + ' = ' + e.code.str + ';';
+
+      const type = new Type(BaseType.TERM);
+      const symbol = new SymTabEntry(
+        id,
+        SymbolKind.Local,
+        type,
+        this.scope,
+        [],
+      );
+      this.symTab.push(symbol);
+
       this.lexer.EOS();
     } else {
       // non-function declaration
@@ -477,17 +489,17 @@ export class SMPL_Parser {
             tc.code.str += params[k].code.str;
             pos++;
           }
-          // finally put lexer position (if applicable)
-          if (prototype.runtimeExceptions) {
-            if (pos > 0) tc.code.str += ', ';
-            tc.code.str +=
-              "'" +
-              this.lexer.getToken().row +
-              ':' +
-              this.lexer.getToken().col +
-              "'";
-            pos++;
-          }
+          // finally put lexer position
+          //if (prototype.runtimeExceptions) {
+          if (pos > 0) tc.code.str += ', ';
+          tc.code.str +=
+            "'" +
+            this.lexer.getToken().row +
+            ':' +
+            this.lexer.getToken().col +
+            "'";
+          pos++;
+          //}
           tc.code.str += ')';
           tc.sym = null;
           break;
@@ -497,8 +509,17 @@ export class SMPL_Parser {
       prototype = prototype.functionOverloadSuccessor;
     }
     if (prototype == null) {
+      let argTypes = '';
+      for (const param of params) {
+        if (argTypes.length > 0) argTypes += ', ';
+        argTypes += param.type.toString();
+      }
       this.lexer.error(
-        'no matching function prototype for calling ' + tc.sym.id,
+        'no matching function prototype for calling "' +
+          tc.sym.id +
+          '" with types (' +
+          argTypes +
+          ')',
       ); // TODO: create custom error method
     }
     return tc;
