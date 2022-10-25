@@ -1,3 +1,16 @@
 let a/b/c = rand(1,5);
 let A = set(a, b, c);
 let B = set(a, c);
+
+TODO: generate code as follows:
+
+let a, b, c;
+{
+  a = rand(1, 5);
+  do {
+    b = rand(1, 5);
+  } while( a != b ); // TODO: use "compareT()" for type T
+  do {
+    c = rand(1, 5);
+  } while( c != a && c != b );
+}
