@@ -58,7 +58,7 @@ for (const v of variables) {
   true,
 );*/
 
-const variables = SMPL.interpret(`let A:B = randZ<3,3>(-5,5);
+/*const variables = SMPL.interpret(`let A:B = randZ<3,3>(-5,5);
 let C = A * B;
 let d = det(C);
 let f(x) = x^2;
@@ -66,4 +66,27 @@ let f(x) = x^2;
 
 for (const v of variables) {
   console.log(v.id + ' = ' + v.value.toString());
+}*/
+
+// test examples
+import * as glob from 'glob';
+import * as fs from 'fs';
+import * as process from 'process';
+import { SymTabEntry } from '../src/symbol';
+
+const path_list = glob.sync('examples/test_*.txt');
+for (const path of path_list) {
+  console.log('--- ' + path + ' ---');
+  const input = fs.readFileSync(path, 'utf-8');
+  let variables: SymTabEntry[] = [];
+  try {
+    variables = SMPL.interpret(input);
+  } catch (e) {
+    console.log('ERROR: ' + e);
+    process.exit(-1);
+  }
+  for (const v of variables) {
+    console.log(v.id + ' = ' + v.value.toString());
+  }
+  const bp = 1337;
 }
