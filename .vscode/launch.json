@@ -25,6 +25,13 @@
       "sourceMaps": true,
       "preLaunchTask": "tsc: build - tsconfig.json",
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
     }
   ]
 }
