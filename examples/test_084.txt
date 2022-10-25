@@ -1,0 +1,3 @@
+let MA = rand<2,3>(-5,5);
+let MB = rand<3,2>(-5,5);
+let MC = rand<2,2>(-5,5);

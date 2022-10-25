@@ -1,0 +1,6 @@
+let a = rand(3,8);
+let a in { 3, 4, ..., 8 }
+let f1(x) = a * x * exp(x);
+let f1_deriv_1(x) = diff(f1, x);
+let f1_deriv_2(x) = diff(f1_deriv_1, x);
+let f1_deriv_3(x) = diff(f1_deriv_2, x);

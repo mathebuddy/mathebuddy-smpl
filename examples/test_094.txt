@@ -1,0 +1,2 @@
+let A = rand<3,3>(0,2);
+let r = rank(A);

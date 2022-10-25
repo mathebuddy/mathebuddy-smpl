@@ -1,0 +1,5 @@
+let A = rand<3,3>(2,5);
+let b = rand(2,5);
+let B = b * A;
+TODO input rows = resizable;
+TODO input cols = resizable;

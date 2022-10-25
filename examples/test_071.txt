@@ -1,0 +1,4 @@
+let lambda = rand(-9,9);
+let u:v = rand<3,1>(-9,9);
+let w = u + v;
+let x = lambda * u;

@@ -1,0 +1,1 @@
+Seien $a<b<c$ und $f:[a,c] \to \RR$ eine Funktion die auf dem Intervall $[a,c]$ Riemann-integrierbar ist.

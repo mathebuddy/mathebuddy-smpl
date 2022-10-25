@@ -1,0 +1,6 @@
+let a:b = rand(3,8);
+let u:v = zeros<3,1>();
+u[1,1] = a;
+v[1,1] = 3;
+v[3,1] = 4;
+a = acos( dot(u, v) / ( norm2(u) * norm2(v) ) );

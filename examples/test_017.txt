@@ -1,0 +1,2 @@
+let n:u = rand(4,8);
+let grad = n + u;

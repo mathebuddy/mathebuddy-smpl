@@ -1,0 +1,4 @@
+let x = rand(2,5);
+let a1 = x/2;
+let a2 = 2*x/3;
+let a3 = 3*x/4;

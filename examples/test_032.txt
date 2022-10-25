@@ -1,0 +1,2 @@
+let a:b = rand(2,5);
+let c = rand(6,8);

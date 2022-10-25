@@ -1,0 +1,2 @@
+let a/b/c = rand(1,5);
+let n = 2;

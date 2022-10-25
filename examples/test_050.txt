@@ -1,0 +1,7 @@
+let f(x) = exp(x);
+let x0 = 0;
+let f1(x) = diff(f, x);
+let f2(x) = diff(f1, x);
+let p0(x) = f(x0) / 0! * (x - x0)^0;
+let p1(x) = f1(x0) / 1! * (x - x0)^1;
+let p2(x) = f2(x0) / 2! * (x - x0)^2;

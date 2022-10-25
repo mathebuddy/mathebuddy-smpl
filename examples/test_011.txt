@@ -1,0 +1,2 @@
+let a = rand(-10,-1);
+let b = abs(a);

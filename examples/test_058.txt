@@ -1,0 +1,2 @@
+let u = rand(3,8);
+let f(x) = u * x^2;

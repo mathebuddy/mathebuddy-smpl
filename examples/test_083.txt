@@ -1,0 +1,5 @@
+let A:C = rand<2,1>(1,3);
+let B = rand<2,2>(1,3);
+let D = (A + B^T * C)^T;
+TODO input rows = resizable;
+TODO input cols = resizable;

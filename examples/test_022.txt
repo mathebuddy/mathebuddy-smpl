@@ -1,0 +1,5 @@
+let x:y:z = rand(2,5);
+let u:v:w = rand(2,5);
+let res1 = 0;
+let res2 = x / y;
+let res3 = x / u;

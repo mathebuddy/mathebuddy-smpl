@@ -1,0 +1,5 @@
+let a:b = rand(3,8);
+let f1(x) = sin(a * x + b);
+let f1_deriv_1(x) = diff(f1, x);
+let f1_deriv_2(x) = diff(f1_deriv_1, x);
+let f1_deriv_3(x) = diff(f1_deriv_2, x);

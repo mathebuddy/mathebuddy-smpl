@@ -1,0 +1,2 @@
+let a = rand(3,8);
+let i = 0;

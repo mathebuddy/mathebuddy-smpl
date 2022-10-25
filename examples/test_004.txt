@@ -1,0 +1,2 @@
+let a = rand(1,5);
+let B = set(a,a*2,a*3);

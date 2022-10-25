@@ -1,0 +1,5 @@
+let a:b = rand(2,4);
+let x = 1/b;
+let k0 = 1 / fac(0) * (a*x)^0;
+let k1 = 1 / fac(1) * (a*x)^1;
+let k2 = 1 / fac(2) * (a*x)^2;

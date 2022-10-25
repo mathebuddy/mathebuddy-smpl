@@ -1,0 +1,4 @@
+let x:y:z = rand(2,5);
+let a1 = z;
+let a2 = x*a1 + y ;
+let a3 = x*a2 + y;

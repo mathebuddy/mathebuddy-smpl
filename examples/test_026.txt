@@ -1,0 +1,1 @@
+let x:y:z:w:u = rand(2,5);

@@ -1,0 +1,1 @@
+let a:b:c:d = rand(3,5);

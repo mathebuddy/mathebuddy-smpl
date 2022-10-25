@@ -1,0 +1,3 @@
+let a = rand(3,8);
+let f1(x) = a;
+let f1d(x) = diff(f1, x);

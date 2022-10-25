@@ -1,0 +1,3 @@
+let a/b/c/d = rand(1,10);
+let A = set(a, a+b, a+b+c, a+b+c+d);
+let p = 2^len(A);
