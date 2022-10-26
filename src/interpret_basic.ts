@@ -6,8 +6,9 @@
  * License: GPL-3.0-or-later
  */
 
+import * as mathjs from 'mathjs';
+
 import { SMPL_Interpreter } from './interpret';
-import { Set_INT } from './set';
 
 export class SMPL_Interpreter_Basic {
   private parent: SMPL_Interpreter = null;
@@ -168,6 +169,22 @@ export class SMPL_Interpreter_Basic {
     return x == 0 ? 0 : x < 0 ? -1 : 1;
   }
 
+  //G max(list:INT_LIST): INT -> _maxInt;
+  _maxInt(list: number[]): number {
+    return Math.max(...list);
+  }
+
+  //G fac(x:INT): INT -> _fac;
+  _fac(x: number): number {
+    let y = 1;
+    for (let i = 1; i <= x; i++) {
+      y *= i;
+    }
+    return y;
+  }
+
   //G binomial(n:INT,k:INT): INT -> _binomial;
-  // TODO
+  _binomial(n: number, k: number): number {
+    return mathjs.combinations(n, k);
+  }
 }
