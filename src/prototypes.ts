@@ -35,6 +35,7 @@ _pow(x:INT,y:INT):INT -> interpret_basic._pow;
 _pow(x:INT,y:REAL):REAL -> interpret_basic._pow;
 _pow(x:REAL,y:INT):REAL -> interpret_basic._pow;
 _pow(x:REAL,y:REAL):REAL -> interpret_basic._pow;
+set(elements:INT_LIST): SET_INT -> interpret_basic._createSet;
 rand(max:INT): INT -> interpret_basic._randIntMax;
 rand(min:INT,max:INT): INT -> interpret_basic._randIntMinMax;
 randZ(min:INT,max:INT): INT -> interpret_basic._randIntMinMaxZ;
