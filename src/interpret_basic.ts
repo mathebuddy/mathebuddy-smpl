@@ -6,9 +6,8 @@
  * License: GPL-3.0-or-later
  */
 
-import * as mathjs from 'mathjs';
-import { Complex } from './complex';
-import { RunError, SMPL_Interpreter } from './interpret';
+import { SMPL_Interpreter } from './interpret';
+import { Set_INT } from './set';
 
 export class SMPL_Interpreter_Basic {
   private parent: SMPL_Interpreter = null;
@@ -66,6 +65,13 @@ export class SMPL_Interpreter_Basic {
   //G _pow(x:REAL,y:REAL):REAL -> _pow;
   _pow(x: number, y: number): number {
     return Math.pow(x, y);
+  }
+
+  //G set(elements:INT_LIST): SET_INT -> _createSet;
+  _createSet(elements: number[]): Set_INT {
+    const s = new Set_INT();
+    s.elements = elements;
+    return s;
   }
 
   //G rand(max:INT): INT -> _randIntMax;
