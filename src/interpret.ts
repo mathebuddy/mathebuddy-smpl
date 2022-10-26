@@ -17,6 +17,7 @@ import { SMPL_Interpreter_Matrix } from './interpret_matrix';
 import { SMPL_Interpreter_Complex } from './interpret_complex';
 import { SMPL_Interpreter_Basic } from './interpret_basic';
 import { SMPL_Interpreter_Term } from './interpret_term';
+import { Set_INT } from './set';
 
 export class RunError extends Error {
   constructor(srcPos: string, msg: string) {
@@ -51,7 +52,7 @@ export class SMPL_Interpreter {
     code += '];';
     const f = new Function('runtime', code);
     try {
-      const values: (boolean | number | Term | Matrix)[] = f(this);
+      const values: (boolean | number | Set_INT | Term | Matrix)[] = f(this);
       for (let i = 0; i < locals.length; i++) {
         const local = locals[i];
         switch (local.type.base) {
@@ -67,6 +68,9 @@ export class SMPL_Interpreter {
             break;
           case BaseType.TERM:
             local.value = values[i] as Term;
+            break;
+          case BaseType.INT_SET:
+            local.value = values[i] as Set_INT;
             break;
           default:
             throw new RunError(
