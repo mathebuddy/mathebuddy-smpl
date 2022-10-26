@@ -67,13 +67,6 @@ export class SMPL_Interpreter_Basic {
     return Math.pow(x, y);
   }
 
-  //G set(elements:INT_LIST): SET_INT -> _createSet;
-  _createSet(elements: number[]): Set_INT {
-    const s = new Set_INT();
-    s.elements = elements;
-    return s;
-  }
-
   //G rand(max:INT): INT -> _randIntMax;
   _randIntMax(max: number): number {
     return Math.floor(Math.random() * max);
