@@ -6,7 +6,7 @@
  * License: GPL-3.0-or-later
  */
 
-import { RunError, SMPL_Interpreter } from './interpret';
+import { SMPL_Interpreter } from './interpret';
 
 import { Set_INT } from './set';
 
@@ -22,5 +22,10 @@ export class SMPL_Interpreter_Set {
     const s = new Set_INT();
     s.elements = elements;
     return s;
+  }
+
+  //G len(s:SET_INT): INT -> _lenSet;
+  _lenSet(s: Set_INT): number {
+    return s.elements.length;
   }
 }
