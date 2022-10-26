@@ -7,8 +7,8 @@
  */
 
 import * as mathjs from 'mathjs';
-import { RunError, SMPL_Interpreter } from './interpret';
 
+import { RunError, SMPL_Interpreter } from './interpret';
 import { Complex } from './complex';
 
 export class SMPL_Interpreter_Complex {
