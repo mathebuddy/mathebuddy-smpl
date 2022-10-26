@@ -118,7 +118,7 @@ export class SMPL_Parser {
   }
 
   //G declaration = "let" id_list "=" expr EOS | "let" ID "(" ID { "," ID } ")" "=" expr EOS;
-  //G id_list = ID { ":" ID };
+  //G id_list = ID { ":" ID } | ID { "/" ID };
   // TODO: continue declaration after "," (e.g. "let x=4, y=6;")
   private parseDeclaration(): Code {
     // e.g. "let a:b = rand(5);" -> "let a=rand(5), b=rand(5);"
@@ -173,7 +173,12 @@ export class SMPL_Parser {
       this.lexer.EOS();
     } else {
       // non-function declaration
-      while (this.lexer.isTER(':')) {
+      let distinctValues = false; // if true, then each variable has a different value
+      while (this.lexer.isTER(':') || this.lexer.isTER('/')) {
+        if (this.lexer.isTER('/')) distinctValues = true;
+        if (this.lexer.isTER(':') && distinctValues == true) {
+          this.lexer.error('cannot mix ":" and "/"');
+        }
         this.lexer.next();
         ids.push(this.lexer.ID());
       }
@@ -189,7 +194,43 @@ export class SMPL_Parser {
           [],
         );
         this.symTab.push(symbol);
-        c.str += 'let ' + id + ' = ' + e.code.str + ';';
+      }
+      if (distinctValues) {
+        // declare variables and run initialization such that each variable
+        // has a value that is different to all other variables.
+        // Note: In case that the right-hand side (expression "e") is
+        // not (sufficiently) randomized, we run into an infinite loop...
+        if (e.type.base !== BaseType.INT)
+          this.lexer.error(
+            'declaration operator "/" is unimplemented for type ' + e.type.base,
+          );
+        c.str += 'let ';
+        for (let i = 0; i < ids.length; i++) {
+          const id = ids[i];
+          if (i > 0) c.str += ', ';
+          c.str += id;
+        }
+        c.str += ';\n';
+        for (let i = 0; i < ids.length; i++) {
+          const id = ids[i];
+          if (i == 0) {
+            c.str += id + ' = ' + e.code.str + ';\n';
+          } else {
+            c.str += 'do { ' + id + ' = ' + e.code.str + '; } while (';
+            let condition = '';
+            for (let j = 0; j < i; j++) {
+              if (condition.length > 0) condition += ' || ';
+              condition += id + ' == ' + ids[j];
+            }
+            c.str += condition;
+            c.str += ');\n';
+          }
+        }
+      } else {
+        // just declare variables and set right-hand side
+        for (const id of ids) {
+          c.str += 'let ' + id + ' = ' + e.code.str + ';';
+        }
       }
       this.lexer.EOS();
     }
@@ -454,10 +495,17 @@ export class SMPL_Parser {
       }
       // check
       if (
-        prototypeDims.length == dims.length &&
-        prototypeParams.length == params.length
+        (prototypeDims.length == dims.length &&
+          prototypeParams.length == params.length) ||
+        (prototypeParams.length == 1 &&
+          prototypeParams[0].type.base == BaseType.INT_LIST)
       ) {
+        const is_int_list =
+          prototypeParams.length == 1 &&
+          prototypeParams[0].type.base == BaseType.INT_LIST;
+
         let match = true;
+
         //check dimension types
         for (let k = 0; k < prototypeDims.length; k++) {
           if (prototypeDims[k].type.base !== dims[k].type.base) {
@@ -465,13 +513,24 @@ export class SMPL_Parser {
             break;
           }
         }
+
         // check parameter types
-        for (let k = 0; k < prototypeParams.length; k++) {
-          if (prototypeParams[k].type.base !== params[k].type.base) {
-            match = false;
-            break;
+        if (is_int_list) {
+          for (let k = 0; k < params.length; k++) {
+            if (params[k].type.base != BaseType.INT) {
+              match = false;
+              break;
+            }
+          }
+        } else {
+          for (let k = 0; k < prototypeParams.length; k++) {
+            if (prototypeParams[k].type.base !== params[k].type.base) {
+              match = false;
+              break;
+            }
           }
         }
+
         // generate code in case of matching dimension and parameter types
         if (match) {
           tc.type = prototype.type;
@@ -484,10 +543,21 @@ export class SMPL_Parser {
             pos++;
           }
           // then put actual parameter
-          for (let k = 0; k < prototypeParams.length; k++) {
+          if (is_int_list) {
             if (pos > 0) tc.code.str += ', ';
-            tc.code.str += params[k].code.str;
+            tc.code.str += '[';
+            for (let k = 0; k < params.length; k++) {
+              if (k > 0) tc.code.str += ',';
+              tc.code.str += params[k].code.str;
+            }
+            tc.code.str += ']';
             pos++;
+          } else {
+            for (let k = 0; k < prototypeParams.length; k++) {
+              if (pos > 0) tc.code.str += ', ';
+              tc.code.str += params[k].code.str;
+              pos++;
+            }
           }
           // finally put lexer position
           //if (prototype.runtimeExceptions) {
