@@ -9,6 +9,7 @@
 import { Lexer } from '@multila/multila-lexer';
 
 import { Matrix } from './matrix';
+import { Set_INT } from './set';
 import { Term } from './term';
 
 export enum BaseType {
@@ -21,6 +22,8 @@ export enum BaseType {
   TERM_VAR = 'TERM_VAR',
   MATRIX = 'MATRIX',
   FUNCTION_CALL = 'FUNCTION_CALL',
+  INT_SET = 'INT_SET',
+  INT_LIST = 'INT_LIST',
 }
 
 export class Type {
@@ -67,7 +70,7 @@ export class SymTabEntry {
   //public runtimeExceptions = false;
   public subSymbols: SymTabEntry[] = [];
   public functionOverloadSuccessor: SymTabEntry = null;
-  public value: boolean | number | Term | Matrix = null;
+  public value: boolean | number | Set_INT | Term | Matrix = null;
 
   constructor(
     id: string,
@@ -110,6 +113,8 @@ function getBaseType(lex: Lexer, str: string): BaseType {
   else if (str === 'MATRIX') return BaseType.MATRIX;
   else if (str === 'TERM') return BaseType.TERM;
   else if (str === 'TERM_VAR') return BaseType.TERM_VAR;
+  else if (str === 'SET_INT') return BaseType.INT_SET;
+  else if (str === 'INT_LIST') return BaseType.INT_LIST;
   else lex.error('unknown base type ' + str);
 }
 
