@@ -2,7 +2,7 @@
 program = { statement };
 statement = declaration | if | for | do | while | switch | function | return | break | continue | expression EOS;
 declaration = "let" id_list "=" expr EOS | "let" ID "(" ID { "," ID } ")" "=" expr EOS;
-id_list = ID { ":" ID };
+id_list = ID { ":" ID } | ID { "/" ID };
 expression = or { ("="|"+="|"-="|"/=") or };
 or = and { "||" and };
 and = equal { "&&" equal };
