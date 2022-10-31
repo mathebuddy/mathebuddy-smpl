@@ -90,3 +90,5 @@ for (const path of path_list) {
   }
   const bp = 1337;
 }
+
+// REMEMBER: run "./build.sh" after changing grammar!
