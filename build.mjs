@@ -21,8 +21,7 @@ esbuild.buildSync({
 
 // ---- convert README.md to README.html ----
 const date = new Date().toISOString().slice(0, 10);
-//execSync('cp README.md __tmp.md');
-execSync("sed -e '1,/## Language Definition/d' README.md > __tmp.md");
+execSync("sed -e '1,/<!-- start-for-website -->/d' README.md > __tmp.md");
 execSync(
   'pandoc -s __tmp.md --metadata title="SIMPLE MATH PROGRAMMING LANGUAGE (SMPL)" --metadata author="" --metadata date="' +
     date +
