@@ -51,6 +51,8 @@ for (let v of variables) {
 npm install @mathebuddy/mathebuddy-smpl
 ```
 
+<!-- start-for-website -->
+
 ## Language Definition
 
 SMPL is (mostly) an imperative, typed language. Its base syntax is derived from JavaScript.
