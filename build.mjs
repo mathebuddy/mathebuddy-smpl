@@ -7,7 +7,9 @@
  */
 
 import * as esbuild from 'esbuild';
+import { execSync } from 'child_process';
 
+// ---- build ----
 esbuild.buildSync({
   platform: 'node',
   minify: false, // TODO
@@ -16,3 +18,15 @@ esbuild.buildSync({
   bundle: true,
   outfile: 'build/mathebuddy-smpl.min.js',
 });
+
+// ---- convert README.md to README.html ----
+const date = new Date().toISOString().slice(0, 10);
+//execSync('cp README.md __tmp.md');
+execSync("sed -e '1,/## Language Definition/d' README.md > __tmp.md");
+execSync(
+  'pandoc -s __tmp.md --metadata title="SIMPLE MATH PROGRAMMING LANGUAGE (SMPL)" --metadata author="" --metadata date="' +
+    date +
+    '"  --css README.css --self-contained -o README.html',
+);
+execSync('rm __tmp.md');
+// TODO: --mathjax may be needed, but results in large file, if --self-contained option is provided...
