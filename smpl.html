@@ -19,6 +19,69 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
   <style type="text/css">html {
@@ -400,8 +463,7 @@ state. We are planning to release version 1.0 by end of 2022.</p>
 <p>This document describes the <em>Simple Math Programming Language
 (SMPL)</em>.</p>
 <p>SMPL is a math-oriented programming language that can be interpreted
-in the browser. Its primary use is for the <strong>mathe:buddy</strong>
-app.</p>
+in the browser. Its primary use is for the <em>mathe:buddy app</em>.</p>
 <p>SMPL is (mostly) an imperative, typed language. Its syntax is
 basically a subset of <em>JavaScript</em>, but extends with intrinsic
 mathematical data types (e.g. terms, sets and matrices) and operator
@@ -409,24 +471,67 @@ overloading for these types.</p>
 <p>The language definition of SMPL is independent of concrete
 implementations. A reference implementation can be found <a href="https://github.com/mathebuddy/mathebuddy-smpl">here</a>. Visit our
 online <a href="https://mathebuddy.github.io/mathebuddy-smpl/">playground</a>.</p>
+<p>SMPL is heavily used by the <a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">mathe:buddy
+language</a>.</p>
 <h3 id="history-notes">History Notes</h3>
 <p>Many concepts (and also parts of the source code) are taken from the
-<strong>Simple E-Learning Language</strong> <a href="https://sell.f07-its.fh-koeln.de">SELL</a>. Compared to SELL, SMPL
-is Turing Complete: It allows e.g. loops and conditions.</p>
-<h2 id="example">Example</h2>
-<pre><code>let A:B = randZ&lt;3,3&gt;(-5,5);
+<em>Simple E-Learning Language</em> <a href="https://sell.f07-its.fh-koeln.de">SELL</a>. Compared to SELL, SMPL
+is <em>Turing Complete</em>, but lacks an interactive e-learning
+environment.</p>
+<h2 id="first-example">First Example</h2>
+<p>The following example program creates two <span class="math inline">3 × 3</span>-matrices <span class="math inline"><em>A</em></span> and <span class="math inline"><em>B</em></span>, with random (integral) entries in
+range [-5,5] without zero. Both matrices are numerically unequal. The
+product of <span class="math inline"><em>A</em></span> and <span class="math inline"><em>B</em></span> is finally assigned to variable
+<span class="math inline"><em>C</em></span>.</p>
+<pre><code>let A/B = randZ&lt;3,3&gt;(-5,5);
 let C = A * B;</code></pre>
-<p>The example program creates two <span class="math inline">3 × 3</span>-matrices <span class="math inline"><em>A</em></span> and <span class="math inline"><em>B</em></span>, with random (integral) entries in
-range [-5,5] without zero.</p>
-<p>Matrix <span class="math inline"><em>C</em></span> TODO.</p>
+<p>The example demonstrates some of the key features of SMPL:</p>
+<ul>
+<li>very short syntax</li>
+<li>flexible randomization functions</li>
+<li>operator overloading</li>
+</ul>
+<p>The following <em>Python</em> program is similar to the two lines of
+SMPL code above (but not semantically equivalent, since it generates
+zero-elements in some cases).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> numpy.<span class="bu">round</span>(numpy.random.rand(<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">*</span><span class="dv">10</span>) <span class="op">-</span> <span class="dv">5</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  B <span class="op">=</span> numpy.<span class="bu">round</span>(numpy.random.rand(<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">*</span><span class="dv">10</span>) <span class="op">-</span> <span class="dv">5</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="kw">not</span> numpy.array_equal(A,B):</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> numpy.matmul(A, B)</span></code></pre></div>
 <h2 id="programs">Programs</h2>
+<p>An SMPl program is a sequence of statements <span class="math inline"><em>p</em> = (<em>s</em><sub>0</sub> <em>s</em><sub>1</sub>…)</span>.
+Each statements ends by a semicolon (<code>;</code>). Declarations and
+assignments are executed statement wise, i.e. <span class="math inline"><em>s</em><sub><em>i</em> + 1</sub></span> is
+executed after statement <span class="math inline"><em>s</em><sub><em>i</em></sub></span>.</p>
+<p>Example:</p>
+<pre><code>let x = 3;
+let y = sin(x);</code></pre>
+<p>The example programs executes lines one and two in given order. Each
+line is evaluated, before the next line is executed. Indeed, we also
+could write all statements in one line, since the semicolon separates
+statements.</p>
+<ul>
+<li><p>The first line evaluates the right-hand side of the equal sign
+(<code>=</code>) and assigns the result, here <code>3</code>, to a new
+variable with identifier <code>x</code>. The type of variable
+<code>x</code> is <code>integer</code>.</p></li>
+<li><p>The second line first evaluates the expression
+<code>sin(x)</code>. Variable <code>x</code> is taken as argument to the
+sine function. The numeric result <code>0.14111..</code> is stored to
+variable <code>y</code> of data type <code>real</code>. It has
+double-precision (refer to IEEE 754). Take care, that real numbers <span class="math inline">ℝ</span> are stored approximately, unless symbolic
+computation is applied explicitly.</p></li>
+</ul>
 <h2 id="data-types">Data Types</h2>
 <p>boolean (<code>BOOL</code>), integer (<code>INT</code>), rational
 (<code>RATIONAL</code>), real (<code>REAL</code>), term
 (<code>TERM</code>), matrix (<code>MATRIX</code>), vector
 (<code>VECTOR</code>), set (<code>SET</code>), complex
 (<code>COMPLEX</code>).</p>
-<h3 id="declarations">Declarations</h3>
+<h2 id="declarations">Declarations</h2>
 <p>Declarations are initiated with keyword <code>let</code>, followed by
 an identifier and finally assigned expression by <code>=</code>. The
 expression in the right-hand side is mandatory to derive the data
@@ -460,7 +565,7 @@ individually.</li>
 <li>Separator <code>:/</code> guarantees that no pair of matrices
 <code>c</code>, <code>d</code> and <code>e</code> is equal.</li>
 </ul>
-<h3 id="expressions">Expressions</h3>
+<h2 id="expressions">Expressions</h2>
 <p>List of operators, ordered by increasing precedence:</p>
 <table>
 <colgroup>
@@ -524,7 +629,7 @@ let d = det(C);</code></pre>
 <code>w</code>, <code>A</code>, <code>B</code>, <code>C</code> have been
 declared before usage.</li>
 </ul>
-<h3 id="conditions">Conditions</h3>
+<h2 id="conditions">Conditions</h2>
 <blockquote>
 <p>Example</p>
 </blockquote>
@@ -538,7 +643,7 @@ else if (x &lt; 0) {
 else {
   x=0;
 }</code></pre>
-<h3 id="loops">Loops</h3>
+<h2 id="loops">Loops</h2>
 <blockquote>
 <p>Example</p>
 </blockquote>
@@ -557,7 +662,7 @@ else {
 <pre><code>for (let i = 0; i &lt; 5; i++) {
   // body
 }</code></pre>
-<h3 id="functions">Functions</h3>
+<h2 id="functions">Functions</h2>
 <p>A function consists of a <strong>header</strong> and a
 <strong>body</strong>:</p>
 <ul>
@@ -574,13 +679,13 @@ returns a result that is compatible to the return type.</li>
 }
 
 let y = f(3, 4);</code></pre>
-<h2 id="grammar">Grammar</h2>
+<h2 id="appendix-grammar">Appendix: Grammar</h2>
 <p>The following formal grammar (denoted in EBNF) is currently
 implemented.</p>
 <pre class="ebnf"><code>program = { statement };
 statement = declaration | if | for | do | while | switch | function | return | break | continue | expression EOS;
 declaration = &quot;let&quot; id_list &quot;=&quot; expr EOS | &quot;let&quot; ID &quot;(&quot; ID { &quot;,&quot; ID } &quot;)&quot; &quot;=&quot; expr EOS;
-id_list = ID { &quot;:&quot; ID };
+id_list = ID { &quot;:&quot; ID } | ID { &quot;/&quot; ID };
 expression = or { (&quot;=&quot;|&quot;+=&quot;|&quot;-=&quot;|&quot;/=&quot;) or };
 or = and { &quot;||&quot; and };
 and = equal { &quot;&amp;&amp;&quot; equal };
@@ -602,5 +707,6 @@ function = &quot;function&quot; ID &quot;(&quot; [ ID { &quot;,&quot; ID } ] &qu
 return = &quot;return&quot; [ expr ] EOS;
 break = &quot;break&quot; EOS;
 continue = &quot;continue&quot; EOS;</code></pre>
+<p><em>Author: Andreas Schwenk, TH Köln</em></p>
 </body>
 </html>
