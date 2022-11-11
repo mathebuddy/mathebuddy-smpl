@@ -11,7 +11,7 @@ This reference guide is in work-in-progress state. We are planning to release ve
 
 This document describes the _Simple Math Programming Language (SMPL)_.
 
-SMPL is a math-oriented programming language that can be interpreted in the browser. Its primary use is for the **mathe:buddy** app.
+SMPL is a math-oriented programming language that can be interpreted in the browser. Its primary use is for the _mathe:buddy app_.
 
 SMPL is (mostly) an imperative, typed language. Its syntax is basically a subset of _JavaScript_, but extends with intrinsic mathematical data types (e.g. terms, sets and matrices) and operator overloading for these types.
 
@@ -19,29 +19,67 @@ The language definition of SMPL is independent of concrete implementations.
 A reference implementation can be found [here](https://github.com/mathebuddy/mathebuddy-smpl).
 Visit our online [playground](https://mathebuddy.github.io/mathebuddy-smpl/).
 
+SMPL is heavily used by the [mathe:buddy language](https://app.f07-its.fh-koeln.de/docs-mbl.html).
+
 ### History Notes
 
-Many concepts (and also parts of the source code) are taken from the **Simple E-Learning Language** [SELL](https://sell.f07-its.fh-koeln.de).
-Compared to SELL, SMPL is Turing Complete: It allows e.g. loops and conditions.
+Many concepts (and also parts of the source code) are taken from the _Simple E-Learning Language_ [SELL](https://sell.f07-its.fh-koeln.de).
+Compared to SELL, SMPL is _Turing Complete_, but lacks an interactive e-learning environment.
 
-## Example
+## First Example
+
+The following example program creates two $3 \times 3$-matrices $A$ and $B$, with random (integral) entries in range [-5,5] without zero.
+Both matrices are numerically unequal. The product of $A$ and $B$ is finally assigned to variable $C$.
 
 ```
-let A:B = randZ<3,3>(-5,5);
+let A/B = randZ<3,3>(-5,5);
 let C = A * B;
 ```
 
-The example program creates two $3 \times 3$-matrices $A$ and $B$, with random (integral) entries in range [-5,5] without zero.
+The example demonstrates some of the key features of SMPL:
 
-Matrix $C$ TODO.
+- very short syntax
+- flexible randomization functions
+- operator overloading
+
+The following _Python_ program is similar to the two lines of SMPL code above (but not semantically equivalent, since it generates zero-elements in some cases).
+
+```python
+import numpy
+A = numpy.round(numpy.random.rand(3,3)*10) - 5
+while True:
+  B = numpy.round(numpy.random.rand(3,3)*10) - 5
+  if not numpy.array_equal(A,B):
+    break
+C = numpy.matmul(A, B)
+```
 
 ## Programs
+
+An SMPl program is a sequence of statements $p=(s_0 ~s_1 \dots)$.
+Each statements ends by a semicolon (`;`).
+Declarations and assignments are executed statement wise, i.e. $s_{i+1}$ is executed after statement $s_i$.
+
+Example:
+
+```
+let x = 3;
+let y = sin(x);
+```
+
+The example programs executes lines one and two in given order.
+Each line is evaluated, before the next line is executed.
+Indeed, we also could write all statements in one line, since the semicolon separates statements.
+
+- The first line evaluates the right-hand side of the equal sign (`=`) and assigns the result, here `3`, to a new variable with identifier `x`. The type of variable `x` is `integer`.
+
+- The second line first evaluates the expression `sin(x)`. Variable `x` is taken as argument to the sine function. The numeric result `0.14111..` is stored to variable `y` of data type `real`. It has double-precision (refer to IEEE 754). Take care, that real numbers $\mathbb{R}$ are stored approximately, unless symbolic computation is applied explicitly.
 
 ## Data Types
 
 boolean (`BOOL`), integer (`INT`), rational (`RATIONAL`), real (`REAL`), term (`TERM`), matrix (`MATRIX`), vector (`VECTOR`), set (`SET`), complex (`COMPLEX`).
 
-### Declarations
+## Declarations
 
 Declarations are initiated with keyword `let`, followed by an identifier and finally assigned expression by `=`.
 The expression in the right-hand side is mandatory to derive the data type.
@@ -65,7 +103,7 @@ let c :/ d :/ e = rand<3,3>(-2, 2);
 - The colon separator `:` evaluates the right-hand side to each of the variables: `let a = rand<3,3>(-2, 2); let b = rand<3,3>(-2, 2);`. Accordingly, elements for `a` and `b` are drawn individually.
 - Separator `:/` guarantees that no pair of matrices `c`, `d` and `e` is equal.
 
-### Expressions
+## Expressions
 
 List of operators, ordered by increasing precedence:
 
@@ -93,7 +131,7 @@ let d = det(C);
 
 - The examples assumes, that variables `y`, `u`, `w`, `A`, `B`, `C` have been declared before usage.
 
-### Conditions
+## Conditions
 
 > Example
 
@@ -110,7 +148,7 @@ else {
 }
 ```
 
-### Loops
+## Loops
 
 > Example
 
@@ -136,7 +174,7 @@ for (let i = 0; i < 5; i++) {
 }
 ```
 
-### Functions
+## Functions
 
 A function consists of a **header** and a **body**:
 
@@ -153,15 +191,15 @@ function f(x: INT, y: INT): INT {
 let y = f(3, 4);
 ```
 
-## Grammar
+## Appendix: Grammar
 
 The following formal grammar (denoted in EBNF) is currently implemented.
 
-```ebnf
+```EBNF
 program = { statement };
 statement = declaration | if | for | do | while | switch | function | return | break | continue | expression EOS;
 declaration = "let" id_list "=" expr EOS | "let" ID "(" ID { "," ID } ")" "=" expr EOS;
-id_list = ID { ":" ID };
+id_list = ID { ":" ID } | ID { "/" ID };
 expression = or { ("="|"+="|"-="|"/=") or };
 or = and { "||" and };
 and = equal { "&&" equal };
@@ -184,3 +222,5 @@ return = "return" [ expr ] EOS;
 break = "break" EOS;
 continue = "continue" EOS;
 ```
+
+_Author: Andreas Schwenk, TH Köln_
