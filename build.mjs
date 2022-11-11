@@ -24,7 +24,7 @@ esbuild.buildSync({
 const date = new Date().toISOString().slice(0, 10);
 execSync("sed -e '1,/<!-- start-for-website -->/d' smpl.md > __tmp.md");
 execSync(
-  'pandoc -s __tmp.md --metadata title="SIMPLE MATH PROGRAMMING LANGUAGE (SMPL)" --metadata author="" --metadata date="' +
+  'pandoc -s __tmp.md --metadata title="Simple Math Programming Language (SMPL)" --metadata author="" --metadata date="' +
     date +
     '"  --css README.css --embed-resources --standalone -o smpl.html',
 );
