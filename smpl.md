@@ -396,6 +396,30 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `set(1, 3, 3, 7)` return the set $\{1,3,7\}$._
 
+- `rand ( a : INT, b : INT ) : INT`
+
+  Returns a random integer in range `[a,b]`.
+
+- `rand < n : INT > ( a : INT, b : INT ) : VECTOR`
+
+  Returns a vector of length $n$, where each element is a randomly chosen integer value in range `[a,b]`.
+
+- `rand < m : INT , n : INT > ( a : INT, b : INT ) : MATRIX`
+
+  Returns a $m \times n$ matrix, where each element is a randomly chosen integer value in range `[a,b]`.
+
+- `randZ ( a : INT, b : INT ) : INT`
+
+  Returns a random integer in range `[a,b]`, except value 0.
+
+- `randZ < n : INT > ( a : INT, b : INT ) : VECTOR`
+
+  Returns a vector of length $n$, where each element is a randomly chosen integer value in range `[a,b]`, except value 0.
+
+- `randZ < m : INT , n : INT > ( a : INT, b : INT ) : MATRIX`
+
+  Returns a $m \times n$ vector, where each element is a randomly chosen integer value in range `[a,b]`, except value 0.
+
 - `shuffle ( x : VECTOR ) : VECTOR`
 
   Randomly reorders the elements of `x`.
