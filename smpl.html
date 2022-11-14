@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-11-11" />
+  <meta name="dcterms.date" content="2022-11-14" />
   <title>Simple Math Programming Language (SMPL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -454,7 +454,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>]<h1 class="title">Simple Math Programming Language (SMPL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-11</p>
+<p class="date">2022-11-14</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -503,7 +503,7 @@ zero-elements in some cases).</p>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> numpy.matmul(A, B)</span></code></pre></div>
 <h2 id="programs">Programs</h2>
 <p>An SMPl program is a sequence of statements <span class="math inline"><em>p</em> = (<em>s</em><sub>0</sub> <em>s</em><sub>1</sub>…)</span>.
-Each statements ends by a semicolon (<code>;</code>). Declarations and
+Each statement ends by a semicolon (<code>;</code>). Declarations and
 assignments are executed statement wise, i.e. <span class="math inline"><em>s</em><sub><em>i</em> + 1</sub></span> is
 executed after statement <span class="math inline"><em>s</em><sub><em>i</em></sub></span>.</p>
 <p>Example:</p>
@@ -525,26 +525,19 @@ variable <code>y</code> of data type <code>real</code>. It has
 double-precision (refer to IEEE 754). Take care, that real numbers <span class="math inline">ℝ</span> are stored approximately, unless symbolic
 computation is applied explicitly.</p></li>
 </ul>
-<h2 id="data-types">Data Types</h2>
-<p>boolean (<code>BOOL</code>), integer (<code>INT</code>), rational
-(<code>RATIONAL</code>), real (<code>REAL</code>), term
-(<code>TERM</code>), matrix (<code>MATRIX</code>), vector
-(<code>VECTOR</code>), set (<code>SET</code>), complex
-(<code>COMPLEX</code>).</p>
 <h2 id="declarations">Declarations</h2>
 <p>Declarations are initiated with keyword <code>let</code>, followed by
 an identifier and finally assigned expression by <code>=</code>. The
-expression in the right-hand side is mandatory to derive the data
-type.</p>
-<blockquote>
-<p>Example</p>
-</blockquote>
+expression in the right-hand side is mandatory to derive the data type.
+Data types are described in detail in the next section.</p>
+<p>Example:</p>
 <pre><code>let x = 5;
-let y = 7, z = 9.1011;
+let y = 7;
+let z = 9.1011;
 let u = rand(5);
 let v = zeros&lt;2,3&gt;();
-let a : b = rand&lt;3,3&gt;(-2, 2);
-let c :/ d :/ e = rand&lt;3,3&gt;(-2, 2);</code></pre>
+let a:b = randZ&lt;3,3&gt;(-2, 2);
+let c/d/e = rand&lt;3,3&gt;(-2, 2);</code></pre>
 <ul>
 <li>Variables <code>x</code> and <code>u</code> are integral. The value
 for <code>u</code> is randomly chosen from set {0,1,2,3,4,5}.</li>
@@ -556,21 +549,44 @@ for <code>u</code> is randomly chosen from set {0,1,2,3,4,5}.</li>
 <code>c</code> and <code>d</code> are matrices. <code>v</code> is a zero
 matrix with two rows and three columns.</li>
 <li>Matrices <code>a</code> and <code>b</code> consist of randomly
-chosen, integral elements in range [-2,2].</li>
-<li>The colon separator <code>:</code> evaluates the right-hand side to
-each of the variables:
-<code>let a = rand&lt;3,3&gt;(-2, 2); let b = rand&lt;3,3&gt;(-2, 2);</code>.
-Accordingly, elements for <code>a</code> and <code>b</code> are drawn
-individually.</li>
-<li>Separator <code>:/</code> guarantees that no pair of matrices
-<code>c</code>, <code>d</code> and <code>e</code> is equal.</li>
+chosen, integral elements in range [-2,2] without zero.</li>
+<li>The colon separator <code>:</code> evaluates the right-hand side as
+many times, as there are left-hand side variables. The example is equal
+to:
+<code>let a = randZ&lt;3,3&gt;(-2, 2); let b = randZ&lt;3,3&gt;(-2, 2);</code>.</li>
+<li>Separator <code>/</code> guarantees that no pair of matrices
+<code>c</code>, <code>d</code> and <code>e</code> is equal: Matrix, a
+<span class="math inline">3 × 3</span> matrix is generated and assigned
+to variable <code>c</code>. Then a random <span class="math inline">3 × 3</span> matrix is generated that is numerically
+unequal to matrix <code>a</code>. Finally, a random <span class="math inline">3 × 3</span> matrix for <code>c</code> is generated
+with <span class="math inline"><em>c</em> ≠ <em>a</em></span> and <span class="math inline"><em>c</em> ≠ <em>b</em></span>.</li>
 </ul>
 <h2 id="expressions">Expressions</h2>
-<p>List of operators, ordered by increasing precedence:</p>
+<p>An assignment has the form <code>X = Y;</code>. First, the right-hand
+side <code>Y</code> is evaluated and then assigned to the variable
+<code>X</code> on the left-hand side.</p>
+<p>Variables are named by identifiers, consisting of one ore more
+characters. The first character must be a lowercase or uppercase letter
+or underscore, i.e. <code>a..z</code> or <code>A..Z</code> or
+<code>_</code>. Starting from the second character, also numbers
+<code>0..9</code> are allowed additionally. Keywords and function names
+of the standard function library (see appendix) are not allowed.
+Examples: <code>x</code>, <code>y0</code>, <code>A</code>,
+<code>mat_0</code>.</p>
+<p>The right-hand side of an assignment consists of a unary constant
+(e.g. <code>1337</code> or <code>3.14</code> or <code>-42</code>) or a
+function call (e.g. <code>sin(x)</code>) or a variable
+(e.g. <code>x</code>) or an expression (e.g. <code>a + 4</code>).</p>
+<p>An expression is denoted in infix notation: The operator is denoted
+between two operands in case of a binary operation or the operator is
+denoted before the operand in case of a unary operation.</p>
+<p>The following list of operators is implemented in SMPL. The list is
+ordered by increasing precedence. Explicit parentheses can break the
+default precedence (e.g. <span class="math inline"><em>a</em> * (<em>b</em>+<em>c</em>)</span>).</p>
 <table>
 <colgroup>
-<col style="width: 24%" />
-<col style="width: 75%" />
+<col style="width: 21%" />
+<col style="width: 78%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -581,55 +597,186 @@ individually.</li>
 <tbody>
 <tr class="odd">
 <td><code>\|\|</code></td>
-<td>Logical Or</td>
+<td>Logical Or (binary)</td>
 </tr>
 <tr class="even">
 <td><code>&amp;&amp;</code></td>
-<td>Logical And</td>
+<td>Logical And (binary)</td>
 </tr>
 <tr class="odd">
 <td><code>==</code>,<code>!=</code></td>
-<td>Equal, Unequal</td>
+<td>Equal, Unequal (binary)</td>
 </tr>
 <tr class="even">
 <td><code>&lt;</code>,
 <code>&lt;=</code>,<code>&gt;</code>,<code>&gt;=</code></td>
-<td>Less than, Less or equal, Greater than, Greater or equal</td>
+<td>Less than, Less or equal, Greater than, Greater or equal
+(binary)</td>
 </tr>
 <tr class="odd">
 <td><code>+</code>, <code>-</code></td>
-<td>Addition, Subtraction</td>
+<td>Addition, Subtraction (binary)</td>
 </tr>
 <tr class="even">
 <td><code>*</code>, <code>/</code></td>
-<td>Multiplication, Division</td>
+<td>Multiplication, Division (binary)</td>
 </tr>
 <tr class="odd">
 <td><code>^</code></td>
-<td>Potency</td>
+<td>Potency (binary)</td>
 </tr>
 <tr class="even">
 <td><code>++</code>, <code>--</code></td>
-<td>Postfix Incrementation, Decrementation</td>
+<td>Postfix Incrementation, Decrementation (unary)</td>
+</tr>
+<tr class="odd">
+<td><code>!</code></td>
+<td>logical not (unary)</td>
 </tr>
 </tbody>
 </table>
-<p>Base data types are evaluated at compile-time. Properties like
-e.g. matrix dimensions are evaluated at runtime. Thus, a
-<code>RuntimeError</code> is thrown if e.g. two matrices with a
-different number of rows are added.</p>
-<blockquote>
-<p>Example</p>
-</blockquote>
+<!-- TODO: numerical equal -->
+<p>Not all operators can be applied to each data type. For example,
+<code>a &amp;&amp; b</code> is only valid, if operands <code>a</code>
+and <code>b</code> are boolean.</p>
+<p>Base data types are evaluated at compile-time. The compiler reports
+an error, if types do not match for a operator.</p>
+<p>Dimensions are evaluated at runtime. For example, a
+<code>RuntimeError</code> is thrown if two matrices with a different
+number of rows are added.</p>
+<p>Some examples for expressions (the examples assumes, that variables
+<code>y</code>, <code>u</code>, <code>w</code>, <code>A</code>,
+<code>B</code>, <code>C</code> have been declared before usage):</p>
 <pre><code>let x = 1.23 * sin(y) + exp(u + 2*w);
-let C = A * B^T;
+let C = A * transpose(B);
 let d = det(C);</code></pre>
+<p>The set of implemented functions is listed in the appendix.</p>
+<h2 id="data-types">Data Types</h2>
+<p>SMPL supports the following data types:</p>
 <ul>
-<li>The examples assumes, that variables <code>y</code>, <code>u</code>,
-<code>w</code>, <code>A</code>, <code>B</code>, <code>C</code> have been
-declared before usage.</li>
+<li><p>boolean (<code>BOOL</code>)</p>
+<p>A boolean variable is either <code>true</code> or
+<code>false</code>.</p>
+<p>Example:</p>
+<pre><code>let x = true;
+let y = false;
+let w = true;
+let u = (x &amp;&amp; y) || !w;
+let v = 3 &lt; 5;</code></pre>
+<p><span class="math inline"><em>u</em> := (<em>x</em>∧<em>y</em>) ∨ ¬<em>w</em></span></p></li>
+<li><p>integer (<code>INT</code>)</p>
+<p>An integer variable stores integral values in range <span class="math inline"> − 2<sup>53</sup></span> to <span class="math inline">2<sup>53</sup> − 1</span>.</p>
+<blockquote>
+<p>Note: <code>JavaScript</code> stores integer values as double
+precision floating point numbers.</p>
+</blockquote>
+<p>Example:</p>
+<pre><code>let x = 5;
+let y = -23;
+let z = x * y;
+let w = round(x / y);</code></pre>
+<p>Note that the division outputs <code>RATIONAL</code> data type,
+despite concrete values. Use <code>round</code> or <code>floor</code> or
+<code>ceil</code> to get an integer value.</p></li>
+<li><p>rational (<code>RATIONAL</code>)</p>
+<p>A rational number variable stores values of the form <code>x/y</code>
+with <span class="math inline"><em>x</em>, <em>y</em> ∈ ℤ</span>.</p>
+<p>Example:</p>
+<pre><code>let x = 1 / 7;
+let y = real(1 / 7);</code></pre>
+<p>Variable <code>x</code> is of type <code>RATIONAL</code> and stores
+<code>1/7</code>. Variable <code>y</code> is of type <code>REAL</code>
+and stores <code>0.142857...</code> in IEEE 754 double
+precision.</p></li>
+<li><p>real (<code>REAL</code>)</p>
+<p>Real number variables store approximations of real values with IEEE
+754 double precision.</p>
+<p>Example:</p>
+<pre><code>let x = PI;
+let y = sin(0.1);</code></pre></li>
+<li><p>complex (<code>COMPLEX</code>).</p>
+<p>Complex variables store complex number in normal form
+<code>x+yi</code> with <span class="math inline"><em>x</em>, <em>y</em> ∈ ℝ</span>. Complex numbers
+can be initialized by function <code>complex(x,y)</code> or writing
+<code>x+yi</code>.</p>
+<p>For <code>y=1</code>, one must write <code>1i</code> instead of just
+<code>i</code>. The identifier <code>i</code> is an ordinary variable
+name.</p>
+<p>Example:</p>
+<pre><code>let x = 3 - 4i;
+let y = complex(3, -4);
+let phi = arg(x);
+let r = abs(x);
+let z = r * exp(phi);</code></pre></li>
+<li><p>set (<code>SET</code>)</p>
+<p>A set variable stores a set of integer numbers. A set is
+initialized</p>
+<pre><code>let x = set(3, 4, 5);      // x := {3,4,5}
+add(x, 4);                 // x := {3,4,5}
+add(x, 6);                 // x := {3,4,5,6}
+remove(x, 3);              // x := {4,5,6}
+let y = iselement(x, 4);   // true</code></pre>
+<blockquote>
+<p>Note: set of non-integers will be supported later.</p>
+</blockquote></li>
+<li><p>term (<code>TERM</code>)</p>
+<p>A term is an symbolic expression.</p>
+<p>Example</p>
+<pre><code>let f(x) = x^2;
+let y = f(3);
+let g(x,y) = 2 * exp(-x) * sin(y);
+let h(x,y) = diff(g, x);
+let i = int(f, 0, 3);</code></pre>
+<p>The example calculates <span class="math inline"><em>f</em>(<em>x</em>) = <em>x</em><sup>2</sup></span>,
+<span class="math inline"><em>y</em> = 9</span>, <span class="math inline"><em>g</em>(<em>x</em>) = 2 ⋅ exp (<em>x</em>) ⋅ sin (<em>y</em>)</span>,
+<span class="math inline"><em>h</em>(<em>x</em>,<em>y</em>) =  − 2 ⋅ exp (<em>x</em>) ⋅ sin (<em>y</em>)</span>,
+<span class="math inline"><em>i</em> = 21.3333...</span>.</p></li>
+<li><p>vector (<code>VECTOR</code>)</p>
+<pre><code>let v = [1, 2, 3];
+let w = [4, 5, 6];
+let x = zeros&lt;3&gt;();
+let n = len(v);
+let d = dot(v, w);</code></pre></li>
+<li><p>matrix (<code>MATRIX</code>)</p>
+<p>A matrix variable stores a real valued matrix.</p>
+<ul>
+<li>Matrices can be initialized e.g. by the
+<code>zero&lt;m,n&gt;()</code> function, which creates a zero matrix
+with <code>m</code> rows and <code>n</code> columns.</li>
+<li>A matrix with all its elements can be specified by the brackets
+operator:
+<code>[a00, a01, ..., a0n-1; a10, a11, ..., a1n-1; ...; am-10 am-11 ... am-1n-1]</code>.
+Rows are delimited by <code>;</code> and columns are delimited by
+<code>,</code>.</li>
+<li>Matrix elements can be accessed by <code>[i,j]</code> with row
+<code>i</code> and column <code>j</code>. Indices start at zero,
+i.e. the first index is 0 and the last index is <span class="math inline"><em>m</em> − 1</span> for a row and <span class="math inline"><em>n</em> − 1</span> for a column.</li>
 </ul>
+<p>The appendix lists all functions with matrix operands.</p>
+<pre><code>let A = zeros&lt;2,3&gt;();
+let B = [1, 2, 3; 4, 5, 6];
+let C = ones&lt;3,3&gt;();
+B[2,3] = 5;
+let x = B[0,0];
+let d = det(C);</code></pre>
+<blockquote>
+<p>Note: matrices with complex elements will be supported later.</p>
+</blockquote></li>
+</ul>
+<!-- TODO: bigint -->
+<!-- TODO: special constants: PI, ... -->
 <h2 id="conditions">Conditions</h2>
+<p>Conditional code is executed only, if a conditional is true. The
+<code>if</code>-statement has the form
+<code>if (C) { S0 } else if (C1) { S1 } ... else { Sn }</code>, with a
+sequences of statements <code>S0</code>, <code>S1</code> etc. Sequence
+<code>S0</code> is executed, if the boolean condition <code>S0</code> is
+true. Sequence <code>S1</code> is executed, if the boolean condition
+<code>S0</code> is false and the boolean condition <code>S1</code> is
+true. In case that all conditions <code>Ci</code> are false, then
+sequence <code>Sn</code> is executed.</p>
+<p>The <code>else if</code> parts and <code>else</code> part are
+optional.</p>
 <blockquote>
 <p>Example</p>
 </blockquote>
@@ -644,21 +791,16 @@ else {
   x=0;
 }</code></pre>
 <h2 id="loops">Loops</h2>
-<blockquote>
-<p>Example</p>
-</blockquote>
+<p>TODO:</p>
+<p>Example:</p>
 <pre><code>while (x &gt; 0) {
   // body
 }</code></pre>
-<blockquote>
-<p>Example</p>
-</blockquote>
+<p>Example:</p>
 <pre><code>do {
   // body
 } while (x &gt; 0);</code></pre>
-<blockquote>
-<p>Example</p>
-</blockquote>
+<p>Example:</p>
 <pre><code>for (let i = 0; i &lt; 5; i++) {
   // body
 }</code></pre>
@@ -671,14 +813,47 @@ parameter names and types and the return type.</li>
 <li>The <strong>body</strong> is represented by a list of statements and
 returns a result that is compatible to the return type.</li>
 </ul>
-<blockquote>
-<p>Example</p>
-</blockquote>
+<p>Example:</p>
 <pre><code>function f(x: INT, y: INT): INT {
   return x + y;
 }
 
 let y = f(3, 4);</code></pre>
+<h2 id="appendix-built-in-functions">Appendix: Built-in functions</h2>
+<p>The following list describes all built-in functions. We use the
+notation <code>:T1|T2|...</code> to list valid data types for each
+parameter and the return value. For example
+<code>abs(x:INTEGER|REAL|COMPLEX):REAL</code> denotes function
+<code>abs</code> with one parameter named <code>x</code> that can be an
+integer, real or complex value. The function returns a real value.</p>
+<p>Some function also require dimensions. These are embedded into
+<code>&lt;...&gt;</code>.</p>
+<ul>
+<li><p><code>abs( x : INTEGER|REAL|COMPLEX ) : REAL</code></p>
+<p>Returns the absolute values of <code>x</code>.</p>
+<p><em>Example: <code>abs(-4)</code> is evaluated to
+<code>4</code>.</em></p>
+<p><em>Example: <code>abs(3+4i)</code> is evaluated to
+<code>5</code>.</em></p></li>
+<li><p><code>ones &lt; m : INTEGER , n : INTEGER &gt; () : MATRIX</code></p>
+<p>Returns a one-matrix with <code>m</code> rows and <code>n</code>
+columns.</p>
+<p><em>Example: <code>ones&lt;2,3&gt;()</code> returns a <span class="math inline">2 × 3</span> matrix with all elements
+1.</em></p></li>
+<li><p><code>set ( x : INTEGER, y : INTEGER, ...) : SET</code></p>
+<p>Returns a set with values <code>x</code>, <code>y</code>, …</p>
+<p><em>Example: <code>set(1, 3, 3, 7)</code> return the set <span class="math inline">{1, 3, 7}</span>.</em></p></li>
+<li><p><code>shuffle ( x : VECTOR ) : VECTOR</code></p>
+<p>Randomly reorders the elements of <code>x</code>.</p>
+<p><em>Example: <code>shuffle([3,1,4])</code></em> returns
+<code>[1,3,4]</code> or <code>[4,3,1]</code> or …</p></li>
+<li><p><code>zero &lt; m : INTEGER , n : INTEGER &gt; () : MATRIX</code></p>
+<p>Returns a zero-matrix with <code>m</code> rows and <code>n</code>
+columns.</p>
+<p><em>Example: <code>zero&lt;2,3&gt;()</code> returns a <span class="math inline">2 × 3</span> matrix with all elements
+0.</em></p></li>
+</ul>
+<p>TODO: THIS LIST IS CURRENTLY WORK IN PROGRESS…</p>
 <h2 id="appendix-grammar">Appendix: Grammar</h2>
 <p>The following formal grammar (denoted in EBNF) is currently
 implemented.</p>
