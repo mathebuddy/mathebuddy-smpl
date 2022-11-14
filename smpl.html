@@ -517,7 +517,7 @@ statements.</p>
 <li><p>The first line evaluates the right-hand side of the equal sign
 (<code>=</code>) and assigns the result, here <code>3</code>, to a new
 variable with identifier <code>x</code>. The type of variable
-<code>x</code> is <code>integer</code>.</p></li>
+<code>x</code> is <code>INT</code>.</p></li>
 <li><p>The second line first evaluates the expression
 <code>sin(x)</code>. Variable <code>x</code> is taken as argument to the
 sine function. The numeric result <code>0.14111..</code> is stored to
@@ -823,31 +823,31 @@ let y = f(3, 4);</code></pre>
 <p>The following list describes all built-in functions. We use the
 notation <code>:T1|T2|...</code> to list valid data types for each
 parameter and the return value. For example
-<code>abs(x:INTEGER|REAL|COMPLEX):REAL</code> denotes function
+<code>abs(x:INT|REAL|COMPLEX):REAL</code> denotes function
 <code>abs</code> with one parameter named <code>x</code> that can be an
 integer, real or complex value. The function returns a real value.</p>
 <p>Some function also require dimensions. These are embedded into
 <code>&lt;...&gt;</code>.</p>
 <ul>
-<li><p><code>abs( x : INTEGER|REAL|COMPLEX ) : REAL</code></p>
+<li><p><code>abs( x : INT|REAL|COMPLEX ) : REAL</code></p>
 <p>Returns the absolute values of <code>x</code>.</p>
 <p><em>Example: <code>abs(-4)</code> is evaluated to
 <code>4</code>.</em></p>
 <p><em>Example: <code>abs(3+4i)</code> is evaluated to
 <code>5</code>.</em></p></li>
-<li><p><code>ones &lt; m : INTEGER , n : INTEGER &gt; () : MATRIX</code></p>
+<li><p><code>ones &lt; m : INT , n : INT &gt; () : MATRIX</code></p>
 <p>Returns a one-matrix with <code>m</code> rows and <code>n</code>
 columns.</p>
 <p><em>Example: <code>ones&lt;2,3&gt;()</code> returns a <span class="math inline">2 × 3</span> matrix with all elements
 1.</em></p></li>
-<li><p><code>set ( x : INTEGER, y : INTEGER, ...) : SET</code></p>
+<li><p><code>set ( x : INT, y : INT, ...) : SET</code></p>
 <p>Returns a set with values <code>x</code>, <code>y</code>, …</p>
 <p><em>Example: <code>set(1, 3, 3, 7)</code> return the set <span class="math inline">{1, 3, 7}</span>.</em></p></li>
 <li><p><code>shuffle ( x : VECTOR ) : VECTOR</code></p>
 <p>Randomly reorders the elements of <code>x</code>.</p>
 <p><em>Example: <code>shuffle([3,1,4])</code></em> returns
 <code>[1,3,4]</code> or <code>[4,3,1]</code> or …</p></li>
-<li><p><code>zero &lt; m : INTEGER , n : INTEGER &gt; () : MATRIX</code></p>
+<li><p><code>zero &lt; m : INT , n : INT &gt; () : MATRIX</code></p>
 <p>Returns a zero-matrix with <code>m</code> rows and <code>n</code>
 columns.</p>
 <p><em>Example: <code>zero&lt;2,3&gt;()</code> returns a <span class="math inline">2 × 3</span> matrix with all elements
