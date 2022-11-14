@@ -57,7 +57,7 @@ C = numpy.matmul(A, B)
 ## Programs
 
 An SMPl program is a sequence of statements $p=(s_0 ~s_1 \dots)$.
-Each statements ends by a semicolon (`;`).
+Each statement ends by a semicolon (`;`).
 Declarations and assignments are executed statement wise, i.e. $s_{i+1}$ is executed after statement $s_i$.
 
 Example:
@@ -75,63 +75,237 @@ Indeed, we also could write all statements in one line, since the semicolon sepa
 
 - The second line first evaluates the expression `sin(x)`. Variable `x` is taken as argument to the sine function. The numeric result `0.14111..` is stored to variable `y` of data type `real`. It has double-precision (refer to IEEE 754). Take care, that real numbers $\mathbb{R}$ are stored approximately, unless symbolic computation is applied explicitly.
 
-## Data Types
-
-boolean (`BOOL`), integer (`INT`), rational (`RATIONAL`), real (`REAL`), term (`TERM`), matrix (`MATRIX`), vector (`VECTOR`), set (`SET`), complex (`COMPLEX`).
-
 ## Declarations
 
 Declarations are initiated with keyword `let`, followed by an identifier and finally assigned expression by `=`.
 The expression in the right-hand side is mandatory to derive the data type.
+Data types are described in detail in the next section.
 
-> Example
+Example:
 
 ```
 let x = 5;
-let y = 7, z = 9.1011;
+let y = 7;
+let z = 9.1011;
 let u = rand(5);
 let v = zeros<2,3>();
-let a : b = rand<3,3>(-2, 2);
-let c :/ d :/ e = rand<3,3>(-2, 2);
+let a:b = randZ<3,3>(-2, 2);
+let c/d/e = rand<3,3>(-2, 2);
 ```
 
 - Variables `x` and `u` are integral. The value for `u` is randomly chosen from set {0,1,2,3,4,5}.
 - Variable `z` is a real valued.
 - Variables `x` and `z` are declared together (without any semantical relation). The notation is equivalent to `let y=7; let y=9.1011;`
 - Variables `v`, `a`, `b`, `c` and `d` are matrices. `v` is a zero matrix with two rows and three columns.
-- Matrices `a` and `b` consist of randomly chosen, integral elements in range [-2,2].
-- The colon separator `:` evaluates the right-hand side to each of the variables: `let a = rand<3,3>(-2, 2); let b = rand<3,3>(-2, 2);`. Accordingly, elements for `a` and `b` are drawn individually.
-- Separator `:/` guarantees that no pair of matrices `c`, `d` and `e` is equal.
+- Matrices `a` and `b` consist of randomly chosen, integral elements in range [-2,2] without zero.
+- The colon separator `:` evaluates the right-hand side as many times, as there are left-hand side variables. The example is equal to: `let a = randZ<3,3>(-2, 2); let b = randZ<3,3>(-2, 2);`.
+- Separator `/` guarantees that no pair of matrices `c`, `d` and `e` is equal: Matrix, a $3 \times 3$ matrix is generated and assigned to variable `c`. Then a random $3 \times 3$ matrix is generated that is numerically unequal to matrix `a`. Finally, a random $3 \times 3$ matrix for `c` is generated with $c \neq a$ and $c \neq b$.
 
 ## Expressions
 
-List of operators, ordered by increasing precedence:
+An assignment has the form `X = Y;`. First, the right-hand side `Y` is evaluated and then assigned to the variable `X` on the left-hand side.
 
-| Operator           | Description                                              |
-| ------------------ | -------------------------------------------------------- |
-| `\|\|`             | Logical Or                                               |
-| `&&`               | Logical And                                              |
-| `==`,`!=`          | Equal, Unequal                                           |
-| `<`, `<=`,`>`,`>=` | Less than, Less or equal, Greater than, Greater or equal |
-| `+`, `-`           | Addition, Subtraction                                    |
-| `*`, `/`           | Multiplication, Division                                 |
-| `^`                | Potency                                                  |
-| `++`, `--`         | Postfix Incrementation, Decrementation                   |
+Variables are named by identifiers, consisting of one ore more characters.
+The first character must be a lowercase or uppercase letter or underscore, i.e. `a..z` or `A..Z` or `_`.
+Starting from the second character, also numbers `0..9` are allowed additionally.
+Keywords and function names of the standard function library (see appendix) are not allowed.
+Examples: `x`, `y0`, `A`, `mat_0`.
 
-Base data types are evaluated at compile-time. Properties like e.g. matrix dimensions are evaluated at runtime.
-Thus, a `RuntimeError` is thrown if e.g. two matrices with a different number of rows are added.
+The right-hand side of an assignment consists of a unary constant (e.g. `1337` or `3.14` or `-42`) or a function call (e.g. `sin(x)`) or a variable (e.g. `x`) or an expression (e.g. `a + 4`).
 
-> Example
+An expression is denoted in infix notation: The operator is denoted between two operands in case of a binary operation or the operator is denoted before the operand in case of a unary operation.
+
+The following list of operators is implemented in SMPL.
+The list is ordered by increasing precedence.
+Explicit parentheses can break the default precedence (e.g. $a * (b+c)$).
+
+| Operator           | Description                                                       |
+| ------------------ | ----------------------------------------------------------------- |
+| `\|\|`             | Logical Or (binary)                                               |
+| `&&`               | Logical And (binary)                                              |
+| `==`,`!=`          | Equal, Unequal (binary)                                           |
+| `<`, `<=`,`>`,`>=` | Less than, Less or equal, Greater than, Greater or equal (binary) |
+| `+`, `-`           | Addition, Subtraction (binary)                                    |
+| `*`, `/`           | Multiplication, Division (binary)                                 |
+| `^`                | Potency (binary)                                                  |
+| `++`, `--`         | Postfix Incrementation, Decrementation (unary)                    |
+| `!`                | logical not (unary)                                               |
+
+<!-- TODO: numerical equal -->
+
+Not all operators can be applied to each data type.
+For example, `a && b` is only valid, if operands `a` and `b` are boolean.
+
+Base data types are evaluated at compile-time.
+The compiler reports an error, if types do not match for a operator.
+
+Dimensions are evaluated at runtime.
+For example, a `RuntimeError` is thrown if two matrices with a different number of rows are added.
+
+Some examples for expressions (the examples assumes, that variables `y`, `u`, `w`, `A`, `B`, `C` have been declared before usage):
 
 ```
 let x = 1.23 * sin(y) + exp(u + 2*w);
-let C = A * B^T;
+let C = A * transpose(B);
 let d = det(C);
 ```
 
-- The examples assumes, that variables `y`, `u`, `w`, `A`, `B`, `C` have been declared before usage.
+The set of implemented functions is listed in the appendix.
+
+## Data Types
+
+SMPL supports the following data types:
+
+- boolean (`BOOL`)
+
+  A boolean variable is either `true` or `false`.
+
+  Example:
+
+  ```
+  let x = true;
+  let y = false;
+  let w = true;
+  let u = (x && y) || !w;
+  let v = 3 < 5;
+  ```
+
+  $u := (x \land y) \lor \lnot w$
+
+- integer (`INT`)
+
+  An integer variable stores integral values in range $-2^{53}$ to $2^{53}-1$.
+
+  > Note: `JavaScript` stores integer values as double precision floating point numbers.
+
+  Example:
+
+  ```
+  let x = 5;
+  let y = -23;
+  let z = x * y;
+  let w = round(x / y);
+  ```
+
+  Note that the division outputs `RATIONAL` data type, despite concrete values.
+  Use `round` or `floor` or `ceil` to get an integer value.
+
+- rational (`RATIONAL`)
+
+  A rational number variable stores values of the form `x/y` with $x,y \in \mathbb{Z}$.
+
+  Example:
+
+  ```
+  let x = 1 / 7;
+  let y = real(1 / 7);
+  ```
+
+  Variable `x` is of type `RATIONAL` and stores `1/7`.
+  Variable `y` is of type `REAL` and stores `0.142857...` in IEEE 754 double precision.
+
+- real (`REAL`)
+
+  Real number variables store approximations of real values with IEEE 754 double precision.
+
+  Example:
+
+  ```
+  let x = PI;
+  let y = sin(0.1);
+  ```
+
+- complex (`COMPLEX`).
+
+  Complex variables store complex number in normal form `x+yi` with $x,y \in \mathbb{R}$.
+  Complex numbers can be initialized by function `complex(x,y)` or writing `x+yi`.
+
+  For `y=1`, one must write `1i` instead of just `i`.
+  The identifier `i` is an ordinary variable name.
+
+  Example:
+
+  ```
+  let x = 3 - 4i;
+  let y = complex(3, -4);
+  let phi = arg(x);
+  let r = abs(x);
+  let z = r * exp(phi);
+  ```
+
+- set (`SET`)
+
+  A set variable stores a set of integer numbers. A set is initialized
+
+  ```
+  let x = set(3, 4, 5);      // x := {3,4,5}
+  add(x, 4);                 // x := {3,4,5}
+  add(x, 6);                 // x := {3,4,5,6}
+  remove(x, 3);              // x := {4,5,6}
+  let y = iselement(x, 4);   // true
+  ```
+
+  > Note: set of non-integers will be supported later.
+
+- term (`TERM`)
+
+  A term is an symbolic expression.
+
+  Example
+
+  ```
+  let f(x) = x^2;
+  let y = f(3);
+  let g(x,y) = 2 * exp(-x) * sin(y);
+  let h(x,y) = diff(g, x);
+  let i = int(f, 0, 3);
+  ```
+
+  The example calculates $f(x)=x^2$, $y=9$, $g(x)=2\cdot\exp(x)\cdot\sin(y)$, $h(x,y)=-2 \cdot \exp(x) \cdot \sin(y)$, $i=21.3333...$.
+
+- vector (`VECTOR`)
+
+  ```
+  let v = [1, 2, 3];
+  let w = [4, 5, 6];
+  let x = zeros<3>();
+  let n = len(v);
+  let d = dot(v, w);
+  ```
+
+- matrix (`MATRIX`)
+
+  A matrix variable stores a real valued matrix.
+
+  - Matrices can be initialized e.g. by the `zero<m,n>()` function, which creates a zero matrix with `m` rows and `n` columns.
+  - A matrix with all its elements can be specified by the brackets operator: `[a00, a01, ..., a0n-1; a10, a11, ..., a1n-1; ...; am-10 am-11 ... am-1n-1]`. Rows are delimited by `;` and columns are delimited by `,`.
+  - Matrix elements can be accessed by `[i,j]` with row `i` and column `j`. Indices start at zero, i.e. the first index is 0 and the last index is $m-1$ for a row and $n-1$ for a column.
+
+  The appendix lists all functions with matrix operands.
+
+  ```
+  let A = zeros<2,3>();
+  let B = [1, 2, 3; 4, 5, 6];
+  let C = ones<3,3>();
+  B[2,3] = 5;
+  let x = B[0,0];
+  let d = det(C);
+  ```
+
+  > Note: matrices with complex elements will be supported later.
+
+<!-- TODO: bigint -->
+<!-- TODO: special constants: PI, ... -->
 
 ## Conditions
+
+Conditional code is executed only, if a conditional is true.
+The `if`-statement has the form `if (C) { S0 } else if (C1) { S1 } ... else { Sn }`, with a sequences of statements `S0`, `S1` etc.
+Sequence `S0` is executed, if the boolean condition `S0` is true.
+Sequence `S1` is executed, if the boolean condition `S0` is false and the boolean condition `S1` is true.
+In case that all conditions `Ci` are false, then sequence `Sn` is executed.
+
+The `else if` parts and `else` part are optional.
 
 > Example
 
@@ -150,7 +324,9 @@ else {
 
 ## Loops
 
-> Example
+TODO:
+
+Example:
 
 ```
 while (x > 0) {
@@ -158,7 +334,7 @@ while (x > 0) {
 }
 ```
 
-> Example
+Example:
 
 ```
 do {
@@ -166,7 +342,7 @@ do {
 } while (x > 0);
 ```
 
-> Example
+Example:
 
 ```
 for (let i = 0; i < 5; i++) {
@@ -181,7 +357,7 @@ A function consists of a **header** and a **body**:
 - The **header** declared the name of the function, its parameter names and types and the return type.
 - The **body** is represented by a list of statements and returns a result that is compatible to the return type.
 
-> Example
+Example:
 
 ```
 function f(x: INT, y: INT): INT {
@@ -190,6 +366,49 @@ function f(x: INT, y: INT): INT {
 
 let y = f(3, 4);
 ```
+
+## Appendix: Built-in functions
+
+The following list describes all built-in functions.
+We use the notation `:T1|T2|...` to list valid data types for each parameter and the return value.
+For example `abs(x:INTEGER|REAL|COMPLEX):REAL` denotes function `abs` with one parameter named `x` that can be an integer, real or complex value.
+The function returns a real value.
+
+Some function also require dimensions. These are embedded into `<...>`.
+
+- `abs( x : INTEGER|REAL|COMPLEX ) : REAL`
+
+  Returns the absolute values of `x`.
+
+  _Example: `abs(-4)` is evaluated to `4`._
+
+  _Example: `abs(3+4i)` is evaluated to `5`._
+
+- `ones < m : INTEGER , n : INTEGER > () : MATRIX`
+
+  Returns a one-matrix with `m` rows and `n` columns.
+
+  _Example: `ones<2,3>()` returns a $2\times 3$ matrix with all elements 1._
+
+- `set ( x : INTEGER, y : INTEGER, ...) : SET`
+
+  Returns a set with values `x`, `y`, ...
+
+  _Example: `set(1, 3, 3, 7)` return the set $\{1,3,7\}$._
+
+- `shuffle ( x : VECTOR ) : VECTOR`
+
+  Randomly reorders the elements of `x`.
+
+  _Example: `shuffle([3,1,4])`_ returns `[1,3,4]` or `[4,3,1]` or ...
+
+- `zero < m : INTEGER , n : INTEGER > () : MATRIX`
+
+  Returns a zero-matrix with `m` rows and `n` columns.
+
+  _Example: `zero<2,3>()` returns a $2\times 3$ matrix with all elements 0._
+
+TODO: THIS LIST IS CURRENTLY WORK IN PROGRESS...
 
 ## Appendix: Grammar
 
