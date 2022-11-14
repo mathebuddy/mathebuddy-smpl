@@ -71,7 +71,7 @@ The example programs executes lines one and two in given order.
 Each line is evaluated, before the next line is executed.
 Indeed, we also could write all statements in one line, since the semicolon separates statements.
 
-- The first line evaluates the right-hand side of the equal sign (`=`) and assigns the result, here `3`, to a new variable with identifier `x`. The type of variable `x` is `integer`.
+- The first line evaluates the right-hand side of the equal sign (`=`) and assigns the result, here `3`, to a new variable with identifier `x`. The type of variable `x` is `INT`.
 
 - The second line first evaluates the expression `sin(x)`. Variable `x` is taken as argument to the sine function. The numeric result `0.14111..` is stored to variable `y` of data type `real`. It has double-precision (refer to IEEE 754). Take care, that real numbers $\mathbb{R}$ are stored approximately, unless symbolic computation is applied explicitly.
 
@@ -371,12 +371,12 @@ let y = f(3, 4);
 
 The following list describes all built-in functions.
 We use the notation `:T1|T2|...` to list valid data types for each parameter and the return value.
-For example `abs(x:INTEGER|REAL|COMPLEX):REAL` denotes function `abs` with one parameter named `x` that can be an integer, real or complex value.
+For example `abs(x:INT|REAL|COMPLEX):REAL` denotes function `abs` with one parameter named `x` that can be an integer, real or complex value.
 The function returns a real value.
 
 Some function also require dimensions. These are embedded into `<...>`.
 
-- `abs( x : INTEGER|REAL|COMPLEX ) : REAL`
+- `abs( x : INT|REAL|COMPLEX ) : REAL`
 
   Returns the absolute values of `x`.
 
@@ -384,13 +384,13 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `abs(3+4i)` is evaluated to `5`._
 
-- `ones < m : INTEGER , n : INTEGER > () : MATRIX`
+- `ones < m : INT , n : INT > () : MATRIX`
 
   Returns a one-matrix with `m` rows and `n` columns.
 
   _Example: `ones<2,3>()` returns a $2\times 3$ matrix with all elements 1._
 
-- `set ( x : INTEGER, y : INTEGER, ...) : SET`
+- `set ( x : INT, y : INT, ...) : SET`
 
   Returns a set with values `x`, `y`, ...
 
@@ -402,7 +402,7 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `shuffle([3,1,4])`_ returns `[1,3,4]` or `[4,3,1]` or ...
 
-- `zero < m : INTEGER , n : INTEGER > () : MATRIX`
+- `zero < m : INT , n : INT > () : MATRIX`
 
   Returns a zero-matrix with `m` rows and `n` columns.
 
