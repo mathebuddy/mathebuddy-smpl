@@ -843,6 +843,26 @@ columns.</p>
 <li><p><code>set ( x : INT, y : INT, ...) : SET</code></p>
 <p>Returns a set with values <code>x</code>, <code>y</code>, …</p>
 <p><em>Example: <code>set(1, 3, 3, 7)</code> return the set <span class="math inline">{1, 3, 7}</span>.</em></p></li>
+<li><p><code>rand ( a : INT, b : INT ) : INT</code></p>
+<p>Returns a random integer in range <code>[a,b]</code>.</p></li>
+<li><p><code>rand &lt; n : INT &gt; ( a : INT, b : INT ) : VECTOR</code></p>
+<p>Returns a vector of length <span class="math inline"><em>n</em></span>, where each element is a randomly
+chosen integer value in range <code>[a,b]</code>.</p></li>
+<li><p><code>rand &lt; m : INT , n : INT &gt; ( a : INT, b : INT ) : MATRIX</code></p>
+<p>Returns a <span class="math inline"><em>m</em> × <em>n</em></span>
+matrix, where each element is a randomly chosen integer value in range
+<code>[a,b]</code>.</p></li>
+<li><p><code>randZ ( a : INT, b : INT ) : INT</code></p>
+<p>Returns a random integer in range <code>[a,b]</code>, except value
+0.</p></li>
+<li><p><code>randZ &lt; n : INT &gt; ( a : INT, b : INT ) : VECTOR</code></p>
+<p>Returns a vector of length <span class="math inline"><em>n</em></span>, where each element is a randomly
+chosen integer value in range <code>[a,b]</code>, except value
+0.</p></li>
+<li><p><code>randZ &lt; m : INT , n : INT &gt; ( a : INT, b : INT ) : MATRIX</code></p>
+<p>Returns a <span class="math inline"><em>m</em> × <em>n</em></span>
+vector, where each element is a randomly chosen integer value in range
+<code>[a,b]</code>, except value 0.</p></li>
 <li><p><code>shuffle ( x : VECTOR ) : VECTOR</code></p>
 <p>Randomly reorders the elements of <code>x</code>.</p>
 <p><em>Example: <code>shuffle([3,1,4])</code></em> returns
