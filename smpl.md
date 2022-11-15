@@ -376,7 +376,7 @@ The function returns a real value.
 
 Some function also require dimensions. These are embedded into `<...>`.
 
-- `abs ( x : INT|REAL|COMPLEX ) : REAL`
+- **`abs ( x : INT|REAL|COMPLEX ) : REAL`**
 
   Returns the absolute values of `x`.
 
@@ -384,133 +384,169 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `abs(3+4i)` is evaluated to `5`._
 
-- `set ( x : INT , y : INT, ...) : SET`
-
-  Returns a set with values `x`, `y`, ...
-
-  _Example: `set(1, 3, 3, 7)` returns the set $\{1,3,7\}$._
-
-- `set ( x : INT , y : INT, ...) : SET`
-
-  Returns a set with values `x`, `y`, ...
-
-  _Example: `set(1, 3, 3, 7)` returns the set $\{1,3,7\}$._
-
-- `acos ( x : REAL ) : REAL`
+- **`acos ( x : REAL ) : REAL`**
 
   Calculates $\cos^{-1}(x)$.
 
   _Example: `acos(0)` returns $1.57079...$._
 
-- `asin ( x : REAL ) : REAL`
+- **`asin ( x : REAL ) : REAL`**
 
   Calculates $\sin^{-1}(x)$.
 
   _Example: `asin(0)` returns $0$._
 
-- `atan ( x : REAL ) : REAL`
+- **`atan ( x : REAL ) : REAL`**
 
   Calculates $\tan^{-1}(x)$.
 
   _Example: `atan(0)` returns $0$._
 
-- `binomial ( n : INT , k : INT ) : INT`
+- **`binomial ( n : INT , k : INT ) : INT`**
 
   Calculates the binomial coefficient $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.
 
   _Example: `binomial(4,2)` returns `6`._
 
-- `cos ( x : REAL ) : REAL`
+- **`cos ( x : REAL ) : REAL`**
 
   Calculates $\cos(x)$.
 
   _Example: `cos(PI/2)` returns $0$._
 
-- `diff ( f : TERM , x : ID ) : TERM`
+- **`cross ( x : VECTOR, y : VECTOR ) : VECTOR`**
+
+  Calculated the cross product of two vectors $x$ and $y$, i.e. $x \times y$,
+  or throws an exception, if one of the vectors has not exactly three elements.
+
+  _Example: `cross([1,2,3],[4,5,6])` returns `[-3,6,-3]`._;
+
+- **`det ( x : MATRIX ) : REAL`**
+
+  Returns `\det(x)` or throws an error, if $x$ is not square.
+
+  TODO: example(s).
+
+- **`diff ( f : TERM , x : ID ) : TERM`**
 
   Calculates $\frac{\partial f}{\partial x}$.
 
   _Example: `f(x,y)=x^2+y; diff(f, x)` returns `2*x`._
 
-- `set ( x : INT , y : INT, ...) : SET`
+- **`dot ( u : VECTOR , v : VECTOR ) : REAL`**
 
-  Returns a set with values `x`, `y`, ...
+  Calculates the doc product of two vectors $u$ and $v$.
 
-  _Example: `set(1, 3, 3, 7)` returns the set $\{1,3,7\}$._
+  _Example: `dot([1,2,3],[4,5,6])` returns `32`._
 
-- `exp ( x : REAL|COMPLEX ) : REAL|COMPLEX`
+- **`exp ( x : REAL|COMPLEX ) : REAL|COMPLEX`**
 
   Calculates $\exp(x)$.
 
   _Examples: `exp(0)` returns $1$. `exp(1i)` returns `0.54... + 0.84...i`._
 
-- `fac( x : INTEGER) : INTEGER`
+- **`fac ( x : INTEGER) : INTEGER`**
 
   Calculates $x!$, i.e. the faculty of $x$.
 
   _Example: `fac(3)` returns 6._
 
-- `len ( X : VECTOR|SET ) : INT`
+- **`is_invertible ( x : MATRIX) : BOOL`**
+
+  Returns true, if $x$ is invertible, otherwise false.
+  Throws an exception, if $x$ is not a square matrix.
+
+  TODO: epsilon + give example(s)
+
+- **`is_zero ( x : VECTOR|MATRIX) : BOOL`**
+
+  Returns true, if all elements of $x < \epsilon$.
+
+  TODO: specify epsilon + give example(s)
+
+- **`len ( x : VECTOR|SET ) : INT`**
 
   Returns the length of a vector or the cardinality (number of elements) of a set.
 
   _Examples: `len([1,0,0,1])` returns 4. `len(set(1,3,3,7))` returns 3._
 
-- `ones < m : INT , n : INT > () : MATRIX`
+- **`linsolve ( A : MATRIX , x : VECTOR ) : VECTOR`**
+
+  TODO: no, one, inf solutions.
+
+- **`norm2 ( u : VECTOR ) : REAL`**
+
+  Calculates the euclidean norm of a vector $u$, i.e. $\sqrt{u_0^2 + u_1^2 + \dots}$.
+
+  _Example: `norm2([3,4])` returns `5`._
+
+- **`ones < m : INT , n : INT > () : MATRIX`**
 
   Returns a one-matrix with `m` rows and `n` columns.
 
   _Example: `ones<2,3>()` returns a $2\times 3$ matrix with all elements 1._
 
-- `rand ( a : INT , b : INT ) : INT`
+- **`rand ( a : INT , b : INT ) : INT`**
 
   Returns a random integer in range `[a,b]`.
 
-- `rand < n : INT > ( a : INT , b : INT ) : VECTOR`
+- **`rand < n : INT > ( a : INT , b : INT ) : VECTOR`**
 
   Returns a vector of length $n$, where each element is a randomly chosen integer value in range `[a,b]`.
 
-- `rand < m : INT , n : INT > ( a : INT , b : INT ) : MATRIX`
+- **`rand < m : INT , n : INT > ( a : INT , b : INT ) : MATRIX`**
 
   Returns a $m \times n$ matrix, where each element is a randomly chosen integer value in range `[a,b]`.
 
-- `randZ ( a : INT , b : INT ) : INT`
+- **`randZ ( a : INT , b : INT ) : INT`**
 
   Returns a random integer in range `[a,b]`, except value 0.
 
-- `randZ < n : INT > ( a : INT , b : INT ) : VECTOR`
+- **`randZ < n : INT > ( a : INT , b : INT ) : VECTOR`**
 
   Returns a vector of length $n$, where each element is a randomly chosen integer value in range `[a,b]`, except value 0.
 
-- `randZ < m : INT , n : INT > ( a : INT , b : INT ) : MATRIX`
+- **`randZ < m : INT , n : INT > ( a : INT , b : INT ) : MATRIX`**
 
   Returns a $m \times n$ vector, where each element is a randomly chosen integer value in range `[a,b]`, except value 0.
 
-- `set ( x0 : INT , x1 : INT, ... ) : SET`
+- **`rank ( x : MATRIX ) : INT`**
+
+  Calculates the rank of matrix $x$.
+
+  TODO: give example(s)
+
+- **`set ( x0 : INT , x1 : INT, ... ) : SET`**
 
   Creates and returns a set of integer values.
 
   _Example: `set(4, 2, 5, 2)` returns a set `{2,4,5}`._
 
-- `sin ( x : REAL ) : REAL`
+- **`sin ( x : REAL ) : REAL`**
 
   Calculates $\sin(x)$.
 
   _Example: `sin(0)` returns $0$._
 
-- `shuffle ( x : VECTOR ) : VECTOR`
+- **`shuffle ( x : VECTOR ) : VECTOR`**
 
   Randomly reorders the elements of `x`.
 
   _Example: `shuffle([3,1,4])` returns `[1,3,4]` or `[4,3,1]` or ..._
 
-- `tan ( x : REAL ) : REAL`
+- **`tan ( x : REAL ) : REAL`**
 
   Calculates $\tan(x)$.
 
   _Example: `tan(0)` returns $0$._
 
-- `zero < m : INT , n : INT > () : MATRIX`
+- **`triu ( x : MATRIX ) : MATRIX `**
+
+  Returns the upper triangular part of $x$.
+
+  TODO: example(s)
+
+- **`zero < m : INT , n : INT > () : MATRIX`**
 
   Returns a zero-matrix with `m` rows and `n` columns.
 
