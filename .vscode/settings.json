@@ -22,6 +22,7 @@
     "Köln",
     "LEARNINGOUTCOMES",
     "Lern",
+    "linsolve",
     "mathbb",
     "mathe",
     "mathebuddy",
@@ -34,6 +35,7 @@
     "pandoc",
     "Schwenk",
     "SMPL",
-    "Stiftung"
+    "Stiftung",
+    "triu"
   ]
 }
