@@ -493,108 +493,139 @@ value.</p>
 <p>Some function also require dimensions. These are embedded into
 <code>&lt;...&gt;</code>.</p>
 <ul>
-<li><p><code>abs ( x : INT|REAL|COMPLEX ) : REAL</code></p>
+<li><p><strong><code>abs ( x : INT|REAL|COMPLEX ) : REAL</code></strong></p>
 <p>Returns the absolute values of <code>x</code>.</p>
 <p><em>Example: <code>abs(-4)</code> is evaluated to
 <code>4</code>.</em></p>
 <p><em>Example: <code>abs(3+4i)</code> is evaluated to
 <code>5</code>.</em></p></li>
-<li><p><code>set ( x : INT , y : INT, ...) : SET</code></p>
-<p>Returns a set with values <code>x</code>, <code>y</code>, …</p>
-<p><em>Example: <code>set(1, 3, 3, 7)</code> returns the set <span
-class="math inline">\(\{1,3,7\}\)</span>.</em></p></li>
-<li><p><code>set ( x : INT , y : INT, ...) : SET</code></p>
-<p>Returns a set with values <code>x</code>, <code>y</code>, …</p>
-<p><em>Example: <code>set(1, 3, 3, 7)</code> returns the set <span
-class="math inline">\(\{1,3,7\}\)</span>.</em></p></li>
-<li><p><code>acos ( x : REAL ) : REAL</code></p>
+<li><p><strong><code>acos ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\cos^{-1}(x)\)</span>.</p>
 <p><em>Example: <code>acos(0)</code> returns <span
 class="math inline">\(1.57079...\)</span>.</em></p></li>
-<li><p><code>asin ( x : REAL ) : REAL</code></p>
+<li><p><strong><code>asin ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\sin^{-1}(x)\)</span>.</p>
 <p><em>Example: <code>asin(0)</code> returns <span
 class="math inline">\(0\)</span>.</em></p></li>
-<li><p><code>atan ( x : REAL ) : REAL</code></p>
+<li><p><strong><code>atan ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\tan^{-1}(x)\)</span>.</p>
 <p><em>Example: <code>atan(0)</code> returns <span
 class="math inline">\(0\)</span>.</em></p></li>
-<li><p><code>binomial ( n : INT , k : INT ) : INT</code></p>
+<li><p><strong><code>binomial ( n : INT , k : INT ) : INT</code></strong></p>
 <p>Calculates the binomial coefficient <span
 class="math inline">\(\binom{n}{k} = \frac{n!}{k!(n-k)!}\)</span>.</p>
 <p><em>Example: <code>binomial(4,2)</code> returns
 <code>6</code>.</em></p></li>
-<li><p><code>cos ( x : REAL ) : REAL</code></p>
+<li><p><strong><code>cos ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\cos(x)\)</span>.</p>
 <p><em>Example: <code>cos(PI/2)</code> returns <span
 class="math inline">\(0\)</span>.</em></p></li>
-<li><p><code>diff ( f : TERM , x : ID ) : TERM</code></p>
+<li><p><strong><code>cross ( x : VECTOR, y : VECTOR ) : VECTOR</code></strong></p>
+<p>Calculated the cross product of two vectors <span
+class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span>, i.e. <span class="math inline">\(x
+\times y\)</span>, or throws an exception, if one of the vectors has not
+exactly three elements.</p>
+<p><em>Example: <code>cross([1,2,3],[4,5,6])</code> returns
+<code>[-3,6,-3]</code>.</em>;</p></li>
+<li><p><strong><code>det ( x : MATRIX ) : REAL</code></strong></p>
+<p>Returns <code>\det(x)</code> or throws an error, if <span
+class="math inline">\(x\)</span> is not square.</p>
+<p>TODO: example(s).</p></li>
+<li><p><strong><code>diff ( f : TERM , x : ID ) : TERM</code></strong></p>
 <p>Calculates <span class="math inline">\(\frac{\partial f}{\partial
 x}\)</span>.</p>
 <p><em>Example: <code>f(x,y)=x^2+y; diff(f, x)</code> returns
 <code>2*x</code>.</em></p></li>
-<li><p><code>set ( x : INT , y : INT, ...) : SET</code></p>
-<p>Returns a set with values <code>x</code>, <code>y</code>, …</p>
-<p><em>Example: <code>set(1, 3, 3, 7)</code> returns the set <span
-class="math inline">\(\{1,3,7\}\)</span>.</em></p></li>
-<li><p><code>exp ( x : REAL|COMPLEX ) : REAL|COMPLEX</code></p>
+<li><p><strong><code>dot ( u : VECTOR , v : VECTOR ) : REAL</code></strong></p>
+<p>Calculates the doc product of two vectors <span
+class="math inline">\(u\)</span> and <span
+class="math inline">\(v\)</span>.</p>
+<p><em>Example: <code>dot([1,2,3],[4,5,6])</code> returns
+<code>32</code>.</em></p></li>
+<li><p><strong><code>exp ( x : REAL|COMPLEX ) : REAL|COMPLEX</code></strong></p>
 <p>Calculates <span class="math inline">\(\exp(x)\)</span>.</p>
 <p><em>Examples: <code>exp(0)</code> returns <span
 class="math inline">\(1\)</span>. <code>exp(1i)</code> returns
 <code>0.54... + 0.84...i</code>.</em></p></li>
-<li><p><code>fac( x : INTEGER) : INTEGER</code></p>
+<li><p><strong><code>fac ( x : INTEGER) : INTEGER</code></strong></p>
 <p>Calculates <span class="math inline">\(x!\)</span>, i.e. the faculty
 of <span class="math inline">\(x\)</span>.</p>
 <p><em>Example: <code>fac(3)</code> returns 6.</em></p></li>
-<li><p><code>len ( X : VECTOR|SET ) : INT</code></p>
+<li><p><strong><code>is_invertible ( x : MATRIX) : BOOL</code></strong></p>
+<p>Returns true, if <span class="math inline">\(x\)</span> is
+invertible, otherwise false. Throws an exception, if <span
+class="math inline">\(x\)</span> is not a square matrix.</p>
+<p>TODO: epsilon + give example(s)</p></li>
+<li><p><strong><code>is_zero ( x : VECTOR|MATRIX) : BOOL</code></strong></p>
+<p>Returns true, if all elements of <span class="math inline">\(x &lt;
+\epsilon\)</span>.</p>
+<p>TODO: specify epsilon + give example(s)</p></li>
+<li><p><strong><code>len ( x : VECTOR|SET ) : INT</code></strong></p>
 <p>Returns the length of a vector or the cardinality (number of
 elements) of a set.</p>
 <p><em>Examples: <code>len([1,0,0,1])</code> returns 4.
 <code>len(set(1,3,3,7))</code> returns 3.</em></p></li>
-<li><p><code>ones &lt; m : INT , n : INT &gt; () : MATRIX</code></p>
+<li><p><strong><code>linsolve ( A : MATRIX , x : VECTOR ) : VECTOR</code></strong></p>
+<p>TODO: no, one, inf solutions.</p></li>
+<li><p><strong><code>norm2 ( u : VECTOR ) : REAL</code></strong></p>
+<p>Calculates the euclidean norm of a vector <span
+class="math inline">\(u\)</span>, i.e. <span
+class="math inline">\(\sqrt{u_0^2 + u_1^2 + \dots}\)</span>.</p>
+<p><em>Example: <code>norm2([3,4])</code> returns
+<code>5</code>.</em></p></li>
+<li><p><strong><code>ones &lt; m : INT , n : INT &gt; () : MATRIX</code></strong></p>
 <p>Returns a one-matrix with <code>m</code> rows and <code>n</code>
 columns.</p>
 <p><em>Example: <code>ones&lt;2,3&gt;()</code> returns a <span
 class="math inline">\(2\times 3\)</span> matrix with all elements
 1.</em></p></li>
-<li><p><code>rand ( a : INT , b : INT ) : INT</code></p>
+<li><p><strong><code>rand ( a : INT , b : INT ) : INT</code></strong></p>
 <p>Returns a random integer in range <code>[a,b]</code>.</p></li>
-<li><p><code>rand &lt; n : INT &gt; ( a : INT , b : INT ) : VECTOR</code></p>
+<li><p><strong><code>rand &lt; n : INT &gt; ( a : INT , b : INT ) : VECTOR</code></strong></p>
 <p>Returns a vector of length <span class="math inline">\(n\)</span>,
 where each element is a randomly chosen integer value in range
 <code>[a,b]</code>.</p></li>
-<li><p><code>rand &lt; m : INT , n : INT &gt; ( a : INT , b : INT ) : MATRIX</code></p>
+<li><p><strong><code>rand &lt; m : INT , n : INT &gt; ( a : INT , b : INT ) : MATRIX</code></strong></p>
 <p>Returns a <span class="math inline">\(m \times n\)</span> matrix,
 where each element is a randomly chosen integer value in range
 <code>[a,b]</code>.</p></li>
-<li><p><code>randZ ( a : INT , b : INT ) : INT</code></p>
+<li><p><strong><code>randZ ( a : INT , b : INT ) : INT</code></strong></p>
 <p>Returns a random integer in range <code>[a,b]</code>, except value
 0.</p></li>
-<li><p><code>randZ &lt; n : INT &gt; ( a : INT , b : INT ) : VECTOR</code></p>
+<li><p><strong><code>randZ &lt; n : INT &gt; ( a : INT , b : INT ) : VECTOR</code></strong></p>
 <p>Returns a vector of length <span class="math inline">\(n\)</span>,
 where each element is a randomly chosen integer value in range
 <code>[a,b]</code>, except value 0.</p></li>
-<li><p><code>randZ &lt; m : INT , n : INT &gt; ( a : INT , b : INT ) : MATRIX</code></p>
+<li><p><strong><code>randZ &lt; m : INT , n : INT &gt; ( a : INT , b : INT ) : MATRIX</code></strong></p>
 <p>Returns a <span class="math inline">\(m \times n\)</span> vector,
 where each element is a randomly chosen integer value in range
 <code>[a,b]</code>, except value 0.</p></li>
-<li><p><code>set ( x0 : INT , x1 : INT, ... ) : SET</code></p>
+<li><p><strong><code>rank ( x : MATRIX ) : INT</code></strong></p>
+<p>Calculates the rank of matrix <span
+class="math inline">\(x\)</span>.</p>
+<p>TODO: give example(s)</p></li>
+<li><p><strong><code>set ( x0 : INT , x1 : INT, ... ) : SET</code></strong></p>
 <p>Creates and returns a set of integer values.</p>
 <p><em>Example: <code>set(4, 2, 5, 2)</code> returns a set
 <code>{2,4,5}</code>.</em></p></li>
-<li><p><code>sin ( x : REAL ) : REAL</code></p>
+<li><p><strong><code>sin ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\sin(x)\)</span>.</p>
 <p><em>Example: <code>sin(0)</code> returns <span
 class="math inline">\(0\)</span>.</em></p></li>
-<li><p><code>shuffle ( x : VECTOR ) : VECTOR</code></p>
+<li><p><strong><code>shuffle ( x : VECTOR ) : VECTOR</code></strong></p>
 <p>Randomly reorders the elements of <code>x</code>.</p>
 <p><em>Example: <code>shuffle([3,1,4])</code> returns
 <code>[1,3,4]</code> or <code>[4,3,1]</code> or …</em></p></li>
-<li><p><code>tan ( x : REAL ) : REAL</code></p>
+<li><p><strong><code>tan ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\tan(x)\)</span>.</p>
 <p><em>Example: <code>tan(0)</code> returns <span
 class="math inline">\(0\)</span>.</em></p></li>
-<li><p><code>zero &lt; m : INT , n : INT &gt; () : MATRIX</code></p>
+<li><p><strong><code>triu ( x : MATRIX ) : MATRIX</code></strong></p>
+<p>Returns the upper triangular part of <span
+class="math inline">\(x\)</span>.</p>
+<p>TODO: example(s)</p></li>
+<li><p><strong><code>zero &lt; m : INT , n : INT &gt; () : MATRIX</code></strong></p>
 <p>Returns a zero-matrix with <code>m</code> rows and <code>n</code>
 columns.</p>
 <p><em>Example: <code>zero&lt;2,3&gt;()</code> returns a <span
