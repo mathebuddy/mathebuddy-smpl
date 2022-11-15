@@ -26,7 +26,7 @@ execSync("sed -e '1,/<!-- start-for-website -->/d' smpl.md > __tmp.md");
 execSync(
   'pandoc -s __tmp.md --metadata title="Simple Math Programming Language (SMPL)" --metadata author="" --metadata date="' +
     date +
-    '"  --css README.css --embed-resources --standalone -o smpl.html',
+    '"  --css README.css --mathjax --standalone -o smpl.html',
 );
 execSync('rm __tmp.md');
 // TODO: --mathjax may be needed, but results in large file, if --self-contained option is provided...
