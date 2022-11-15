@@ -371,12 +371,12 @@ let y = f(3, 4);
 
 The following list describes all built-in functions.
 We use the notation `:T1|T2|...` to list valid data types for each parameter and the return value.
-For example `abs(x:INT|REAL|COMPLEX):REAL` denotes function `abs` with one parameter named `x` that can be an integer, real or complex value.
+For example `abs(x:INT|REAL|COMPLEX):REAL` denotes function `abs` with one parameter named `x` that can be an integer a real value or complex value.
 The function returns a real value.
 
 Some function also require dimensions. These are embedded into `<...>`.
 
-- `abs( x : INT|REAL|COMPLEX ) : REAL`
+- `abs ( x : INT|REAL|COMPLEX ) : REAL`
 
   Returns the absolute values of `x`.
 
@@ -384,47 +384,131 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `abs(3+4i)` is evaluated to `5`._
 
+- `set ( x : INT , y : INT, ...) : SET`
+
+  Returns a set with values `x`, `y`, ...
+
+  _Example: `set(1, 3, 3, 7)` returns the set $\{1,3,7\}$._
+
+- `set ( x : INT , y : INT, ...) : SET`
+
+  Returns a set with values `x`, `y`, ...
+
+  _Example: `set(1, 3, 3, 7)` returns the set $\{1,3,7\}$._
+
+- `acos ( x : REAL ) : REAL`
+
+  Calculates $\cos^{-1}(x)$.
+
+  _Example: `acos(0)` returns $1.57079...$._
+
+- `asin ( x : REAL ) : REAL`
+
+  Calculates $\sin^{-1}(x)$.
+
+  _Example: `asin(0)` returns $0$._
+
+- `atan ( x : REAL ) : REAL`
+
+  Calculates $\tan^{-1}(x)$.
+
+  _Example: `atan(0)` returns $0$._
+
+- `binomial ( n : INT , k : INT ) : INT`
+
+  Calculates the binomial coefficient $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.
+
+  _Example: `binomial(4,2)` returns `6`._
+
+- `cos ( x : REAL ) : REAL`
+
+  Calculates $\cos(x)$.
+
+  _Example: `cos(PI/2)` returns $0$._
+
+- `diff ( f : TERM , x : ID ) : TERM`
+
+  Calculates $\frac{\partial f}{\partial x}$.
+
+  _Example: `f(x,y)=x^2+y; diff(f, x)` returns `2*x`._
+
+- `set ( x : INT , y : INT, ...) : SET`
+
+  Returns a set with values `x`, `y`, ...
+
+  _Example: `set(1, 3, 3, 7)` returns the set $\{1,3,7\}$._
+
+- `exp ( x : REAL|COMPLEX ) : REAL|COMPLEX`
+
+  Calculates $\exp(x)$.
+
+  _Examples: `exp(0)` returns $1$. `exp(1i)` returns `0.54... + 0.84...i`._
+
+- `fac( x : INTEGER) : INTEGER`
+
+  Calculates $x!$, i.e. the faculty of $x$.
+
+  _Example: `fac(3)` returns 6._
+
+- `len ( X : VECTOR|SET ) : INT`
+
+  Returns the length of a vector or the cardinality (number of elements) of a set.
+
+  _Examples: `len([1,0,0,1])` returns 4. `len(set(1,3,3,7))` returns 3._
+
 - `ones < m : INT , n : INT > () : MATRIX`
 
   Returns a one-matrix with `m` rows and `n` columns.
 
   _Example: `ones<2,3>()` returns a $2\times 3$ matrix with all elements 1._
 
-- `set ( x : INT, y : INT, ...) : SET`
-
-  Returns a set with values `x`, `y`, ...
-
-  _Example: `set(1, 3, 3, 7)` return the set $\{1,3,7\}$._
-
-- `rand ( a : INT, b : INT ) : INT`
+- `rand ( a : INT , b : INT ) : INT`
 
   Returns a random integer in range `[a,b]`.
 
-- `rand < n : INT > ( a : INT, b : INT ) : VECTOR`
+- `rand < n : INT > ( a : INT , b : INT ) : VECTOR`
 
   Returns a vector of length $n$, where each element is a randomly chosen integer value in range `[a,b]`.
 
-- `rand < m : INT , n : INT > ( a : INT, b : INT ) : MATRIX`
+- `rand < m : INT , n : INT > ( a : INT , b : INT ) : MATRIX`
 
   Returns a $m \times n$ matrix, where each element is a randomly chosen integer value in range `[a,b]`.
 
-- `randZ ( a : INT, b : INT ) : INT`
+- `randZ ( a : INT , b : INT ) : INT`
 
   Returns a random integer in range `[a,b]`, except value 0.
 
-- `randZ < n : INT > ( a : INT, b : INT ) : VECTOR`
+- `randZ < n : INT > ( a : INT , b : INT ) : VECTOR`
 
   Returns a vector of length $n$, where each element is a randomly chosen integer value in range `[a,b]`, except value 0.
 
-- `randZ < m : INT , n : INT > ( a : INT, b : INT ) : MATRIX`
+- `randZ < m : INT , n : INT > ( a : INT , b : INT ) : MATRIX`
 
   Returns a $m \times n$ vector, where each element is a randomly chosen integer value in range `[a,b]`, except value 0.
+
+- `set ( x0 : INT , x1 : INT, ... ) : SET`
+
+  Creates and returns a set of integer values.
+
+  _Example: `set(4, 2, 5, 2)` returns a set `{2,4,5}`._
+
+- `sin ( x : REAL ) : REAL`
+
+  Calculates $\sin(x)$.
+
+  _Example: `sin(0)` returns $0$._
 
 - `shuffle ( x : VECTOR ) : VECTOR`
 
   Randomly reorders the elements of `x`.
 
-  _Example: `shuffle([3,1,4])`_ returns `[1,3,4]` or `[4,3,1]` or ...
+  _Example: `shuffle([3,1,4])` returns `[1,3,4]` or `[4,3,1]` or ..._
+
+- `tan ( x : REAL ) : REAL`
+
+  Calculates $\tan(x)$.
+
+  _Example: `tan(0)` returns $0$._
 
 - `zero < m : INT , n : INT > () : MATRIX`
 
