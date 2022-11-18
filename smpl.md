@@ -84,9 +84,8 @@ Data types are described in detail in the next section.
 Example:
 
 ```
-let x = 5;
+let x = 5, z = 9.1011;
 let y = 7;
-let z = 9.1011;
 let u = rand(5);
 let v = zeros<2,3>();
 let a:b = randZ<3,3>(-2, 2);
