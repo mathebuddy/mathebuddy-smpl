@@ -15,6 +15,8 @@ import glob
 
 path = '../mathebuddy-public-courses/demo-ma1/*.mbl'
 files = sorted(glob.glob(path))
+path = '../mathebuddy-public-courses/demo-ma2/*.mbl'
+files += sorted(glob.glob(path))
 
 listings = []
 
