@@ -35,7 +35,8 @@ const title = `<h1 class="title">`;
 const links =
   `[<a href="https://app.f07-its.fh-koeln.de">Home</a>] ` +
   `[<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] ` +
-  `[<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>]`;
+  `[<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] ` +
+  `[<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] `;
 fs.writeFileSync(
   'smpl.html',
   fs.readFileSync('smpl.html', 'utf-8').replace(title, links + title),
