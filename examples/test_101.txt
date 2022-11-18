@@ -1,0 +1,5 @@
+let a:b:c:d = rand(1,5);
+a = randZ(-1,1) * a;
+let z2 = complex(a,b);
+let r = complex(c,d);
+let z1 = z2 * r;

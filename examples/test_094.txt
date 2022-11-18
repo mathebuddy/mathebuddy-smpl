@@ -1,2 +1,5 @@
-let A = rand<3,3>(0,2);
-let r = rank(A);
+let A = zeros(3,3);
+do {
+    A = rand<3,3>(0,2);
+} while(is_invertible(A) == false);
+iA = inv(A);

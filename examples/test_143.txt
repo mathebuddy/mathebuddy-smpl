@@ -1,0 +1,7 @@
+let a = rand(0,1);
+let b = 1 - a;
+let c:d = rand(3,4);
+let f(x,y) = c * x^d * y + x^(d-1);
+let dxx(x,y) = diff( diff(f,x), x);
+let dxy(x,y) = diff( diff(f,x), y);
+let dyy(x,y) = diff( diff(f,y), y);

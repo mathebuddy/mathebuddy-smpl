@@ -1,0 +1,6 @@
+let a:b = rand(2,8);
+let f(x,y) = a*x^2 - b*y^2;
+let fx(x,y) = diff(f, x);
+let fy(x,y) = diff(f, y);
+let sx = 0;
+let sy = 0;

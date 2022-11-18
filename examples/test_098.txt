@@ -1,0 +1,3 @@
+let z = rand(1,5) + rand(1,5)*1i;
+let c = conj(z);
+let z2 = z * c;

@@ -1,0 +1,6 @@
+let a:b:c:vx:vy = rand(2,4);
+let f(x,y) = a*x^b * y^c + x*y;
+let ex(x,y) = diff(f, x);
+let ey(x,y) = diff(f, y);
+let delta = 0.1;
+let zmax = abs(ex(vx,vy))*delta + abs(ey(vx,vy))*delta;

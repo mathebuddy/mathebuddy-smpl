@@ -1,0 +1,6 @@
+let E2 = eye(2);
+let A/B/C/D = rand<2,2>(0,1);
+let qa := (A * A^T) == E2;
+let qb := (B * B^T) == E2;
+let qc := (C * C^T) == E2;
+let qd := (D * D^T) == E2;

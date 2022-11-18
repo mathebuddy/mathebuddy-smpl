@@ -1,0 +1,2 @@
+let A:B = rand<2,2>(1,3);
+let C = A * B;

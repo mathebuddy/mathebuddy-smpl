@@ -1,3 +1,13 @@
-let MA = rand<2,3>(-5,5);
-let MB = rand<3,2>(-5,5);
-let MC = rand<2,2>(-5,5);
+let A = rand<2,2>(2,4);
+let b = rand<2,1>(1,3);
+A[1,0] = 0;
+let a11 = A[0,0];
+let a12 = A[0,1];
+let a21 = A[1,0];
+let a22 = A[1,1];
+let b1 = b[0];
+let b2 = b[0];
+x = linsolve(A, b);
+input rows = resizable;
+input cols = resizable;
+TODO input cols = static

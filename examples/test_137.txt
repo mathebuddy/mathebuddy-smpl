@@ -1,0 +1,4 @@
+let a:b:c:d:e = rand(2,5);
+let f(x,y) = a*x^b + c*x^d*y^e;
+let fx(x,y) = diff(f, x);
+let fy(x,y) = diff(f, y);

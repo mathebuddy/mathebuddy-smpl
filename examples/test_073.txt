@@ -1,7 +1,2 @@
-let a:b = rand(-4,4);
-let ux:uy = rand(-3,3);
-let u1 = [[ux],[uy]];
-let v1 = a * u1;
-let ux:uy = rand(-3,3);
-let u2 = [[ux],[uy]];
-let v2 = [[ux*b],[uy*(-b)]];
+let u:v = rand<3,1>(-5,5);
+let s = dot(u,v);

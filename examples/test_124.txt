@@ -1,0 +1,5 @@
+let A = rand<3,3>(0,2);
+while ( is_invertible(A) == false ) {
+    A = rand<3,3>(0,2);
+}	
+let iA = inv(A);

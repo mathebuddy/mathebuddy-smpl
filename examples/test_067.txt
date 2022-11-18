@@ -1,1 +1,1 @@
-let f(x) = exp(3*x-1);
+let f(x) = 3*x * sin(x^2+1);

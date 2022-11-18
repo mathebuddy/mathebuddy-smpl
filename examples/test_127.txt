@@ -1,0 +1,2 @@
+let A:B = rand<2,2>(0,1);
+let AB = (A*B) mod 2;

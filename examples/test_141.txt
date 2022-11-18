@@ -1,0 +1,6 @@
+let a = rand(0,1);
+let b = 1 - a;
+let c:d = rand(2,5);
+let f(x,y) = exp(c*x) * (a*sin(d*y) + b*cos(d*y));
+let fx(x,y) = diff(f, x);
+let fy(x,y) = diff(f, y);

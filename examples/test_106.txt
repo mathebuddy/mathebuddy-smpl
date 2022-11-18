@@ -1,0 +1,4 @@
+let a = rand(2,8)^2;
+let z1 = sqrt(a) * 1i;
+let z2 = -z1;
+let r = set(z1,z2);

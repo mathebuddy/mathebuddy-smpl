@@ -1,0 +1,8 @@
+let A = rand<2,2>(1,4);
+while (is_invertible(A) == false || is_symmetric(A) == false) {
+	A = rand<2,2>(1,4);
+}
+let s = eigenvalues_sym(A);
+let p1 = min(s) > 0;
+let p2 = max(s) < 0;
+let p3 = !(p1 || p2);

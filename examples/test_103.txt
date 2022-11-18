@@ -1,0 +1,4 @@
+let z = rand(2,4) * 1i;
+let a1 = z^1;
+let a2 = z^2;
+let a3 = z^3;

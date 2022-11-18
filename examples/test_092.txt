@@ -1,6 +1,19 @@
-let A = zeros(4,4);
-do {
-    A = randZ<4,4>(1,4);
-} while(is_invertible(A) == false);
-let b = randZ<4,1>(1,4);
-let x = linsolve(A, b);
+let a:b:c:d:e:f:g:h:_i = rand(0,2);
+
+let v1 = matrix(a; b);
+let v2 = matrix(c; d);
+let A = matrix(a,c; b,d);
+let q1 = det(A) != 0;
+
+a = (a + 1) mod 2
+let v3 = matrix(a; b);
+let v4 = matrix(c; d);
+let A = matrix(a,c; b,d);
+let q2 = det(A) != 0;
+
+let v5 = matrix(a; b; c);
+let v6 = matrix(d; e; f);
+let v7 = matrix(g; h; _i);
+
+let A = matrix(a,d,g; b,e,h; c,f,_i);
+let q3 = det(A) != 0;

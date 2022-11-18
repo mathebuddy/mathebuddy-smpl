@@ -1,0 +1,7 @@
+let n = rand(3,7);
+let b = rand(1,7);
+let c = b + 1;
+b = b mod (n-1) + 1;
+c = c mod (n-1) + 1;
+let s1 = xgcd(b, n)[1] mod n;
+let s2 = xgcd(c, n)[1] mod n;

@@ -1,1 +1,1 @@
-let f(x) = x * sin(x);
+let f(x) = (x+1) / exp(x);

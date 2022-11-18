@@ -1,1 +1,1 @@
-let f(x) = (x+1)^2
+let f(x) = exp(3*x-1);

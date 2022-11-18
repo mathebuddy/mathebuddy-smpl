@@ -1,0 +1,4 @@
+let c = rand(-4,-2);
+let d = rand(2,4)
+let a = c^2 + d^2;
+let b = -c;

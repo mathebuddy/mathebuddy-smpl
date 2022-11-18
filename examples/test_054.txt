@@ -1,1 +1,3 @@
-Seien $a<b<c$ und $f:[a,c] \to \RR$ eine Funktion die auf dem Intervall $[a,c]$ Riemann-integrierbar ist.
+let u1:u2 = rand(2,9);
+let f(x) = u1;
+let g(y) = u2;

@@ -1,0 +1,6 @@
+let a:b:c = randZ(-1,2);
+let A = [[a,0,0],[0,b,0],[0,0,c]];
+let s = set(a,b,c);
+let p1 = min(s) > 0;
+let p2 = max(s) < 0;
+let p3 = !(p1 || p2);

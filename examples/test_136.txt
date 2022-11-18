@@ -1,0 +1,4 @@
+let a:b:c:d:e:f:g:h:i = rand(0,1);
+let f1(x,y,z) = a*x + b*y + c*z;
+let f2(x,y,z) = d*x + e*y + fx*z;
+let f3(x,y,z) = g*x + h*y + i*z;

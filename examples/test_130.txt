@@ -1,0 +1,6 @@
+let a = randZ(-2,2);
+let b = a + 1;
+let x = a^2 - b^2;
+let y = 2 * a * b;
+let c1 = -y;
+let c2 = 1 / sqrt(x^2 + y^2);

@@ -1,6 +1,6 @@
-let A = zeros(3,3);
+let A = zeros(4,4);
 do {
-    A = randZ<3,3>(1,4);
+    A = randZ<4,4>(1,4);
 } while(is_invertible(A) == false);
-let b = randZ<3,1>(1,4);
+let b = randZ<4,1>(1,4);
 let x = linsolve(A, b);

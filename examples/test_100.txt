@@ -1,0 +1,3 @@
+let a:b = rand(2,5);
+let c = a^2 + b^2;
+let r = complex(a,b);

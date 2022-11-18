@@ -1,0 +1,3 @@
+let A:C = rand<2,1>(0,1);
+let B = rand<2,2>(0,1);
+let term = (A + B' * C)' mod 2;

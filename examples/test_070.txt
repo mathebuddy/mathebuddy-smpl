@@ -1,3 +1,4 @@
-let a:b = rand(2,5);
-let c = 2*a;
-let d = a^2+b;
+let lambda = rand(-9,9);
+let u:v = rand<3,1>(-9,9);
+let w = u + v;
+let x = lambda * u;

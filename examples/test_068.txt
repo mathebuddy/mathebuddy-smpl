@@ -1,1 +1,1 @@
-let f(x) = 3*x * sin(x^2+1);
+let a:b = rand(3,5);

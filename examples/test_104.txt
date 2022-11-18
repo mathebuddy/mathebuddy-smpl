@@ -1,0 +1,4 @@
+let c = rand(2,4);
+let Z = 1/c + 1/c * 1i;
+let	a1 = z^1;
+let a2 = z^2;

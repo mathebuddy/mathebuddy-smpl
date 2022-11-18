@@ -1,0 +1,4 @@
+let c = rand(2,5);
+let f(u,v) = u^2 / v^2 + c;
+let fu(u,v) = diff(f, u);
+let fv(u,v) = diff(f, v);

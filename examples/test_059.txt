@@ -1,1 +1,2 @@
-let f(x) = cos(x);
+let a = rand(2,4);
+let f(x) = a * sin(x);
