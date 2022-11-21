@@ -15,6 +15,22 @@ export class TermError extends Error {
 
 /**
  * Algebraic term.
+ *
+ * Operations:
+ *   $     variable
+ *   #     scalar
+ *   +     add (n-ary)
+ *   -     sub (n-ary)
+ *   *     mul (n-ary)
+ *   /     div (binary)
+ *   .-    unary minus
+ *   exp   exp
+ *   sin   sin
+ *   cos   cos
+ *   tan   tan
+ *   asin  arcus sin
+ *   acos  arcus acos
+ *   atan  arcus atan
  */
 export class Term {
   private op = ''; // operation. Special operations: '$' := variable, '#' := scalar
@@ -98,6 +114,9 @@ export class Term {
         x = 0;
         for (const oi of this.o) x -= oi.eval(varValues);
         break;
+      case '.-':
+        x = -this.o[0].eval(varValues);
+        break;
       case '#':
         x = this.value as number;
         break;
@@ -146,11 +165,54 @@ export class Term {
         t = Term.Op('+', []);
         for (const oi of this.o) t.o.push(oi.diff(varId));
         break;
-      case '*': // TODO: non-binary!
+      case '*':
         // diff(n0*n1) = diff(n0)*n1 + n0*diff(n1)
+        if (this.o.length != 2) {
+          throw new TermError('diff(..): non-binary * is unimplemented!');
+        }
         t = Term.Op('+', [
           Term.Op('*', [this.o[0].diff(varId), this.o[1].clone()]),
           Term.Op('*', [this.o[0].clone(), this.o[1].diff(varId)]),
+        ]);
+        break;
+      case '^':
+        // TODO: check, if v is const
+        // diff(u^v) = u' * v * u^(v-1);
+        if (this.o[1].op !== '#') {
+          throw new TermError(
+            'diff(..): u^v: operator ^ only implemented for constant v',
+          );
+        }
+        t = Term.Op('*', [
+          this.o[0].diff(varId),
+          this.o[1].clone(),
+          Term.Op('^', [
+            this.o[0].clone(),
+            Term.Const((this.o[1].value as number) - 1),
+          ]),
+        ]);
+        break;
+      case 'exp':
+        // diff(exp(u)) = u' * exp(u);
+        t = Term.Op('*', [
+          this.o[0].diff(varId),
+          Term.Op('exp', [this.o[0].clone()]),
+        ]);
+        break;
+      case 'sin':
+        // diff(sin(u)) = u' * cos(u)
+        t = Term.Op('*', [
+          this.o[0].diff(varId),
+          Term.Op('cos', [this.o[0].clone()]),
+        ]);
+        break;
+      case 'cos':
+        // diff(cos(u)) = - u' * cos(u)
+        t = Term.Op('.-', [
+          Term.Op('*', [
+            this.o[0].diff(varId),
+            Term.Op('cos', [this.o[0].clone()]),
+          ]),
         ]);
         break;
       case '$':
@@ -252,6 +314,9 @@ export class Term {
       case '#':
       case '$':
         s = '' + this.value;
+        break;
+      case '.-':
+        s += '-(' + this.o[0].toString() + ')'; // TODO: test!!
         break;
       default:
         if (this.op.length > 2) {
