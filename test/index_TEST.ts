@@ -70,9 +70,8 @@ for (const v of variables) {
 
 // manual test
 const variables = SMPL.interpret(
-  `let a = rand(3,8);
-  let f1(x) = a * x;
-  let f1d(x) = diff(f1, x);
+  `let f(x) = x^2;
+  let y = f(2);
 `,
   true,
 );
