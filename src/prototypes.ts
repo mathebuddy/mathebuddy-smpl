@@ -81,6 +81,7 @@ randZ<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> interpret_matrix._randZM
 det(x:MATRIX): REAL -> interpret_matrix._det;
 min(x:MATRIX): REAL -> interpret_matrix._minMatrix;
 max(x:MATRIX): REAL -> interpret_matrix._maxMatrix;
+_numberToTerm(x:INT):TERM -> interpret_term._numberToTerm;
 _add(x:TERM,y:INT):TERM -> interpret_term._addTermReal;
 _add(x:TERM,y:REAL):TERM -> interpret_term._addTermReal;
 _add(x:INT,y:TERM):TERM -> interpret_term._addRealTerm;
@@ -110,6 +111,7 @@ sin(x:TERM): TERM -> interpret_term._sinTerm;
 cos(x:TERM): TERM -> interpret_term._cosTerm;
 tan(x:TERM): TERM -> interpret_term._tanTerm;
 exp(x:TERM): TERM -> interpret_term._expTerm;
+diff(x:TERM, varId:TERM): TERM -> interpret_term._diffTerm;
 
 `;
 
