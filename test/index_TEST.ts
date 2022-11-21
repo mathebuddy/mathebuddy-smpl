@@ -68,6 +68,19 @@ for (const v of variables) {
   console.log(v.id + ' = ' + v.value.toString());
 }*/
 
+// manual test
+const variables = SMPL.interpret(
+  `let a = rand(3,8);
+  let f1(x) = a * x;
+  let f1d(x) = diff(f1, x);
+`,
+  true,
+);
+
+for (const v of variables) {
+  console.log(v.id + ' = ' + v.value.toString());
+}
+
 // test examples
 import * as glob from 'glob';
 import * as fs from 'fs';
