@@ -13,6 +13,7 @@ import { Set_INT } from './set';
 import { Term } from './term';
 
 export enum BaseType {
+  ID = 'ID',
   BOOL = 'BOOL',
   INT = 'INT',
   REAL = 'REAL',
@@ -70,7 +71,7 @@ export class SymTabEntry {
   //public runtimeExceptions = false;
   public subSymbols: SymTabEntry[] = [];
   public functionOverloadSuccessor: SymTabEntry = null;
-  public value: boolean | number | Set_INT | Term | Matrix = null;
+  public value: string | boolean | number | Set_INT | Term | Matrix = null;
 
   constructor(
     id: string,
@@ -106,7 +107,8 @@ export class SymTabEntry {
 }
 
 function getBaseType(lex: Lexer, str: string): BaseType {
-  if (str === 'BOOL') return BaseType.BOOL;
+  if (str === 'ID') return BaseType.ID;
+  else if (str === 'BOOL') return BaseType.BOOL;
   else if (str === 'INT') return BaseType.INT;
   else if (str === 'REAL') return BaseType.REAL;
   else if (str === 'COMPLEX') return BaseType.COMPLEX;
