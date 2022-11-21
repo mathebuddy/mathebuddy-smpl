@@ -22,6 +22,11 @@ export class SMPL_Interpreter_Term {
     return Term.Var(id);
   }
 
+  //G _numberToTerm(x:INT):TERM -> _numberToTerm;
+  _numberToTerm(x: number): Term {
+    return Term.Const(x);
+  }
+
   //G _add(x:TERM,y:INT):TERM -> _addTermReal;
   //G _add(x:TERM,y:REAL):TERM -> _addTermReal;
   _addTermReal(x: Term, y: number): Term {
@@ -125,5 +130,12 @@ export class SMPL_Interpreter_Term {
   //G exp(x:TERM): TERM -> _expTerm;
   _expTerm(x: Term): Term {
     return Term.Op('exp', [x]);
+  }
+
+  //G diff(x:TERM, varId:TERM): TERM -> _diffTerm;
+  _diffTerm(x: Term, varId: Term): Term {
+    // TODO: must check, if varId is a valid term!!
+    const d = x.diff(varId.toString());
+    return d;
   }
 }
