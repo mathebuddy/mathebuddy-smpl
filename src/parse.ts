@@ -19,31 +19,9 @@ import {
   TypedCode,
 } from './symbol';
 
-/* TODO:
-
-let f(x) = x*x;
-let g(x) = derivate(f, x);
-let h(x,y) = 2*x*y;
-
-let a = rand(2, 3);
-let A = rand<2,a>(-5,5);
-let B = rand<a,1>(-5,5);
-let C = A * B;
-let Z = zeros<2,3>;
-let O = ones<2,3>;
-
-let b = randZ(-3, 3);   // without zero
-let x = 3 + 1i;         // "1i" != "i", since "i" is a valid variable name
-
----
-Plot
-curve f(x)
----
-*/
-
 export class SMPL_Parser {
   private lexer: Lexer = null;
-  private symTab: SymTabEntry[] = [];
+  private symTab: SymTabEntry[] = []; // TODO: add and remove ONLY via methods
 
   private loopLevel = 0;
   private scope = 0;
@@ -57,6 +35,15 @@ export class SMPL_Parser {
       }
     }
     return null;
+  }
+
+  public removeSymTabEntry(e: SymTabEntry): void {
+    const newList: SymTabEntry[] = [];
+    for (const sym of this.symTab) {
+      if (sym === e) continue;
+      else newList.push(sym);
+    }
+    this.symTab = newList;
   }
 
   public getLocalSymbols(): SymTabEntry[] {
@@ -127,10 +114,11 @@ export class SMPL_Parser {
     const ids: string[] = [];
     ids.push(this.lexer.ID());
     if (this.lexer.isTER('(')) {
-      // function declaration; e.g. "let f(x) = x^2;"
-      const id = ids[0];
+      // function declaration; e.g. "let f(x,y) = x^2 + y;"
+      const id = ids[0]; // e.g. "f"
       this.lexer.next();
-      const varIds: string[] = [];
+      const varIds: string[] = []; // e.g. ["x", "y"];
+      //const varIdSymbols: SymTabEntry[] = [];
       varIds.push(this.lexer.ID());
       while (this.lexer.isTER(',')) {
         this.lexer.next();
@@ -145,18 +133,31 @@ export class SMPL_Parser {
           this.scope,
           [],
         );
-        this.symTab.push(symbol);
-        // TODO: x in f(x) vs other variable named x
-        // TODO: define x only once!
-        c.str +=
-          'let ' + varId + ' = runtime.interpret_term.var("' + varId + '");';
+        //varIdSymbols.push(symbol);
+        // already in symTab?
+        const entry = this.getSymbol(varId);
+        // TODO: must check, if symbol exists in other context
+        if (entry == null) {
+          this.symTab.push(symbol);
+          c.str +=
+            'let ' + varId + ' = runtime.interpret_term.var("' + varId + '");';
+        }
       }
       this.lexer.TER(')');
       this.lexer.TER('=');
       const e = this.parseExpression();
       if (e.type.base !== BaseType.TERM) {
-        // TODO: create custom error
-        this.lexer.error('right-hand side is not a term');
+        switch (e.type.base) {
+          case BaseType.INT:
+          case BaseType.REAL:
+            e.code.str =
+              'runtime.interpret_term._numberToTerm(' + e.code.str + ')';
+            e.type.base = BaseType.TERM;
+            break;
+          default:
+            // TODO: create custom error
+            this.lexer.error('right-hand side is not a term');
+        }
       }
       c.str += 'let ' + id + ' = ' + e.code.str + ';';
 
@@ -169,6 +170,11 @@ export class SMPL_Parser {
         [],
       );
       this.symTab.push(symbol);
+
+      // remove varIds from symbol table
+      /*for (const e of varIdSymbols) {
+        this.removeSymTabEntry(e);
+      }*/
 
       this.lexer.EOS();
     } else {
