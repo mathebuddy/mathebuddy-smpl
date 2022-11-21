@@ -155,28 +155,32 @@ export class Term {
    * Symbolic differentiation. The resulting term is not optimized.
    * The caller should also call "opt()" after "diff(..)".
    * @param varId derivation variable
-   * @returns symbolic derivated term
+   * @returns symbolic differentiated term
    */
   diff(varId: string): Term {
     let t: Term = null;
+    let u, v: Term;
     switch (this.op) {
+      case '.-':
+        // diff(-u) = -diff(u);
+        t = Term.Op('.-', [this.o[0].diff(varId)]);
+        break;
       case '+':
         // diff(n0+n1+...) = diff(n0) + diff(n1) + ...
         t = Term.Op('+', []);
         for (const oi of this.o) t.o.push(oi.diff(varId));
         break;
       case '*':
-        // diff(n0*n1) = diff(n0)*n1 + n0*diff(n1)
-        if (this.o.length != 2) {
-          throw new TermError('diff(..): non-binary * is unimplemented!');
-        }
+        // diff(u * v * ...) = diff(u)*(v*...) + u*diff(v*...)
+        u = this.o[0];
+        v = this.o.length == 2 ? this.o[1] : Term.Op('*', this.o.slice(1));
         t = Term.Op('+', [
-          Term.Op('*', [this.o[0].diff(varId), this.o[1].clone()]),
-          Term.Op('*', [this.o[0].clone(), this.o[1].diff(varId)]),
+          Term.Op('*', [u.diff(varId), v.clone()]),
+          Term.Op('*', [u.clone(), v.diff(varId)]),
         ]);
         break;
       case '^':
-        // TODO: check, if v is const
+        // TODO: check, if v is constant
         // diff(u^v) = u' * v * u^(v-1);
         if (this.o[1].op !== '#') {
           throw new TermError(
