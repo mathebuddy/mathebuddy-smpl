@@ -1,4 +1,4 @@
 let a:b:u = rand(3,6);
-let v := u * (a + b);
-let w := u * (a * b);
-let r := set(a,b)
+let v = u * (a + b);
+let w = u * (a * b);
+let r = set(a,b);
