@@ -20,6 +20,10 @@ esbuild.buildSync({
   outfile: 'build/mathebuddy-smpl.min.js',
 });
 
+// ---- update examples/ directory ----
+
+execSync('python3 examples/_get.py');
+
 // ---- convert README.md to README.html ----
 const date = new Date().toISOString().slice(0, 10);
 execSync("sed -e '1,/<!-- start-for-website -->/d' smpl.md > __tmp.md");
