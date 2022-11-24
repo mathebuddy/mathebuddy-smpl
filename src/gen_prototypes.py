@@ -6,7 +6,8 @@
 # * License: GPL-3.0-or-later
 # */
 
-files = ['interpret_basic.ts', 'interpret_set.ts', 'interpret_complex.ts', 'interpret_matrix.ts', 'interpret_term.ts']
+files = ['interpret_basic.ts', 'interpret_set.ts', 'interpret_complex.ts', \
+  'interpret_vector.ts', 'interpret_matrix.ts', 'interpret_term.ts']
 
 prototypes = ''
 
