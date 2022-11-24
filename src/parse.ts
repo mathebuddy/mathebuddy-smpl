@@ -734,6 +734,7 @@ export class SMPL_Parser {
         if (argTypes.length > 0) argTypes += ', ';
         argTypes += param.type.toString();
       }
+      // TODO: also show dim types
       this.lexer.error(
         'no matching function prototype for calling "' +
           tc.sym.id +
