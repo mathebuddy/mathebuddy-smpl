@@ -27,6 +27,24 @@ export class SMPL_Interpreter_Vector {
     return vec;
   }
 
+  _getElement(x: Vector, idx: number, ERR_POS: string): number {
+    if (idx < 0 || idx >= x.getSize())
+      throw new RunError(
+        ERR_POS,
+        'vector has ' + x.getSize() + ' elements. Cannot get element ' + idx,
+      );
+    return x.getValue(idx);
+  }
+
+  _setElement(x: Vector, idx: number, value: number, ERR_POS: string): void {
+    if (idx < 0 || idx >= x.getSize())
+      throw new RunError(
+        ERR_POS,
+        'vector has ' + x.getSize() + ' element. Cannot get element ' + idx,
+      );
+    x.setValue(idx, value);
+  }
+
   //G _add(x:VECTOR,y:VECTOR):VECTOR -> _addVectors;
   _addVectors(x: Vector, y: Vector, ERR_POS: string): Vector {
     if (x.getSize() != y.getSize())
@@ -41,7 +59,7 @@ export class SMPL_Interpreter_Vector {
     return Vector.sub(x, y);
   }
 
-  //G dot(x:VECTOR, y:VECTOR): VECTOR -> _dotVectors;
+  //G dot(x:VECTOR, y:VECTOR): REAL -> _dotVectors;
   _dotVectors(x: Vector, y: Vector, ERR_POS: string): number {
     if (x.getSize() != y.getSize())
       throw new RunError(ERR_POS, 'dimensions do not match');
@@ -53,6 +71,11 @@ export class SMPL_Interpreter_Vector {
     if (x.getSize() != 3 || y.getSize() != 3)
       throw new RunError(ERR_POS, 'vector length must be 3');
     return Vector.cross(x, y);
+  }
+
+  //G norm2(x:VECTOR): REAL -> _norm2vec;
+  _norm2vec(x: Vector): number {
+    return x.norm2();
   }
 
   //G zeros<size:INT>(): VECTOR -> _zerosVector;
