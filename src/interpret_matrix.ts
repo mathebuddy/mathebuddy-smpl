@@ -18,6 +18,17 @@ export class SMPL_Interpreter_Matrix {
     this.parent = parent;
   }
 
+  _create(row_count: number, col_count: number, elements: number[]): Matrix {
+    const matrix = new Matrix(row_count, col_count);
+    let k = 0;
+    for (let i = 0; i < row_count; i++) {
+      for (let j = 0; j < col_count; j++) {
+        matrix.setValue(i, j, elements[k++]);
+      }
+    }
+    return matrix;
+  }
+
   _getElement(x: Matrix, row: number, col: number, ERR_POS: string): number {
     if (row < 0 || row >= x.getRows())
       throw new RunError(
