@@ -11,6 +11,7 @@ import { Lexer } from '@multila/multila-lexer';
 import { Matrix } from './matrix';
 import { Set_INT } from './set';
 import { Term } from './term';
+import { Vector } from './vector';
 
 export enum BaseType {
   ID = 'ID',
@@ -21,6 +22,7 @@ export enum BaseType {
   COMPLEX = 'COMPLEX',
   TERM = 'TERM',
   TERM_VAR = 'TERM_VAR',
+  VECTOR = 'VECTOR',
   MATRIX = 'MATRIX',
   FUNCTION_CALL = 'FUNCTION_CALL',
   INT_SET = 'INT_SET',
@@ -73,7 +75,8 @@ export class SymTabEntry {
   //public runtimeExceptions = false;
   public subSymbols: SymTabEntry[] = [];
   public functionOverloadSuccessor: SymTabEntry = null;
-  public value: string | boolean | number | Set_INT | Term | Matrix = null;
+  public value: string | boolean | number | Set_INT | Term | Vector | Matrix =
+    null;
 
   constructor(
     id: string,
@@ -114,6 +117,7 @@ function getBaseType(lex: Lexer, str: string): BaseType {
   else if (str === 'INT') return BaseType.INT;
   else if (str === 'REAL') return BaseType.REAL;
   else if (str === 'COMPLEX') return BaseType.COMPLEX;
+  else if (str === 'VECTOR') return BaseType.VECTOR;
   else if (str === 'MATRIX') return BaseType.MATRIX;
   else if (str === 'TERM') return BaseType.TERM;
   else if (str === 'TERM_VAR') return BaseType.TERM_VAR;
@@ -124,7 +128,7 @@ function getBaseType(lex: Lexer, str: string): BaseType {
 
 //G prototype = ID [ "<" params ">" ] "(" [ params ] ")" ":" type "->" ID "." ID ";";
 //G params = "ID" ":" type { "," "ID" ":" type };
-//G type = "INT" | "REAL" | "COMPLEX" | "MATRIX";
+//G type = "INT" | "REAL" | "COMPLEX" | "VECTOR" | "MATRIX";
 export function createFunctionPrototypes(prototypeDef: string): SymTabEntry[] {
   // set up lexer
   const lex = new Lexer();
