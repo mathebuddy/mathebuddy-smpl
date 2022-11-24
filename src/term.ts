@@ -117,6 +117,9 @@ export class Term {
       case '.-':
         x = -this.o[0].eval(varValues);
         break;
+      case '^':
+        x = Math.pow(this.o[0].eval(varValues), this.o[1].eval(varValues));
+        break;
       case '#':
         x = this.value as number;
         break;
