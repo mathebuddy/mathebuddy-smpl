@@ -262,7 +262,7 @@ export class SMPL_Parser {
       if (x.code.tmp.includes('setElement')) {
         // TODO: this is ugly...
         if (y.type.base !== BaseType.INT && y.type.base !== BaseType.REAL)
-          this.lexer.error('matrix element must be of type INT or REAL.');
+          this.lexer.error('element must be of type INT or REAL.');
         x.code.str = x.code.tmp.replace('§RHS§', y.code.str);
         x.type.base = BaseType.VOID;
       } else if (
@@ -593,35 +593,59 @@ export class SMPL_Parser {
         i++;
       }
       this.lexer.TER(']');
-      if (tc.type.base === BaseType.MATRIX) {
+      if (tc.type.base === BaseType.VECTOR) {
+        if (indices.length != 1) this.lexer.error('expected one index');
+        if (indices[0].type.base !== BaseType.INT)
+          this.lexer.error('index is not of type integer');
+        tc.type.base = BaseType.REAL; // TODO: INT vs REAL
+        tc.code.str =
+          'runtime.interpret_vector._getElement(' +
+          tc.sym.id +
+          ', ' +
+          indices[0].code.str +
+          ', ' +
+          this.getTokenPosStr() +
+          ')';
+        tc.code.tmp =
+          'runtime.interpret_vector._setElement(' +
+          tc.sym.id +
+          ', ' +
+          indices[0].code.str +
+          ', §RHS§' +
+          ', ' +
+          this.getTokenPosStr() +
+          ')';
+      } else if (tc.type.base === BaseType.MATRIX) {
         if (indices.length != 2) this.lexer.error('expected two indices');
         for (let i = 0; i < indices.length; i++) {
           if (indices[i].type.base !== BaseType.INT)
             this.lexer.error('index ' + (i + 1) + ' is not of type integer');
         }
-      } else this.lexer.error('expected matrix after "["');
-      tc.type.base = BaseType.REAL; // TODO: INT vs REAL
-      tc.code.str =
-        'runtime.interpret_matrix._getElement(' +
-        tc.sym.id +
-        ', ' +
-        indices[0].code.str +
-        ', ' +
-        indices[1].code.str +
-        ', ' +
-        this.getTokenPosStr() +
-        ')';
-      tc.code.tmp =
-        'runtime.interpret_matrix._setElement(' +
-        tc.sym.id +
-        ', ' +
-        indices[0].code.str +
-        ', ' +
-        indices[1].code.str +
-        ', §RHS§' +
-        ', ' +
-        this.getTokenPosStr() +
-        ')';
+        tc.type.base = BaseType.REAL; // TODO: INT vs REAL
+        tc.code.str =
+          'runtime.interpret_matrix._getElement(' +
+          tc.sym.id +
+          ', ' +
+          indices[0].code.str +
+          ', ' +
+          indices[1].code.str +
+          ', ' +
+          this.getTokenPosStr() +
+          ')';
+        tc.code.tmp =
+          'runtime.interpret_matrix._setElement(' +
+          tc.sym.id +
+          ', ' +
+          indices[0].code.str +
+          ', ' +
+          indices[1].code.str +
+          ', §RHS§' +
+          ', ' +
+          this.getTokenPosStr() +
+          ')';
+      } else {
+        this.lexer.error('can only index a matrix or a vector');
+      }
     } else {
       this.lexer.errorExpected(['++', '--', '(', '[']);
     }
