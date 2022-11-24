@@ -1,3 +1,2 @@
-Uneigentliches Integral
 let a = rand(3,8);
 let f(x) = a / x^2;
