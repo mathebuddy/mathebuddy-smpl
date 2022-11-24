@@ -118,14 +118,14 @@ export class SMPL_Parser {
       const id = ids[0]; // e.g. "f"
       this.lexer.next();
       const varIds: string[] = []; // e.g. ["x", "y"];
-      //const varIdSymbols: SymTabEntry[] = [];
       varIds.push(this.lexer.ID());
       while (this.lexer.isTER(',')) {
         this.lexer.next();
         varIds.push(this.lexer.ID());
       }
+      // push term variables to symbol table temporarily
       for (const varId of varIds) {
-        const type = new Type(BaseType.TERM); // TODO: TERM_VAR???
+        const type = new Type(BaseType.TERM_VAR);
         const symbol = new SymTabEntry(
           varId,
           SymbolKind.Local,
@@ -133,15 +133,7 @@ export class SMPL_Parser {
           this.scope,
           [],
         );
-        //varIdSymbols.push(symbol);
-        // already in symTab?
-        const entry = this.getSymbol(varId);
-        // TODO: must check, if symbol exists in other context
-        if (entry == null) {
-          this.symTab.push(symbol);
-          c.str +=
-            'let ' + varId + ' = runtime.interpret_term.var("' + varId + '");';
-        }
+        this.symTab.push(symbol);
       }
       this.lexer.TER(')');
       this.lexer.TER('=');
@@ -159,15 +151,31 @@ export class SMPL_Parser {
             this.lexer.error('right-hand side is not a term');
         }
       }
+      // write term declaration (e.g. "runtime.interpret_term._powTermReal( x,  2 , '3:17');");
       c.str += 'let ' + id + ' = ' + e.code.str + ';';
-
-      const type = new Type(BaseType.TERM);
+      // pop temporary symbols
+      for (let i = 0; i < varIds.length; i++) this.symTab.pop();
+      // push function symbol to symbol table
+      // - sub-symbols := variables IDs (e.g. x and y for "f(x,y)")
+      const subSymbols: SymTabEntry[] = [];
+      for (const varId of varIds) {
+        subSymbols.push(
+          new SymTabEntry(
+            varId,
+            SymbolKind.Parameter,
+            new Type(BaseType.TERM_VAR),
+            this.scope + 1,
+            [],
+          ),
+        );
+      }
+      // symbol (e.g. f)
       const symbol = new SymTabEntry(
         id,
         SymbolKind.Local,
-        type,
+        new Type(BaseType.TERM),
         this.scope,
-        [],
+        subSymbols,
       );
       this.symTab.push(symbol);
 
@@ -251,7 +259,13 @@ export class SMPL_Parser {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseOr();
-      if (
+      if (x.code.tmp.includes('setElement')) {
+        // TODO: this is ugly...
+        if (y.type.base !== BaseType.INT && y.type.base !== BaseType.REAL)
+          this.lexer.error('matrix element must be of type INT or REAL.');
+        x.code.str = x.code.tmp.replace('§RHS§', y.code.str);
+        x.type.base = BaseType.VOID;
+      } else if (
         (x.type.base == BaseType.INT || x.type.base == BaseType.REAL) &&
         (y.type.base == BaseType.INT || y.type.base == BaseType.REAL)
       ) {
@@ -423,8 +437,13 @@ export class SMPL_Parser {
       const id = this.lexer.ID();
       tc.sym = this.getSymbol(id);
       if (tc.sym == null) this.lexer.errorUnknownSymbol(id);
-      tc.type = tc.sym.type.clone();
-      tc.code.str = ' ' + id;
+      if (tc.sym.type.base === BaseType.TERM_VAR) {
+        tc.type = new Type(BaseType.TERM);
+        tc.code.str = 'runtime.interpret_term.var("' + id + '")';
+      } else {
+        tc.type = tc.sym.type.clone();
+        tc.code.str = ' ' + id;
+      }
     } else if (this.lexer.isTER('-')) {
       this.lexer.next();
       const x = this.parseUnary();
@@ -464,18 +483,97 @@ export class SMPL_Parser {
       }
       // (b) parameters (required)
       this.lexer.TER('(');
-      if (tc.sym == null || tc.sym.kind != SymbolKind.Function)
+      if (tc.sym == null) {
         this.lexer.errorNotAFunction();
+      }
+      if (
+        tc.sym.kind == SymbolKind.Function ||
+        (tc.sym.kind == SymbolKind.Local && tc.sym.type.base === BaseType.TERM)
+      ) {
+        let i = 0;
+        while (this.lexer.isNotTER(')')) {
+          if (i > 0) this.lexer.TER(',');
+          params.push(this.parseExpression());
+          i++;
+        }
+        this.lexer.TER(')');
+      } else {
+        this.lexer.errorNotAFunction();
+      }
+      if (tc.sym.kind == SymbolKind.Function) {
+        // (c.1) call
+        tc = this.call(tc.sym, dims, params);
+      } else {
+        // (c.2) evaluate term
+        if (tc.sym.subSymbols.length != params.length)
+          this.lexer.error('invalid parameters for function ' + tc.sym.id);
+        let paramDictStr = '{';
+        for (let i = 0; i < params.length; i++) {
+          if (
+            params[i].type.base !== BaseType.INT &&
+            params[i].type.base !== BaseType.REAL
+          ) {
+            this.lexer.error(
+              'parameters for function must be of type INT or REAL.',
+            );
+          }
+          if (i > 0) paramDictStr += ', ';
+          paramDictStr += tc.sym.subSymbols[i].id + ': ' + params[i].code.str;
+        }
+        paramDictStr += '}';
+        tc.code.str =
+          'runtime.interpret_term._eval' +
+          '(' +
+          tc.sym.id +
+          ', ' +
+          paramDictStr +
+          ', ' +
+          this.getTokenPosStr() +
+          ')';
+        tc.type = new Type(BaseType.REAL); // TODO: always real??
+      }
+    } else if (this.lexer.isTER('[')) {
+      this.lexer.next();
+      const indices: TypedCode[] = [];
       let i = 0;
-      while (this.lexer.isNotTER(')')) {
+      while (this.lexer.isNotTER(']')) {
         if (i > 0) this.lexer.TER(',');
-        params.push(this.parseExpression());
+        indices.push(this.parseExpression());
         i++;
       }
-      this.lexer.TER(')');
-      // (c) call
-      tc = this.call(tc.sym, dims, params);
-    } else this.lexer.errorExpected(['++', '--', '(', '[']);
+      this.lexer.TER(']');
+      if (tc.type.base === BaseType.MATRIX) {
+        if (indices.length != 2) this.lexer.error('expected two indices');
+        for (let i = 0; i < indices.length; i++) {
+          if (indices[i].type.base !== BaseType.INT)
+            this.lexer.error('index ' + (i + 1) + ' is not of type integer');
+        }
+      } else this.lexer.error('expected matrix after "["');
+      tc.type.base = BaseType.REAL; // TODO: INT vs REAL
+      tc.code.str =
+        'runtime.interpret_matrix._getElement(' +
+        tc.sym.id +
+        ', ' +
+        indices[0].code.str +
+        ', ' +
+        indices[1].code.str +
+        ', ' +
+        this.getTokenPosStr() +
+        ')';
+      tc.code.tmp =
+        'runtime.interpret_matrix._setElement(' +
+        tc.sym.id +
+        ', ' +
+        indices[0].code.str +
+        ', ' +
+        indices[1].code.str +
+        ', §RHS§' +
+        ', ' +
+        this.getTokenPosStr() +
+        ')';
+    } else {
+      this.lexer.errorExpected(['++', '--', '(', '[']);
+    }
     return tc;
   }
 
@@ -568,12 +666,7 @@ export class SMPL_Parser {
           // finally put lexer position
           //if (prototype.runtimeExceptions) {
           if (pos > 0) tc.code.str += ', ';
-          tc.code.str +=
-            "'" +
-            this.lexer.getToken().row +
-            ':' +
-            this.lexer.getToken().col +
-            "'";
+          tc.code.str += this.getTokenPosStr();
           pos++;
           //}
           tc.code.str += ')';
@@ -717,5 +810,11 @@ export class SMPL_Parser {
       this.lexer.error('continue not allowed outside loop');
     this.lexer.EOS();
     return new Code(' continue ');
+  }
+
+  private getTokenPosStr(): string {
+    return (
+      "'" + this.lexer.getToken().row + ':' + this.lexer.getToken().col + "'"
+    );
   }
 }
