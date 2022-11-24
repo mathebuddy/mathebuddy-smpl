@@ -71,7 +71,8 @@ for (const v of variables) {
 // manual test
 console.log('--- running manual test in file index_TEST.ts ---');
 const variables = SMPL.interpret(
-  `let u = [[1,2],[3,4]];
+  `let u:v = rand<3>(-5,5);
+let s = dot(u,v);
 `,
   true,
 );
