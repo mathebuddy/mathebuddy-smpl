@@ -18,6 +18,40 @@ export class SMPL_Interpreter_Matrix {
     this.parent = parent;
   }
 
+  _getElement(x: Matrix, row: number, col: number, ERR_POS: string): number {
+    if (row < 0 || row >= x.getRows())
+      throw new RunError(
+        ERR_POS,
+        'matrix has ' + x.getRows() + ' rows. Cannot get row ' + row,
+      );
+    if (col < 0 || col >= x.getCols())
+      throw new RunError(
+        ERR_POS,
+        'matrix has ' + x.getCols() + ' columns. Cannot get column ' + col,
+      );
+    return x.getValue(row, col);
+  }
+
+  _setElement(
+    x: Matrix,
+    row: number,
+    col: number,
+    value: number,
+    ERR_POS: string,
+  ): void {
+    if (row < 0 || row >= x.getRows())
+      throw new RunError(
+        ERR_POS,
+        'matrix has ' + x.getRows() + ' rows. Cannot get row ' + row,
+      );
+    if (col < 0 || col >= x.getCols())
+      throw new RunError(
+        ERR_POS,
+        'matrix has ' + x.getCols() + ' columns. Cannot get column ' + col,
+      );
+    x.setValue(row, col, value);
+  }
+
   //G _add(x:MATRIX,y:MATRIX):MATRIX -> _addMatrices;
   _addMatrices(x: Matrix, y: Matrix, ERR_POS: string): Matrix {
     let z: mathjs.Matrix;
@@ -37,6 +71,20 @@ export class SMPL_Interpreter_Matrix {
     } catch (e) {
       throw new RunError(ERR_POS, 'dimensions do not match');
     }
+    return Matrix.mathjs2matrix(z);
+  }
+
+  //G _mul(x:INT,y:MATRIX):MATRIX -> _mulScalarMatrix;
+  //G _mul(x:REAL,y:MATRIX):MATRIX -> _mulScalarMatrix;
+  _mulScalarMatrix(x: number, y: Matrix): Matrix {
+    const z = mathjs.multiply(x, Matrix.matrix2mathjs(y));
+    return Matrix.mathjs2matrix(z);
+  }
+
+  //G _mul(x: MATRIX, y: INT): MATRIX -> _mulMatrixScalar;
+  //G _mul(x: MATRIX, y: REAL): MATRIX -> _mulMatrixScalar;
+  _mulMatrixScalar(x: Matrix, y: number): Matrix {
+    const z = mathjs.multiply(Matrix.matrix2mathjs(x), y);
     return Matrix.mathjs2matrix(z);
   }
 
@@ -92,11 +140,25 @@ export class SMPL_Interpreter_Matrix {
     return mathjs.max(Matrix.matrix2mathjs(x));
   }
 
-  /*_zeros(rows: number, cols: number): mathjs.MathCollection {
-    return mathjs.zeros([rows, cols]);
+  //G zeros<rows:INT,columns:INT>(): MATRIX -> _zeros;
+  _zeros(rows: number, cols: number): Matrix {
+    const m = new Matrix(rows, cols);
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        m.setValue(i, j, 0);
+      }
+    }
+    return m;
   }
 
-  _ones(rows: number, cols: number): mathjs.MathCollection {
-    return mathjs.ones([rows, cols]);
-  }*/
+  //G ones<rows:INT,columns:INT>(): MATRIX -> _ones;
+  _ones(rows: number, cols: number): Matrix {
+    const m = new Matrix(rows, cols);
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        m.setValue(i, j, 1);
+      }
+    }
+    return m;
+  }
 }
