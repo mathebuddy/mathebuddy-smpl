@@ -545,6 +545,12 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   TODO: example(s)
 
+- **`zeros < n : INT > () : VECTOR`**
+
+  Returns a zero-vector with `n` elements.
+
+  _Example: `zero<3>()` returns a vector with all three elements 0._
+
 - **`zeros < m : INT , n : INT > () : MATRIX`**
 
   Returns a zero-matrix with `m` rows and `n` columns.
