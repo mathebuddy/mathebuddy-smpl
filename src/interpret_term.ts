@@ -9,7 +9,7 @@
 import { RunError, SMPL_Interpreter } from './interpret';
 
 import { Matrix } from './matrix';
-import { Term } from './term';
+import { Term, TermError } from './term';
 
 export class SMPL_Interpreter_Term {
   private parent: SMPL_Interpreter = null;
@@ -20,6 +20,21 @@ export class SMPL_Interpreter_Term {
 
   var(id: string): Term {
     return Term.Var(id);
+  }
+
+  // this method has no grammar, since it is called manually
+  _eval(
+    t: Term,
+    varValues: { [varId: string]: number },
+    ERR_POS: string,
+  ): number {
+    let res = 0;
+    try {
+      res = t.eval(varValues);
+    } catch (e) {
+      throw new RunError(ERR_POS, (e as TermError).message);
+    }
+    return res;
   }
 
   //G _numberToTerm(x:INT):TERM -> _numberToTerm;
