@@ -88,4 +88,12 @@ export class Vector {
     z.values[2] = x.values[0] * y.values[1] - x.values[1] * y.values[0];
     return z;
   }
+
+  norm2(): number {
+    let r = 0;
+    for (let i = 0; i < this.size; i++) {
+      r += this.values[i] * this.values[i];
+    }
+    return Math.sqrt(r);
+  }
 }
