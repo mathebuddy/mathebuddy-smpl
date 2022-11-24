@@ -545,7 +545,7 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   TODO: example(s)
 
-- **`zero < m : INT , n : INT > () : MATRIX`**
+- **`zeros < m : INT , n : INT > () : MATRIX`**
 
   Returns a zero-matrix with `m` rows and `n` columns.
 
