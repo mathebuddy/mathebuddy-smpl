@@ -13,12 +13,14 @@
 import { BaseType, SymTabEntry } from './symbol';
 import { Matrix } from './matrix';
 import { Term } from './term';
+import { SMPL_Interpreter_Vector } from './interpret_vector';
 import { SMPL_Interpreter_Matrix } from './interpret_matrix';
 import { SMPL_Interpreter_Complex } from './interpret_complex';
 import { SMPL_Interpreter_Basic } from './interpret_basic';
 import { SMPL_Interpreter_Term } from './interpret_term';
 import { SMPL_Interpreter_Set } from './interpret_set';
 import { Set_INT } from './set';
+import { Vector } from './vector';
 
 export class RunError extends Error {
   constructor(srcPos: string, msg: string) {
@@ -28,6 +30,7 @@ export class RunError extends Error {
 }
 
 export class SMPL_Interpreter {
+  interpret_vector: SMPL_Interpreter_Vector = null;
   interpret_matrix: SMPL_Interpreter_Matrix = null;
   interpret_complex: SMPL_Interpreter_Complex = null;
   interpret_basic: SMPL_Interpreter_Basic = null;
@@ -35,6 +38,7 @@ export class SMPL_Interpreter {
   interpret_set: SMPL_Interpreter_Set = null;
 
   public constructor() {
+    this.interpret_vector = new SMPL_Interpreter_Vector(this);
     this.interpret_matrix = new SMPL_Interpreter_Matrix(this);
     this.interpret_complex = new SMPL_Interpreter_Complex(this);
     this.interpret_basic = new SMPL_Interpreter_Basic(this);
@@ -55,7 +59,8 @@ export class SMPL_Interpreter {
     code += '];';
     const f = new Function('runtime', code);
     try {
-      const values: (boolean | number | Set_INT | Term | Matrix)[] = f(this);
+      const values: (boolean | number | Set_INT | Term | Vector | Matrix)[] =
+        f(this);
       for (let i = 0; i < locals.length; i++) {
         const local = locals[i];
         switch (local.type.base) {
@@ -65,6 +70,9 @@ export class SMPL_Interpreter {
           case BaseType.INT:
           case BaseType.REAL:
             local.value = values[i] as number;
+            break;
+          case BaseType.VECTOR:
+            local.value = values[i] as Vector;
             break;
           case BaseType.MATRIX:
             local.value = values[i] as Matrix;
