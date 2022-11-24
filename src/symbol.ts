@@ -25,6 +25,7 @@ export enum BaseType {
   FUNCTION_CALL = 'FUNCTION_CALL',
   INT_SET = 'INT_SET',
   INT_LIST = 'INT_LIST',
+  VOID = 'VOID',
 }
 
 export class Type {
@@ -44,6 +45,7 @@ export class Type {
 
 export class Code {
   public str = '';
+  public tmp = '';
   constructor(str = '') {
     this.str = str;
   }
