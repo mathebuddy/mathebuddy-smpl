@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="" />
-  <meta name="dcterms.date" content="2022-11-24" />
+  <meta name="dcterms.date" content="2022-11-25" />
   <title>Simple Math Programming Language (SMPL)</title>
   <style>
     code{white-space: pre-wrap;}
@@ -95,7 +95,7 @@
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Simple Math Programming Language (SMPL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-24</p>
+<p class="date">2022-11-25</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -241,8 +241,8 @@ default precedence (e.g. <span class="math inline">\(a *
 (b+c)\)</span>).</p>
 <table>
 <colgroup>
-<col style="width: 21%" />
-<col style="width: 78%" />
+<col style="width: 27%" />
+<col style="width: 72%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -252,7 +252,7 @@ default precedence (e.g. <span class="math inline">\(a *
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>\|\|</code></td>
+<td><code>||</code></td>
 <td>Logical Or (binary)</td>
 </tr>
 <tr class="even">
@@ -291,7 +291,6 @@ default precedence (e.g. <span class="math inline">\(a *
 </tr>
 </tbody>
 </table>
-<!-- TODO: numerical equal -->
 <p>Not all operators can be applied to each data type. For example,
 <code>a &amp;&amp; b</code> is only valid, if operands <code>a</code>
 and <code>b</code> are boolean.</p>
@@ -300,6 +299,15 @@ an error, if types do not match for a operator.</p>
 <p>Dimensions are evaluated at runtime. For example, a
 <code>RuntimeError</code> is thrown if two matrices with a different
 number of rows are added.</p>
+<p>Comparing non-integer numbers with <code>==</code> and
+<code>!=</code> applies the following numerical compare:
+<code>a == b</code> is implemented as <span
+class="math inline">\(|a-b|\leq\epsilon\)</span> and <code>a != b</code>
+is implemented as <span
+class="math inline">\(|a-b|&gt;\epsilon\)</span>. <em>(Note: <span
+class="math inline">\(\epsilon\)</span> is statically set to <span
+class="math inline">\(10^{-9}\)</span>. It will be configurable in
+future SMPL revisions.)</em></p>
 <p>Some examples for expressions (the examples assumes, that variables
 <code>y</code>, <code>u</code>, <code>w</code>, <code>A</code>,
 <code>B</code>, <code>C</code> have been declared before usage):</p>
@@ -557,9 +565,9 @@ invertible, otherwise false. Throws an exception, if <span
 class="math inline">\(x\)</span> is not a square matrix.</p>
 <p>TODO: epsilon + give example(s)</p></li>
 <li><p><strong><code>is_zero ( x : VECTOR|MATRIX) : BOOL</code></strong></p>
-<p>Returns true, if all elements of <span class="math inline">\(x &lt;
+<p>Returns true, if all elements <span class="math inline">\(|x| &lt;
 \epsilon\)</span>.</p>
-<p>TODO: specify epsilon + give example(s)</p></li>
+<!-- TODO: specify epsilon + give example(s) --></li>
 <li><p><strong><code>len ( x : VECTOR|SET ) : INT</code></strong></p>
 <p>Returns the length of a vector or the cardinality (number of
 elements) of a set.</p>
