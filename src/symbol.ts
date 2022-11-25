@@ -27,6 +27,7 @@ export enum BaseType {
   FUNCTION_CALL = 'FUNCTION_CALL',
   INT_SET = 'INT_SET',
   INT_LIST = 'INT_LIST',
+  VECTOR_LIST = 'VECTOR_LIST',
   VOID = 'VOID',
 }
 
@@ -123,6 +124,7 @@ function getBaseType(lex: Lexer, str: string): BaseType {
   else if (str === 'TERM_VAR') return BaseType.TERM_VAR;
   else if (str === 'SET_INT') return BaseType.INT_SET;
   else if (str === 'INT_LIST') return BaseType.INT_LIST;
+  else if (str === 'VECTOR_LIST') return BaseType.VECTOR_LIST;
   else lex.error('unknown base type ' + str);
 }
 
