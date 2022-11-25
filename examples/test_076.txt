@@ -1,3 +1,2 @@
-let w:v = rand<2,1>(-2,2);
+let w:v = rand<2>(-2,2);
 let p = dot(v,w) / dot(v,v) * v;
-TODO input rows = resizable;
