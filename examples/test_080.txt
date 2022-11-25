@@ -1,4 +1,2 @@
 let A = rand<3,2>(1,3);
-let B = A^T;
-TODO input rows = resizable;
-TODO input cols = resizable;
+let B = transpose(A);
