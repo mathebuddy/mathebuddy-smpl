@@ -36,6 +36,10 @@ export class Vector {
     return this.values[pos];
   }
 
+  static vector2list(v: Vector): number[] {
+    return v.clone().values;
+  }
+
   clone(): Vector {
     const v = new Vector(this.size);
     v.values = [...this.values];
@@ -70,6 +74,14 @@ export class Vector {
     return z;
   }
 
+  mul(v: number): Vector {
+    const z = this.clone();
+    for (let i = 0; i < z.size; i++) {
+      z.values[i] *= v;
+    }
+    return z;
+  }
+
   static dot(x: Vector, y: Vector): number {
     if (x.size != y.size) throw new VectorError('dimensions do not match');
     let z = 0;
@@ -95,5 +107,14 @@ export class Vector {
       r += this.values[i] * this.values[i];
     }
     return Math.sqrt(r);
+  }
+
+  is_zero(epsilon = 1e-9): boolean {
+    for (let i = 0; i < this.size; i++) {
+      if (Math.abs(this.getValue(i)) > epsilon) {
+        return false;
+      }
+    }
+    return true;
   }
 }
