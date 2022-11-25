@@ -71,12 +71,16 @@ for (const v of variables) {
 // manual test
 console.log('--- running manual test in file index_TEST.ts ---');
 const variables = SMPL.interpret(
-  `let a:b = rand(3,8);
-let u:v = zeros<3>();
-u[0] = a;
-v[0] = 3;
-v[2] = 4;
-a = acos( dot(u, v) / ( norm2(u) * norm2(v) ) );
+  `let A = rand<2,2>(2,4);
+let b = rand<2>(1,3);
+A[1,0] = 0;
+let a11 = A[0,0];
+let a12 = A[0,1];
+let a21 = A[1,0];
+let a22 = A[1,1];
+let b1 = b[0];
+let b2 = b[0];
+let x = linsolve(A, b);
 `,
   true,
 );
