@@ -319,6 +319,15 @@ export class SMPL_Parser {
       if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
         x.type.base = BaseType.BOOL;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
+      } else if (
+        (x.type.base == BaseType.INT || x.type.base == BaseType.REAL) &&
+        (y.type.base == BaseType.INT || y.type.base == BaseType.REAL)
+      ) {
+        x.type.base = BaseType.BOOL;
+        x.code.str =
+          op == '=='
+            ? '(Math.abs((' + x.code.str + ') - (' + y.code.str + ')) <= 1e-9)'
+            : '(Math.abs((' + x.code.str + ') - (' + y.code.str + ')) > 1e-9)';
       } else
         this.lexer.errorTypesInBinaryOperation(op, x.type.base, y.type.base);
     }
@@ -659,7 +668,7 @@ export class SMPL_Parser {
   ): TypedCode {
     const tc = new TypedCode();
     tc.sym = functionSym;
-    tc.type = functionSym.type;
+    tc.type = functionSym.type.clone();
     let prototype = functionSym;
     // find matching function prototype (overloading)
     while (prototype != null) {
@@ -712,7 +721,7 @@ export class SMPL_Parser {
 
         // generate code in case of matching dimension and parameter types
         if (match) {
-          tc.type = prototype.type;
+          tc.type = prototype.type.clone();
           tc.code.str = 'runtime.' + prototype.runtimeId + '(';
           // put dimensions first
           let pos = 0;
