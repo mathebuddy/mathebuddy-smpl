@@ -101,6 +101,7 @@ ones<rows:INT,columns:INT>(): MATRIX -> interpret_matrix._ones;
 transpose(x:MATRIX): MATRIX -> interpret_matrix._transposeMatrix;
 triu(x:MATRIX): MATRIX -> interpret_matrix._triu;
 linsolve(A:MATRIX,b:VECTOR): VECTOR -> interpret_matrix._linsolve;
+matrix(v:VECTOR_LIST): MATRIX -> interpret_matrix._matrixFromVectors;
 is_zero(x:MATRIX): BOOL -> interpret_matrix._isMatrixZero;
 is_invertible(x:MATRIX): BOOL -> interpret_matrix._isMatrixInvertible;
 _numberToTerm(x:INT):TERM -> interpret_term._numberToTerm;
