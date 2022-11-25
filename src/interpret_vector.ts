@@ -59,6 +59,12 @@ export class SMPL_Interpreter_Vector {
     return Vector.sub(x, y);
   }
 
+  //G _mul(x:INT,y:VECTOR):VECTOR -> _mulScalarVector;
+  //G _mul(x:REAL,y:VECTOR):VECTOR -> _mulScalarVector;
+  _mulScalarVector(x: number, y: Vector): Vector {
+    return y.mul(x);
+  }
+
   //G dot(x:VECTOR, y:VECTOR): REAL -> _dotVectors;
   _dotVectors(x: Vector, y: Vector, ERR_POS: string): number {
     if (x.getSize() != y.getSize())
@@ -103,5 +109,10 @@ export class SMPL_Interpreter_Vector {
       v.setValue(i, this.parent.interpret_basic._randIntMinMaxZ(min, max));
     }
     return v;
+  }
+
+  //G is_zero(x:VECTOR): BOOL -> _isVectorZero;
+  _isVectorZero(x: Vector): boolean {
+    return x.is_zero(1e-9); // TODO: configure epsilon
   }
 }
