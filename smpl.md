@@ -118,19 +118,17 @@ The following list of operators is implemented in SMPL.
 The list is ordered by increasing precedence.
 Explicit parentheses can break the default precedence (e.g. $a * (b+c)$).
 
-| Operator           | Description                                                       |
-| ------------------ | ----------------------------------------------------------------- |
-| `\|\|`             | Logical Or (binary)                                               |
-| `&&`               | Logical And (binary)                                              |
-| `==`,`!=`          | Equal, Unequal (binary)                                           |
-| `<`, `<=`,`>`,`>=` | Less than, Less or equal, Greater than, Greater or equal (binary) |
-| `+`, `-`           | Addition, Subtraction (binary)                                    |
-| `*`, `/`           | Multiplication, Division (binary)                                 |
-| `^`                | Potency (binary)                                                  |
-| `++`, `--`         | Postfix Incrementation, Decrementation (unary)                    |
-| `!`                | logical not (unary)                                               |
-
-<!-- TODO: numerical equal -->
+| Operator                  | Description                                                       |
+| ------------------------- | ----------------------------------------------------------------- |
+| <code>&#124;&#124;</code> | Logical Or (binary)                                               |
+| `&&`                      | Logical And (binary)                                              |
+| `==`,`!=`                 | Equal, Unequal (binary)                                           |
+| `<`, `<=`,`>`,`>=`        | Less than, Less or equal, Greater than, Greater or equal (binary) |
+| `+`, `-`                  | Addition, Subtraction (binary)                                    |
+| `*`, `/`                  | Multiplication, Division (binary)                                 |
+| `^`                       | Potency (binary)                                                  |
+| `++`, `--`                | Postfix Incrementation, Decrementation (unary)                    |
+| `!`                       | logical not (unary)                                               |
 
 Not all operators can be applied to each data type.
 For example, `a && b` is only valid, if operands `a` and `b` are boolean.
@@ -140,6 +138,8 @@ The compiler reports an error, if types do not match for a operator.
 
 Dimensions are evaluated at runtime.
 For example, a `RuntimeError` is thrown if two matrices with a different number of rows are added.
+
+Comparing non-integer numbers with `==` and `!=` applies the following numerical compare: `a == b` is implemented as $|a-b|\leq\epsilon$ and `a != b` is implemented as $|a-b|>\epsilon$. _(Note: $\epsilon$ is statically set to $10^{-9}$. It will be configurable in future SMPL revisions.)_
 
 Some examples for expressions (the examples assumes, that variables `y`, `u`, `w`, `A`, `B`, `C` have been declared before usage):
 
@@ -459,9 +459,9 @@ Some function also require dimensions. These are embedded into `<...>`.
 
 - **`is_zero ( x : VECTOR|MATRIX) : BOOL`**
 
-  Returns true, if all elements of $x < \epsilon$.
+  Returns true, if all elements $|x| < \epsilon$.
 
-  TODO: specify epsilon + give example(s)
+  <!-- TODO: specify epsilon + give example(s) -->
 
 - **`len ( x : VECTOR|SET ) : INT`**
 
