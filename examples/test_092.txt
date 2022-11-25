@@ -1,4 +1,4 @@
-let a:b:c:d:e:f:g:h:_i = rand(0,2);
+let a:b:c:d:e:f:g:h:i = rand(0,2);
 
 let v1 = matrix(a; b);
 let v2 = matrix(c; d);
@@ -13,7 +13,7 @@ let q2 = det(A) != 0;
 
 let v5 = matrix(a; b; c);
 let v6 = matrix(d; e; f);
-let v7 = matrix(g; h; _i);
+let v7 = matrix(g; h; i);
 
-let A = matrix(a,d,g; b,e,h; c,f,_i);
+let A = matrix(a,d,g; b,e,h; c,f,i);
 let q3 = det(A) != 0;
