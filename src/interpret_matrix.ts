@@ -10,6 +10,7 @@ import * as mathjs from 'mathjs';
 import { RunError, SMPL_Interpreter } from './interpret';
 
 import { Matrix } from './matrix';
+import { Vector } from './vector';
 
 export class SMPL_Interpreter_Matrix {
   private parent: SMPL_Interpreter = null;
@@ -171,5 +172,25 @@ export class SMPL_Interpreter_Matrix {
       }
     }
     return m;
+  }
+
+  //G transpose(x:MATRIX): MATRIX -> _transposeMatrix;
+  _transposeMatrix(x: Matrix): Matrix {
+    const y = Matrix.mathjs2matrix(mathjs.transpose(Matrix.matrix2mathjs(x)));
+    return y;
+  }
+
+  //G linsolve(A:MATRIX,b:VECTOR): VECTOR -> _linsolve;
+  _linsolve(A: Matrix, b: Vector): Vector {
+    // TODO: catch errors
+    const x = Matrix.mathjs2matrix(
+      mathjs.lusolve(Matrix.matrix2mathjs(A), Vector.vector2list(b)),
+    );
+    return x.getCol(0);
+  }
+
+  //G is_zero(x:MATRIX): BOOL -> _isMatrixZero;
+  _isMatrixZero(x: Matrix): boolean {
+    return x.is_zero(1e-9); // TODO: configure epsilon
   }
 }
