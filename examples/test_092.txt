@@ -1,5 +1,10 @@
 let a:b:c:d:e:f:g:h:i = rand(0,2);
 
+let a = 0;
+let b = 2;
+let v1:v2 = rand<2>(a,b);
+let A = matrix(v1,v2);
+
 let v1 = matrix(a; b);
 let v2 = matrix(c; d);
 let A = matrix(a,c; b,d);
