@@ -7,6 +7,7 @@
  */
 
 import * as mathjs from 'mathjs';
+import { Vector } from './vector';
 
 export class Matrix {
   private rows = 1;
@@ -33,6 +34,14 @@ export class Matrix {
 
   getValue(row: number, col: number): number {
     return this.values[row * this.cols + col];
+  }
+
+  getCol(idx: number): Vector {
+    const v = new Vector(this.rows);
+    for (let i = 0; i < this.rows; i++) {
+      v.setValue(i, this.getValue(i, idx));
+    }
+    return v;
   }
 
   clone(): Matrix {
@@ -76,5 +85,16 @@ export class Matrix {
       }
     }
     return result;
+  }
+
+  is_zero(epsilon = 1e-9): boolean {
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        if (Math.abs(this.getValue(i, j)) > epsilon) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }
