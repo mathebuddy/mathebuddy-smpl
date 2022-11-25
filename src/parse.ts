@@ -266,11 +266,35 @@ export class SMPL_Parser {
         x.code.str = x.code.tmp.replace('§RHS§', y.code.str);
         x.type.base = BaseType.VOID;
       } else if (
-        (x.type.base == BaseType.INT || x.type.base == BaseType.REAL) &&
-        (y.type.base == BaseType.INT || y.type.base == BaseType.REAL)
+        (x.type.base === BaseType.INT || x.type.base === BaseType.REAL) &&
+        (y.type.base === BaseType.INT || y.type.base === BaseType.REAL)
       ) {
         x.type.base = BaseType.INT;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
+      } else if (
+        x.type.base === BaseType.VECTOR &&
+        y.type.base === BaseType.VECTOR
+      ) {
+        x.type.base = BaseType.VECTOR;
+        x.code.str =
+          x.code.str +
+          ' ' +
+          op +
+          ' runtime.interpret_vector._clone(' +
+          y.code.str +
+          ')';
+      } else if (
+        x.type.base === BaseType.MATRIX &&
+        y.type.base === BaseType.MATRIX
+      ) {
+        x.type.base = BaseType.MATRIX;
+        x.code.str =
+          x.code.str +
+          ' ' +
+          op +
+          ' runtime.interpret_matrix._clone(' +
+          y.code.str +
+          ')';
       } else
         this.lexer.errorTypesInBinaryOperation(op, x.type.base, y.type.base);
     }
@@ -316,7 +340,10 @@ export class SMPL_Parser {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseRelational();
-      if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
+      if (x.type.base == BaseType.BOOL && y.type.base == BaseType.BOOL) {
+        x.type.base = BaseType.BOOL;
+        x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
+      } else if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
         x.type.base = BaseType.BOOL;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
       } else if (
