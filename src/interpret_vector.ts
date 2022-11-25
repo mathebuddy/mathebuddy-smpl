@@ -27,6 +27,10 @@ export class SMPL_Interpreter_Vector {
     return vec;
   }
 
+  _clone(x: Vector): Vector {
+    return x.clone();
+  }
+
   _getElement(x: Vector, idx: number, ERR_POS: string): number {
     if (idx < 0 || idx >= x.getSize())
       throw new RunError(
