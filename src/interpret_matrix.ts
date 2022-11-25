@@ -30,6 +30,10 @@ export class SMPL_Interpreter_Matrix {
     return matrix;
   }
 
+  _clone(x: Matrix): Matrix {
+    return x.clone();
+  }
+
   _getElement(x: Matrix, row: number, col: number, ERR_POS: string): number {
     if (row < 0 || row >= x.getRows())
       throw new RunError(
@@ -180,6 +184,17 @@ export class SMPL_Interpreter_Matrix {
     return y;
   }
 
+  //G triu(x:MATRIX): MATRIX -> _triu;
+  _triu(x: Matrix): Matrix {
+    const y = x.clone();
+    for (let i = 0; i < y.getRows(); i++) {
+      for (let j = 0; j < y.getCols(); j++) {
+        if (i > j) y.setValue(i, j, 0);
+      }
+    }
+    return y;
+  }
+
   //G linsolve(A:MATRIX,b:VECTOR): VECTOR -> _linsolve;
   _linsolve(A: Matrix, b: Vector): Vector {
     // TODO: catch errors
@@ -192,5 +207,11 @@ export class SMPL_Interpreter_Matrix {
   //G is_zero(x:MATRIX): BOOL -> _isMatrixZero;
   _isMatrixZero(x: Matrix): boolean {
     return x.is_zero(1e-9); // TODO: configure epsilon
+  }
+
+  //G is_invertible(x:MATRIX): BOOL -> _isMatrixInvertible;
+  _isMatrixInvertible(x: Matrix): boolean {
+    const det = mathjs.det(Matrix.matrix2mathjs(x));
+    return Math.abs(det) > 1e-9; // TODO: make epsilon adjustable
   }
 }
