@@ -1,4 +1,4 @@
-let u:v:w:x:y:z = rand<2,1>(-1,1);
+let u:v:w:x:y:z = rand<2>(-1,1);
 let uv = dot(u,v) == 0;
 let wx = dot(w,x) == 0;
 let yz = dot(y,z) == 0;
