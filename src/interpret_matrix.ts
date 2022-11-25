@@ -204,6 +204,25 @@ export class SMPL_Interpreter_Matrix {
     return x.getCol(0);
   }
 
+  //G matrix(v:VECTOR_LIST): MATRIX -> _matrixFromVectors;
+  _matrixFromVectors(v: Vector[], ERR_POS: string): Matrix {
+    const n = v.length;
+    if (n == 0) throw new RunError(ERR_POS, 'no vector given');
+    let m = -1;
+    for (let i = 0; i < n; i++) {
+      if (i == 0) m = v[0].getSize();
+      else if (v[i].getSize() != m)
+        throw new RunError(ERR_POS, 'vector lengths differ');
+    }
+    const A = new Matrix(m, n);
+    for (let i = 0; i < m; i++) {
+      for (let j = 0; j < n; j++) {
+        A.setValue(i, j, v[j].getValue(i));
+      }
+    }
+    return A;
+  }
+
   //G is_zero(x:MATRIX): BOOL -> _isMatrixZero;
   _isMatrixZero(x: Matrix): boolean {
     return x.is_zero(1e-9); // TODO: configure epsilon
