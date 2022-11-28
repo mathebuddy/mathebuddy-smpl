@@ -63,7 +63,7 @@ export class SMPL_Parser {
     this.symTab = createFunctionPrototypes(functionPrototypes);
 
     this.lexer = new Lexer();
-    this.lexer.configureSingleLineComments('//');
+    this.lexer.configureSingleLineComments('%');
     this.lexer.configureMultiLineComments('/*', '*/');
     this.lexer.enableEmitNewlines(false); // TODO
     this.lexer.enableEmitIndentation(false);
