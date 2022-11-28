@@ -17,6 +17,34 @@ export class SMPL_Interpreter_Basic {
     this.parent = parent;
   }
 
+  //G _equal(x:BOOL,y:BOOL):BOOL -> _equalBooleans;
+  _equalBooleans(x: boolean, y: boolean): boolean {
+    return x == y;
+  }
+
+  //G _equal(x:INT,y:INT):BOOL -> _equalNumbers;
+  //G _equal(x:INT,y:REAL):BOOL -> _equalNumbers;
+  //G _equal(x:REAL,y:INT):BOOL -> _equalNumbers;
+  //G _equal(x:REAL,y:REAL):BOOL -> _equalNumbers;
+  _equalNumbers(x: number, y: number): boolean {
+    const epsilon = 1e-9; // TODO: make configurable
+    return Math.abs(x - y) <= epsilon;
+  }
+
+  //G _unequal(x:BOOL,y:BOOL):BOOL -> _unequalBooleans;
+  _unequalBooleans(x: boolean, y: boolean): boolean {
+    return x != y;
+  }
+
+  //G _unequal(x:INT,y:INT):BOOL -> _unequalNumbers;
+  //G _unequal(x:INT,y:REAL):BOOL -> _unequalNumbers;
+  //G _unequal(x:REAL,y:INT):BOOL -> _unequalNumbers;
+  //G _unequal(x:REAL,y:REAL):BOOL -> _unequalNumbers;
+  _unequalNumbers(x: number, y: number): boolean {
+    const epsilon = 1e-9; // TODO: make configurable
+    return Math.abs(x - y) > epsilon;
+  }
+
   //G _add(x:INT,y:INT):INT -> _add;
   //G _add(x:INT,y:REAL):REAL -> _add;
   //G _add(x:REAL,y:INT):REAL -> _add;
@@ -87,7 +115,7 @@ export class SMPL_Interpreter_Basic {
 
   //G rand(min:INT,max:INT): INT -> _randIntMinMax;
   _randIntMinMax(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(Math.random() * (max + 1 - min) + min);
   }
 
   //G randZ(min:INT,max:INT): INT -> _randIntMinMaxZ;
