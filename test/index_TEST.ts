@@ -71,12 +71,9 @@ for (const v of variables) {
 // manual test
 console.log('--- running manual test in file index_TEST.ts ---');
 const variables = SMPL.interpret(
-  `let A = zeros<2,2>();
-do {
-    A = randZ<2,2>(1,4);
-} while(is_invertible(A) == false);
-let b = randZ<2>(1,4);
-let x = linsolve(A, b);
+  `let a = rand(1,5) + rand(1,5)*1i;
+let b = randZ(-1,1)*rand(1,5) + rand(1,5)*1i;
+let c = a + b;
 `,
   true,
 );
