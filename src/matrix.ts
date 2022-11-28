@@ -65,6 +65,20 @@ export class Matrix {
     return s;
   }
 
+  static equal(u: Matrix, v: Matrix, epsilon = 1e-9): boolean {
+    if (u.getRows() != v.getRows()) return false;
+    if (u.getCols() != v.getCols()) return false;
+    const rows = u.getRows();
+    const cols = u.getCols();
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        if (Math.abs(u.getValue(i, j) - v.getValue(i, j)) > epsilon)
+          return false;
+      }
+    }
+    return true;
+  }
+
   floor(): void {
     const rows = this.getRows();
     const cols = this.getCols();
@@ -145,6 +159,18 @@ export class Matrix {
       for (let j = 0; j < this.cols; j++) {
         const value = this.getValue(i, j);
         if (Math.abs(value - Math.round(value)) != 0) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  is_symmetric(): boolean {
+    if (this.rows != this.cols) return false;
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        if (this.getValue(i, j) != this.getValue(j, i)) {
           return false;
         }
       }
