@@ -39,6 +39,7 @@ export class Complex {
   }
 
   toString(): string {
-    return this.real + '+' + this.imag + 'i';
+    if (this.imag >= 0) return this.real + '+' + this.imag + 'i';
+    else return this.real + '-' + -this.imag + 'i';
   }
 }
