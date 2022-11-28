@@ -7,7 +7,6 @@
  */
 
 import * as mathjs from 'mathjs';
-import { matrix } from 'mathjs';
 import { RunError, SMPL_Interpreter } from './interpret';
 
 import { Matrix } from './matrix';
