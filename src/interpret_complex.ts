@@ -22,6 +22,11 @@ export class SMPL_Interpreter_Complex {
     return new Complex(real, imag);
   }
 
+  //G _unaryMinus(x:COMPLEX):COMPLEX -> _unaryMinusComplex;
+  _unaryMinusComplex(x: Complex): Complex {
+    return new Complex(-x.real, -x.imag);
+  }
+
   //G _add(x:COMPLEX,y:COMPLEX):COMPLEX -> _addComplex;
   _addComplex(x: Complex, y: Complex): Complex {
     return Complex.mathjs2complex(mathjs.add(x.toMathJs(), y.toMathJs()));
