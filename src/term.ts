@@ -182,9 +182,23 @@ export class Term {
           Term.Op('*', [u.clone(), v.diff(varId)]),
         ]);
         break;
+      case '/':
+        if (this.o.length > 2)
+          throw new TermError(
+            'diff(..): non-binary "/" operator is unimplemented',
+          );
+        // diff(u/v) = (diff(u) * v - u * diff(v)) / v^2;
+        t = Term.Op('/', [
+          Term.Op('-', [
+            Term.Op('*', [this.o[0].diff(varId), this.o[1].clone()]),
+            Term.Op('*', [this.o[0].clone(), this.o[1].diff(varId)]),
+          ]),
+          Term.Op('^', [this.o[1].clone(), Term.Const(2)]),
+        ]);
+        break;
       case '^':
         // TODO: check, if v is constant
-        // diff(u^v) = u' * v * u^(v-1);
+        // diff(u^v) = diff(u) * v * u^(v-1);
         if (this.o[1].op !== '#') {
           throw new TermError(
             'diff(..): u^v: operator ^ only implemented for constant v',
@@ -200,21 +214,21 @@ export class Term {
         ]);
         break;
       case 'exp':
-        // diff(exp(u)) = u' * exp(u);
+        // diff(exp(u)) = diff(u) * exp(u);
         t = Term.Op('*', [
           this.o[0].diff(varId),
           Term.Op('exp', [this.o[0].clone()]),
         ]);
         break;
       case 'sin':
-        // diff(sin(u)) = u' * cos(u)
+        // diff(sin(u)) = diff(u) * cos(u)
         t = Term.Op('*', [
           this.o[0].diff(varId),
           Term.Op('cos', [this.o[0].clone()]),
         ]);
         break;
       case 'cos':
-        // diff(cos(u)) = - u' * cos(u)
+        // diff(cos(u)) = - diff(u) * cos(u)
         t = Term.Op('.-', [
           Term.Op('*', [
             this.o[0].diff(varId),
