@@ -9,7 +9,7 @@
 import { Complex } from './complex';
 import { SMPL_Interpreter } from './interpret';
 
-import { Set_COMPLEX, Set_INT } from './set';
+import { Set_COMPLEX, Set_INT, Set_REAL } from './set';
 
 export class SMPL_Interpreter_Set {
   private parent: SMPL_Interpreter = null;
@@ -21,6 +21,15 @@ export class SMPL_Interpreter_Set {
   //G set(elements:INT_LIST): SET_INT -> _createIntSet;
   _createIntSet(elements: number[]): Set_INT {
     const s = new Set_INT();
+    for (const element of elements) {
+      s.add(element);
+    }
+    return s;
+  }
+
+  //G set(elements:REAL_LIST): SET_REAL -> _createRealSet;
+  _createRealSet(elements: number[]): Set_REAL {
+    const s = new Set_REAL();
     for (const element of elements) {
       s.add(element);
     }
