@@ -178,6 +178,27 @@ export class SMPL_Interpreter_Matrix {
     return m;
   }
 
+  //G floor(x:MATRIX): MATRIX -> _floorMatrix;
+  _floorMatrix(x: Matrix): Matrix {
+    const res = x.clone();
+    res.floor();
+    return res;
+  }
+
+  //G ceil(x:MATRIX): MATRIX -> _ceilMatrix;
+  _ceilMatrix(x: Matrix): Matrix {
+    const res = x.clone();
+    res.ceil();
+    return res;
+  }
+
+  //G round(x:MATRIX): MATRIX -> _roundMatrix;
+  _roundMatrix(x: Matrix): Matrix {
+    const res = x.clone();
+    res.round();
+    return res;
+  }
+
   //G transpose(x:MATRIX): MATRIX -> _transposeMatrix;
   _transposeMatrix(x: Matrix): Matrix {
     const y = Matrix.mathjs2matrix(mathjs.transpose(Matrix.matrix2mathjs(x)));
@@ -244,5 +265,12 @@ export class SMPL_Interpreter_Matrix {
     if (this._isMatrixInvertible(x) == false)
       throw new RunError(ERR_POS, 'matrix is not invertible');
     return Matrix.mathjs2matrix(mathjs.inv(Matrix.matrix2mathjs(x)));
+  }
+
+  //G _mod(x:MATRIX,y:INT):MATRIX -> _modMatrix;
+  _modMatrix(x: Matrix, y: number, ERR_POS: string): Matrix {
+    if (x.is_integer() == false)
+      throw new RunError(ERR_POS, 'matrix is not integral');
+    return Matrix.mod(x, y);
   }
 }
