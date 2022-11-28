@@ -110,6 +110,11 @@ export class SMPL_Interpreter_Term {
     return Term.Op('/', [x, y]);
   }
 
+  //G _unaryMinus(x:TERM):TERM -> _unaryMinusTerm;
+  _unaryMinusTerm(t: Term): Term {
+    return Term.Op('.-', [t]);
+  }
+
   //G _pow(x:TERM,y:INT):TERM -> _powTermReal;
   //G _pow(x:TERM,y:REAL):TERM -> _powTermReal;
   _powTermReal(x: Term, y: number): Term {
