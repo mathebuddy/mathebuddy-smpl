@@ -6,7 +6,7 @@
  * License: GPL-3.0-or-later
  */
 
-//import * as mathjs from 'mathjs';
+import { Complex } from './complex';
 
 export class Set_INT {
   elements: number[] = [];
@@ -15,9 +15,33 @@ export class Set_INT {
     this.elements = numbers;
   }
 
+  add(value: number): void {
+    if (this.elements.includes(value) == false) this.elements.push(value);
+  }
+
   toString(): string {
     let s = '{';
     s += this.elements.sort().join(',');
+    s += '}';
+    return s;
+  }
+}
+
+export class Set_COMPLEX {
+  elements: Complex[] = [];
+
+  constructor(numbers: Complex[] = []) {
+    this.elements = numbers;
+  }
+
+  add(value: Complex): void {
+    // TODO: check, if value already exists!!
+    this.elements.push(value);
+  }
+
+  toString(): string {
+    let s = '{';
+    s += this.elements.join(',');
     s += '}';
     return s;
   }
