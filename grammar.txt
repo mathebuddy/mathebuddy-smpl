@@ -9,7 +9,7 @@ and = equal { "&&" equal };
 equal = relational [ ("=="|"!=") relational ];
 relational = add [ ("<="|">="|"<"|">") add ];
 add = mul { ("+"|"-") mul };
-mul = pow { ("*"|"/") pow };
+mul = pow { ("*"|"/"|"mod") pow };
 pow = unary [ "^" unary ];
 unary = unaryExpression [ unaryPostfix ];
 unaryExpression = "true" | "false" | INT | IMAG | REAL | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
