@@ -437,13 +437,20 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   Returns a matrix, where each element is the ceiling value of the input matrix.
 
-  _Example: `ceil([1.1,2.2;4.4,5.5])` returns `[2,3;5,6]`._
+  _Example: `ceil([[1.1,2.2],[4.4,5.5]])` returns `[2,3;5,6]`._
 
 - **`complex ( x : INT|REAL , y : INT|REAL ) : COMPLEX`**
 
   Creates a complex number from real part `x` and imaginary part `y`, i.e. $z=x+yi$.
 
   _Example: `complex(2,3)` returns `2+3i`_.
+
+- **`column ( x : MATRIX, c : INT ): VECTOR`**
+
+  Returns the `c`-th column of matrix `x` as vector.
+  The first vector has index 0.
+
+  _Example: `column([[1,2],[3,4]], 1)` returns `[2,4]`._
 
 - **`conj ( z : COMPLEX ) : COMPLEX`**
 
@@ -488,6 +495,12 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Examples: `exp(0)` returns $1$. `exp(1i)` returns `0.54... + 0.84...i`._
 
+- **`eye ( n : INT ): MATRIX`**
+
+  Returns an $n \times n$ identity matrix.
+
+  _Example: `eye(3)` returns `[[1,0,0],[0,1,0],[0,0,1]]`_
+
 - **`fac ( x : INTEGER) : INTEGER`**
 
   Calculates $x!$, i.e. the faculty of $x$.
@@ -511,6 +524,13 @@ Some function also require dimensions. These are embedded into `<...>`.
   Returns the imaginary part of a complex number.
 
   _Example: `imag(3+4i)` returns 4._
+
+- **`int ( x : REAL ) : INT`**
+
+  Typecast from type real to type integer.
+  Same behavior as function `floor`.
+
+  _Example: `int(3.0)` returns `3`. &nbsp; &nbsp; `int(2.71)` returns `2`._
 
 - **`is_invertible ( x : MATRIX ) : BOOL`**
 
@@ -588,6 +608,13 @@ Some function also require dimensions. These are embedded into `<...>`.
   Returns the real part of a complex number.
 
   _Example: `real(3+4i)` returns 3._
+
+- **`row ( x : MATRIX, r : INT ): VECTOR`**
+
+  Returns the `c`-th row of matrix `x` as vector.
+  The first row has index 0.
+
+  _Example: `row([[1,2],[3,4]], 1)` returns `[3,4]`._
 
 - **`round ( x : INT|REAL ) : INT`**
 
