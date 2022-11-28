@@ -12,6 +12,16 @@
 
 export const functionPrototypes = `
 
+_equal(x:BOOL,y:BOOL):BOOL -> interpret_basic._equalBooleans;
+_equal(x:INT,y:INT):BOOL -> interpret_basic._equalNumbers;
+_equal(x:INT,y:REAL):BOOL -> interpret_basic._equalNumbers;
+_equal(x:REAL,y:INT):BOOL -> interpret_basic._equalNumbers;
+_equal(x:REAL,y:REAL):BOOL -> interpret_basic._equalNumbers;
+_unequal(x:BOOL,y:BOOL):BOOL -> interpret_basic._unequalBooleans;
+_unequal(x:INT,y:INT):BOOL -> interpret_basic._unequalNumbers;
+_unequal(x:INT,y:REAL):BOOL -> interpret_basic._unequalNumbers;
+_unequal(x:REAL,y:INT):BOOL -> interpret_basic._unequalNumbers;
+_unequal(x:REAL,y:REAL):BOOL -> interpret_basic._unequalNumbers;
 _add(x:INT,y:INT):INT -> interpret_basic._add;
 _add(x:INT,y:REAL):REAL -> interpret_basic._add;
 _add(x:REAL,y:INT):REAL -> interpret_basic._add;
@@ -117,6 +127,8 @@ zeros<size:INT>(): VECTOR -> interpret_vector._zerosVector;
 rand<size:INT>(min:INT, max:INT): VECTOR -> interpret_vector._randVector;
 randZ<size:INT>(min:INT, max:INT): VECTOR -> interpret_vector._randZVector;
 is_zero(x:VECTOR): BOOL -> interpret_vector._isVectorZero;
+_equal(x:MATRIX, y:MATRIX): BOOL -> interpret_matrix._equalMatrices;
+_unequal(x:MATRIX, y:MATRIX): BOOL -> interpret_matrix._unequalMatrices;
 eye(n:INT): MATRIX -> interpret_matrix._eye;
 _add(x:MATRIX,y:MATRIX):MATRIX -> interpret_matrix._addMatrices;
 _sub(x:MATRIX,y:MATRIX):MATRIX -> interpret_matrix._subMatrices;
@@ -141,6 +153,7 @@ linsolve(A:MATRIX,b:VECTOR): VECTOR -> interpret_matrix._linsolve;
 matrix(v:VECTOR_LIST): MATRIX -> interpret_matrix._matrixFromVectors;
 rank(A:MATRIX): INT -> interpret_matrix._rank;
 is_zero(x:MATRIX): BOOL -> interpret_matrix._isMatrixZero;
+is_symmetric(x:MATRIX): BOOL -> interpret_matrix._isMatrixSymmetric;
 is_invertible(x:MATRIX): BOOL -> interpret_matrix._isMatrixInvertible;
 inv(x:MATRIX): MATRIX -> interpret_matrix._invMatrix;
 _mod(x:MATRIX,y:INT):MATRIX -> interpret_matrix._modMatrix;
