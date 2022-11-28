@@ -21,6 +21,7 @@ import { SMPL_Interpreter_Term } from './interpret_term';
 import { SMPL_Interpreter_Set } from './interpret_set';
 import { Set_INT } from './set';
 import { Vector } from './vector';
+import { Complex } from './complex';
 
 export class RunError extends Error {
   constructor(srcPos: string, msg: string) {
@@ -59,8 +60,15 @@ export class SMPL_Interpreter {
     code += '];';
     const f = new Function('runtime', code);
     try {
-      const values: (boolean | number | Set_INT | Term | Vector | Matrix)[] =
-        f(this);
+      const values: (
+        | boolean
+        | number
+        | Complex
+        | Set_INT
+        | Term
+        | Vector
+        | Matrix
+      )[] = f(this);
       for (let i = 0; i < locals.length; i++) {
         const local = locals[i];
         switch (local.type.base) {
@@ -70,6 +78,9 @@ export class SMPL_Interpreter {
           case BaseType.INT:
           case BaseType.REAL:
             local.value = values[i] as number;
+            break;
+          case BaseType.COMPLEX:
+            local.value = values[i] as Complex;
             break;
           case BaseType.VECTOR:
             local.value = values[i] as Vector;
