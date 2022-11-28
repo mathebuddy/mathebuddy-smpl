@@ -1,6 +1,6 @@
 let a:b:c = rand(10,20);
 let a2:b2:c2:c3 = rand(2,5);
 let sa = a mod a2;
-let b = - b;
+b = - b;
 let sb = b mod b2;
 let sc = c2*c3 mod c2;
