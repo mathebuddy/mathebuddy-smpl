@@ -6,9 +6,10 @@
  * License: GPL-3.0-or-later
  */
 
+import { Complex } from './complex';
 import { SMPL_Interpreter } from './interpret';
 
-import { Set_INT } from './set';
+import { Set_COMPLEX, Set_INT } from './set';
 
 export class SMPL_Interpreter_Set {
   private parent: SMPL_Interpreter = null;
@@ -17,10 +18,21 @@ export class SMPL_Interpreter_Set {
     this.parent = parent;
   }
 
-  //G set(elements:INT_LIST): SET_INT -> _createSet;
-  _createSet(elements: number[]): Set_INT {
+  //G set(elements:INT_LIST): SET_INT -> _createIntSet;
+  _createIntSet(elements: number[]): Set_INT {
     const s = new Set_INT();
-    s.elements = elements;
+    for (const element of elements) {
+      s.add(element);
+    }
+    return s;
+  }
+
+  //G set(elements:COMPLEX_LIST): SET_COMPLEX -> _createComplexSet;
+  _createComplexSet(elements: Complex[]): Set_COMPLEX {
+    const s = new Set_COMPLEX();
+    for (const element of elements) {
+      s.add(element);
+    }
     return s;
   }
 
