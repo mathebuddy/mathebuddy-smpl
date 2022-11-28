@@ -629,10 +629,14 @@ class="math inline">\(x\)</span>.</p>
 <li><p><strong><code>real ( x : COMPLEX ) : REAL</code></strong></p>
 <p>Returns the real part of a complex number.</p>
 <p><em>Example: <code>real(3+4i)</code> returns 3.</em></p></li>
-<li><p><strong><code>set ( x0 : INT , x1 : INT, ... ) : SET</code></strong></p>
+<li><p><strong><code>set ( x0 : INT , x1 : INT, ... ) : SET_INT</code></strong></p>
 <p>Creates and returns a set of integer values.</p>
 <p><em>Example: <code>set(4, 2, 5, 2)</code> returns a set
 <code>{2,4,5}</code>.</em></p></li>
+<li><p><strong><code>set ( x0 : COMPLEX , x1 : COMPLEX, ... ) : SET_COMPLEX</code></strong></p>
+<p>Creates and returns a set of complex values.</p>
+<p><em>Example: <code>set(4+2i, 2, 5i, 2)</code> returns a set
+<code>{4+2i,2,5i}</code>.</em></p></li>
 <li><p><strong><code>sin ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\sin(x)\)</span>.</p>
 <p><em>Example: <code>sin(0)</code> returns <span
