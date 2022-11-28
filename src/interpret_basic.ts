@@ -158,6 +158,8 @@ export class SMPL_Interpreter_Basic {
 
   //G floor(x:INT): INT -> _floor;
   //G floor(x:REAL): INT -> _floor;
+  //G int(x:INT): INT -> _floor;
+  //G int(x:REAL): INT -> _floor;
   _floor(x: number): number {
     return Math.floor(x);
   }
