@@ -129,6 +129,9 @@ min(x:MATRIX): REAL -> interpret_matrix._minMatrix;
 max(x:MATRIX): REAL -> interpret_matrix._maxMatrix;
 zeros<rows:INT,columns:INT>(): MATRIX -> interpret_matrix._zeros;
 ones<rows:INT,columns:INT>(): MATRIX -> interpret_matrix._ones;
+floor(x:MATRIX): MATRIX -> interpret_matrix._floorMatrix;
+ceil(x:MATRIX): MATRIX -> interpret_matrix._ceilMatrix;
+round(x:MATRIX): MATRIX -> interpret_matrix._roundMatrix;
 transpose(x:MATRIX): MATRIX -> interpret_matrix._transposeMatrix;
 triu(x:MATRIX): MATRIX -> interpret_matrix._triu;
 linsolve(A:MATRIX,b:VECTOR): VECTOR -> interpret_matrix._linsolve;
@@ -137,6 +140,7 @@ rank(A:MATRIX): INT -> interpret_matrix._rank;
 is_zero(x:MATRIX): BOOL -> interpret_matrix._isMatrixZero;
 is_invertible(x:MATRIX): BOOL -> interpret_matrix._isMatrixInvertible;
 inv(x:MATRIX): MATRIX -> interpret_matrix._invMatrix;
+_mod(x:MATRIX,y:INT):MATRIX -> interpret_matrix._modMatrix;
 _numberToTerm(x:INT):TERM -> interpret_term._numberToTerm;
 _add(x:TERM,y:INT):TERM -> interpret_term._addTermReal;
 _add(x:TERM,y:REAL):TERM -> interpret_term._addTermReal;
@@ -168,6 +172,7 @@ cos(x:TERM): TERM -> interpret_term._cosTerm;
 tan(x:TERM): TERM -> interpret_term._tanTerm;
 exp(x:TERM): TERM -> interpret_term._expTerm;
 diff(x:TERM, varId:TERM): TERM -> interpret_term._diffTerm;
+ode(lhs:TERM,rhs:TERM): TERM -> interpret_term._ode;
 
 `;
 
