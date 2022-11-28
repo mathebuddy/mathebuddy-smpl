@@ -652,6 +652,28 @@ elements) of a set.</p>
 <code>len(set(1,3,3,7))</code> returns 3.</em></p></li>
 <li><p><strong><code>linsolve ( A : MATRIX , x : VECTOR ) : VECTOR</code></strong></p>
 <p>TODO: no, one, inf solutions.</p></li>
+<li><p><strong><code>max ( SET_INT ) : INT</code></strong></p>
+<p>Returns the maximum value from an integer set. If the set is empty,
+then <span class="math inline">\(-\infty\)</span> is returned.</p>
+<p><em>Example: <code>max({1,-2,3})</code> returns
+<code>3</code>.</em></p></li>
+<li><p><strong><code>max ( SET_REAL ) : REAL</code></strong></p>
+<p>Returns the maximum value from a set consisting of real valued
+elements. If the set is empty, then <span
+class="math inline">\(-\infty\)</span> is returned.</p>
+<p><em>Example: <code>max({1.1,-2.1,3.1})</code> returns
+<code>3.1</code>.</em></p></li>
+<li><p><strong><code>min ( SET_INT ) : INT</code></strong></p>
+<p>Returns the minimum value from an integer set. If the set is empty,
+then <span class="math inline">\(\infty\)</span> is returned.</p>
+<p><em>Example: <code>min({1,-2,3})</code> returns
+<code>-2</code>.</em></p></li>
+<li><p><strong><code>min ( SET_REAL ) : REAL</code></strong></p>
+<p>Returns the minimum value from a set consisting of real valued
+elements. If the set is empty, then <span
+class="math inline">\(\infty\)</span> is returned.</p>
+<p><em>Example: <code>min({1.1,-2.1,3.1})</code> returns
+<code>-2.1</code>.</em></p></li>
 <li><p><strong><code>norm2 ( u : VECTOR ) : REAL</code></strong></p>
 <p>Calculates the euclidean norm of a vector <span
 class="math inline">\(u\)</span>, i.e. <span
