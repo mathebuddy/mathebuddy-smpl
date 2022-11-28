@@ -71,9 +71,7 @@ for (const v of variables) {
 // manual test
 console.log('--- running manual test in file index_TEST.ts ---');
 const variables = SMPL.interpret(
-  `let a = rand(1,5) + rand(1,5)*1i;
-let b = randZ(-1,1)*rand(1,5) + rand(1,5)*1i;
-let c = a + b;
+  `let a = rand(2,5);
 `,
   true,
 );
