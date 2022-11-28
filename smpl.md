@@ -386,6 +386,13 @@ function f(x: INT, y: INT): INT {
 let y = f(3, 4);
 ```
 
+## Appendix: Built-in constants
+
+The following list describes all built-in constants.
+We use the notation `:T` after each variable to indicate its data type.
+
+- **`PI : REAL` &nbsp; ($3.141592653589793$)**
+
 ## Appendix: Built-in functions
 
 The following list describes all built-in functions.
@@ -737,7 +744,7 @@ add = mul { ("+"|"-") mul };
 mul = pow { ("*"|"/"|"mod") pow };
 pow = unary [ "^" unary ];
 unary = unaryExpression [ unaryPostfix ];
-unaryExpression = "true" | "false" | INT | IMAG | REAL | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
+unaryExpression = "PI" | "true" | "false" | INT | IMAG | REAL | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
 matrix_row = "[" expr { "," expr } "]";
 unaryPostfix = "++" | "--" | [ "<" [ unary { "," unary } ] ">" ] "(" [ expr { "," expr } ] ")" | "[" expr "]";
 for = "for" "(" expression ";" expression ";" expression ")" block;
