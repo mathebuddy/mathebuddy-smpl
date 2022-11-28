@@ -1,24 +1,12 @@
-let a:b:c:d:e:f:g:h:i = rand(0,2);
-
 let a = 0;
 let b = 2;
 let v1:v2 = rand<2>(a,b);
 let A = matrix(v1,v2);
-
-let v1 = matrix(a; b);
-let v2 = matrix(c; d);
-let A = matrix(a,c; b,d);
 let q1 = det(A) != 0;
-
-a = (a + 1) mod 2
-let v3 = matrix(a; b);
-let v4 = matrix(c; d);
-let A = matrix(a,c; b,d);
+a = (a + 1) mod 2;
+let v3:v4 = rand<2>(a,b);
+A = matrix(v3,v4);
 let q2 = det(A) != 0;
-
-let v5 = matrix(a; b; c);
-let v6 = matrix(d; e; f);
-let v7 = matrix(g; h; i);
-
-let A = matrix(a,d,g; b,e,h; c,f,i);
+let v5:v6:v7 = rand<3>(a,b);
+A = matrix(v5,v6,v7);
 let q3 = det(A) != 0;
