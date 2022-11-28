@@ -407,6 +407,18 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `binomial(4,2)` returns `6`._
 
+- **`complex ( x : INT|REAL , y : INT|REAL ) : COMPLEX`**
+
+  Creates a complex number from real part `x` and imaginary part `y`, i.e. $z=x+yi$.
+
+  _Example: `complex(2,3)` returns `2+3i`_.
+
+- **`conj ( z : COMPLEX ) : COMPLEX`**
+
+  Calculates $\bar z$, i.e. the complex conjugate of `z`.
+
+  _Example: `conj(3+4i)` returns `3-4i`._
+
 - **`cos ( x : REAL ) : REAL`**
 
   Calculates $\cos(x)$.
@@ -450,14 +462,20 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `fac(3)` returns 6._
 
-- **`is_invertible ( x : MATRIX) : BOOL`**
+- **`imag ( x : COMPLEX ) : REAL`**
+
+  Returns the imaginary part of a complex number.
+
+  _Example: `imag(3+4i)` returns 4._
+
+- **`is_invertible ( x : MATRIX ) : BOOL`**
 
   Returns true, if $x$ is invertible, otherwise false.
   Throws an exception, if $x$ is not a square matrix.
 
   TODO: epsilon + give example(s)
 
-- **`is_zero ( x : VECTOR|MATRIX) : BOOL`**
+- **`is_zero ( x : VECTOR|MATRIX ) : BOOL`**
 
   Returns true, if all elements $|x| < \epsilon$.
 
@@ -515,6 +533,12 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   TODO: give example(s)
 
+- **`real ( x : COMPLEX ) : REAL`**
+
+  Returns the real part of a complex number.
+
+  _Example: `real(3+4i)` returns 3._
+
 - **`set ( x0 : INT , x1 : INT, ... ) : SET`**
 
   Creates and returns a set of integer values.
@@ -532,6 +556,21 @@ Some function also require dimensions. These are embedded into `<...>`.
   Randomly reorders the elements of `x`.
 
   _Example: `shuffle([3,1,4])` returns `[1,3,4]` or `[4,3,1]` or ..._
+
+- **`sqrt ( x : INT|REAL ) : REAL`**
+
+  Calculates $\sqrt{x}$ for $x \geq 0$.
+  If $x<0$, a runtime error is thrown.
+
+  For negative or complex `x`, use function `sqrtC`.
+
+  _Example: `sqrt(4)` returns `2`._
+
+- **`sqrtC ( x : INT|REAL|COMPLEX ) : COMPLEX`**
+
+  Calculates $\sqrt{x}$ and returns the result as complex number. The result is technically a complex number, even if the imaginary part is zero.
+
+  _Examples: `sqrt(-4)` returns `2i`. &nbsp;&nbsp;&nbsp; `sqrt(4)` returns `2+0i`._
 
 - **`tan ( x : REAL ) : REAL`**
 
@@ -574,10 +613,11 @@ and = equal { "&&" equal };
 equal = relational [ ("=="|"!=") relational ];
 relational = add [ ("<="|">="|"<"|">") add ];
 add = mul { ("+"|"-") mul };
-mul = pow { ("*"|"/") pow };
+mul = pow { ("*"|"/"|"mod") pow };
 pow = unary [ "^" unary ];
 unary = unaryExpression [ unaryPostfix ];
-unaryExpression = "true" | "false" | INT | IMAG | REAL | "(" expr ")" | ID | "-" unary | "!" unary;
+unaryExpression = "true" | "false" | INT | IMAG | REAL | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
+matrix_row = "[" expr { "," expr } "]";
 unaryPostfix = "++" | "--" | [ "<" [ unary { "," unary } ] ">" ] "(" [ expr { "," expr } ] ")" | "[" expr "]";
 for = "for" "(" expression ";" expression ";" expression ")" block;
 if = "if" "(" expression ")" block [ "else" block ];
