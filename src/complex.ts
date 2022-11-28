@@ -17,6 +17,15 @@ export class Complex {
     this.imag = imag;
   }
 
+  clone(): Complex {
+    return new Complex(this.real, this.imag);
+  }
+
+  mulReal(value: number): void {
+    this.real *= value;
+    this.imag *= value;
+  }
+
   static mathjs2complex(c: mathjs.Complex): Complex {
     return new Complex(c.re, c.im);
   }
@@ -27,5 +36,9 @@ export class Complex {
 
   toMathJs(): mathjs.Complex {
     return Complex.complex2mathjs(this);
+  }
+
+  toString(): string {
+    return this.real + '+' + this.imag + 'i';
   }
 }
