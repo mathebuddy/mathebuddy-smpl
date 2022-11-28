@@ -183,6 +183,7 @@ _div(x:TERM,y:REAL):TERM -> interpret_term._divTermReal;
 _div(x:INT,y:TERM):TERM -> interpret_term._divRealTerm;
 _div(x:REAL,y:TERM):TERM -> interpret_term._divRealTerm;
 _div(x:TERM,y:TERM):TERM -> interpret_term._divTermTerm;
+_unaryMinus(x:TERM):TERM -> interpret_term._unaryMinusTerm;
 _pow(x:TERM,y:INT):TERM -> interpret_term._powTermReal;
 _pow(x:TERM,y:REAL):TERM -> interpret_term._powTermReal;
 _pow(x:INT,y:TERM):TERM -> interpret_term._powRealTerm;
