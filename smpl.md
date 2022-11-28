@@ -539,11 +539,17 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `real(3+4i)` returns 3._
 
-- **`set ( x0 : INT , x1 : INT, ... ) : SET`**
+- **`set ( x0 : INT , x1 : INT, ... ) : SET_INT`**
 
   Creates and returns a set of integer values.
 
   _Example: `set(4, 2, 5, 2)` returns a set `{2,4,5}`._
+
+- **`set ( x0 : COMPLEX , x1 : COMPLEX, ... ) : SET_COMPLEX`**
+
+  Creates and returns a set of complex values.
+
+  _Example: `set(4+2i, 2, 5i, 2)` returns a set `{4+2i,2,5i}`._
 
 - **`sin ( x : REAL ) : REAL`**
 
