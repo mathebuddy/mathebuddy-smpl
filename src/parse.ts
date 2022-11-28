@@ -450,10 +450,14 @@ export class SMPL_Parser {
     return tc;
   }
 
-  //G unaryExpression = "true" | "false" | INT ["i"] | REAL ["i"] | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
+  //G unaryExpression = "PI" | "true" | "false" | INT ["i"] | REAL ["i"] | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
   private parseUnaryExpression(): TypedCode {
     let tc = new TypedCode();
-    if (this.lexer.isTER('true')) {
+    if (this.lexer.isTER('PI')) {
+      tc.code.str = ' Math.PI ';
+      tc.type.base = BaseType.REAL;
+      this.lexer.next();
+    } else if (this.lexer.isTER('true')) {
       tc.code.str = ' true ';
       tc.type.base = BaseType.BOOL;
       this.lexer.next();
