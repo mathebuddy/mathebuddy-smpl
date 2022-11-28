@@ -500,6 +500,14 @@ returns a result that is compatible to the return type.</li>
 }
 
 let y = f(3, 4);</code></pre>
+<h2 id="appendix-built-in-constants">Appendix: Built-in constants</h2>
+<p>The following list describes all built-in constants. We use the
+notation <code>:T</code> after each variable to indicate its data
+type.</p>
+<ul>
+<li><strong><code>PI : REAL</code>   (<span
+class="math inline">\(3.141592653589793\)</span>)</strong></li>
+</ul>
 <h2 id="appendix-built-in-functions">Appendix: Built-in functions</h2>
 <p>The following list describes all built-in functions. We use the
 notation <code>:T1|T2|...</code> to list valid data types for each
@@ -776,7 +784,7 @@ add = mul { (&quot;+&quot;|&quot;-&quot;) mul };
 mul = pow { (&quot;*&quot;|&quot;/&quot;|&quot;mod&quot;) pow };
 pow = unary [ &quot;^&quot; unary ];
 unary = unaryExpression [ unaryPostfix ];
-unaryExpression = &quot;true&quot; | &quot;false&quot; | INT | IMAG | REAL | &quot;(&quot; expr &quot;)&quot; | &quot;[&quot; matrix_row &quot;,&quot; { matrix_row } &quot;]&quot; | | ID | &quot;-&quot; unary | &quot;!&quot; unary;
+unaryExpression = &quot;PI&quot; | &quot;true&quot; | &quot;false&quot; | INT | IMAG | REAL | &quot;(&quot; expr &quot;)&quot; | &quot;[&quot; matrix_row &quot;,&quot; { matrix_row } &quot;]&quot; | | ID | &quot;-&quot; unary | &quot;!&quot; unary;
 matrix_row = &quot;[&quot; expr { &quot;,&quot; expr } &quot;]&quot;;
 unaryPostfix = &quot;++&quot; | &quot;--&quot; | [ &quot;&lt;&quot; [ unary { &quot;,&quot; unary } ] &quot;&gt;&quot; ] &quot;(&quot; [ expr { &quot;,&quot; expr } ] &quot;)&quot; | &quot;[&quot; expr &quot;]&quot;;
 for = &quot;for&quot; &quot;(&quot; expression &quot;;&quot; expression &quot;;&quot; expression &quot;)&quot; block;
