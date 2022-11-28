@@ -539,6 +539,13 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   TODO: epsilon + give example(s)
 
+- **`is_symmetric ( x : MATRIX ) : BOOL`**
+
+  Returns true, if $x$ is symmetric, otherwise false.
+  Throws an exception, if $x$ is not a square matrix.
+
+  TODO: epsilon + give example(s)
+
 - **`is_zero ( x : VECTOR|MATRIX ) : BOOL`**
 
   Returns true, if all elements $|x| < \epsilon$.
