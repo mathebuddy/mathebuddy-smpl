@@ -65,6 +65,48 @@ export class Matrix {
     return s;
   }
 
+  floor(): void {
+    const rows = this.getRows();
+    const cols = this.getCols();
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        this.setValue(i, j, Math.floor(this.getValue(i, j)));
+      }
+    }
+  }
+
+  ceil(): void {
+    const rows = this.getRows();
+    const cols = this.getCols();
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        this.setValue(i, j, Math.ceil(this.getValue(i, j)));
+      }
+    }
+  }
+
+  round(): void {
+    const rows = this.getRows();
+    const cols = this.getCols();
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        this.setValue(i, j, Math.round(this.getValue(i, j)));
+      }
+    }
+  }
+
+  static mod(m: Matrix, v: number): Matrix {
+    const result = m.clone();
+    const rows = result.getRows();
+    const cols = result.getCols();
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        result.setValue(i, j, result.getValue(i, j) % v);
+      }
+    }
+    return result;
+  }
+
   static mathjs2matrix(m: mathjs.Matrix): Matrix {
     const result = new Matrix(m.size()[0], m.size()[1]);
     const rows = result.getRows();
@@ -91,6 +133,18 @@ export class Matrix {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
         if (Math.abs(this.getValue(i, j)) > epsilon) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  is_integer(): boolean {
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        const value = this.getValue(i, j);
+        if (Math.abs(value - Math.round(value)) != 0) {
           return false;
         }
       }
