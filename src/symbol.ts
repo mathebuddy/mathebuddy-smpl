@@ -7,6 +7,7 @@
  */
 
 import { Lexer } from '@multila/multila-lexer';
+import { Complex } from './complex';
 
 import { Matrix } from './matrix';
 import { Set_INT } from './set';
@@ -18,7 +19,6 @@ export enum BaseType {
   BOOL = 'BOOL',
   INT = 'INT',
   REAL = 'REAL',
-  IMAG = 'IMAG',
   COMPLEX = 'COMPLEX',
   TERM = 'TERM',
   TERM_VAR = 'TERM_VAR',
@@ -76,8 +76,15 @@ export class SymTabEntry {
   //public runtimeExceptions = false;
   public subSymbols: SymTabEntry[] = [];
   public functionOverloadSuccessor: SymTabEntry = null;
-  public value: string | boolean | number | Set_INT | Term | Vector | Matrix =
-    null;
+  public value:
+    | string
+    | boolean
+    | number
+    | Complex
+    | Set_INT
+    | Term
+    | Vector
+    | Matrix = null;
 
   constructor(
     id: string,
