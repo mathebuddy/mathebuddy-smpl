@@ -27,6 +27,25 @@ export class Set_INT {
   }
 }
 
+export class Set_REAL {
+  elements: number[] = [];
+
+  constructor(numbers: number[] = []) {
+    this.elements = numbers;
+  }
+
+  add(value: number): void {
+    if (this.elements.includes(value) == false) this.elements.push(value);
+  }
+
+  toString(): string {
+    let s = '{';
+    s += this.elements.sort().join(','); // TODO: sort does not work!!
+    s += '}';
+    return s;
+  }
+}
+
 export class Set_COMPLEX {
   elements: Complex[] = [];
 
