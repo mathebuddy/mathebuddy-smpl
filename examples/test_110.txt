@@ -1,2 +1,2 @@
 let a = rand(2,5);
-let y(x) = ode( diff(y,x), - a * x^2/y );
+%TODO: let y(x) = ode( diff(y,x), - a * x^2/y );
