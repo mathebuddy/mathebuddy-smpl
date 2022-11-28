@@ -19,7 +19,7 @@ import { SMPL_Interpreter_Complex } from './interpret_complex';
 import { SMPL_Interpreter_Basic } from './interpret_basic';
 import { SMPL_Interpreter_Term } from './interpret_term';
 import { SMPL_Interpreter_Set } from './interpret_set';
-import { Set_COMPLEX, Set_INT } from './set';
+import { Set_COMPLEX, Set_INT, Set_REAL } from './set';
 import { Vector } from './vector';
 import { Complex } from './complex';
 
@@ -65,6 +65,7 @@ export class SMPL_Interpreter {
         | number
         | Complex
         | Set_INT
+        | Set_REAL
         | Set_COMPLEX
         | Term
         | Vector
@@ -94,6 +95,9 @@ export class SMPL_Interpreter {
             break;
           case BaseType.INT_SET:
             local.value = values[i] as Set_INT;
+            break;
+          case BaseType.REAL_SET:
+            local.value = values[i] as Set_REAL;
             break;
           case BaseType.COMPLEX_SET:
             local.value = values[i] as Set_COMPLEX;
