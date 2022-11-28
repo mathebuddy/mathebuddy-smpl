@@ -32,6 +32,7 @@ The following example program creates two $3 \times 3$-matrices $A$ and $B$, wit
 Both matrices are numerically unequal. The product of $A$ and $B$ is finally assigned to variable $C$.
 
 ```
+% multiplication of two 3x3-matrices
 let A/B = randZ<3,3>(-5,5);
 let C = A * B;
 ```
@@ -74,6 +75,25 @@ Indeed, we also could write all statements in one line, since the semicolon sepa
 - The first line evaluates the right-hand side of the equal sign (`=`) and assigns the result, here `3`, to a new variable with identifier `x`. The type of variable `x` is `INT`.
 
 - The second line first evaluates the expression `sin(x)`. Variable `x` is taken as argument to the sine function. The numeric result `0.14111..` is stored to variable `y` of data type `real`. It has double-precision (refer to IEEE 754). Take care, that real numbers $\mathbb{R}$ are stored approximately, unless symbolic computation is applied explicitly.
+
+## Comments
+
+Comments provide the opportunity co write notes in natural language that is not executed.
+Comments are introduced by the percentage sign (`%`) and are valid until the next line break.
+
+Example:
+
+```
+% this is a comment line
+let a = 5;  % assign integer constant 5 to variable a
+%let b = 7;
+```
+
+The same listing can be denoted as follows without comments:
+
+```
+let a = 5;
+```
 
 ## Declarations
 
@@ -407,6 +427,18 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `binomial(4,2)` returns `6`._
 
+- **`ceil ( x : INT|REAL ) : INT`**
+
+  Returns the ceiling of `x`.
+
+  _Example: `ceil(3.14159)` returns `4`._
+
+- **`ceil ( x : MATRIX ) : MATRIX`**
+
+  Returns a matrix, where each element is the ceiling value of the input matrix.
+
+  _Example: `ceil([1.1,2.2;4.4,5.5])` returns `[2,3;5,6]`._
+
 - **`complex ( x : INT|REAL , y : INT|REAL ) : COMPLEX`**
 
   Creates a complex number from real part `x` and imaginary part `y`, i.e. $z=x+yi$.
@@ -462,6 +494,18 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `fac(3)` returns 6._
 
+- **`floor ( x : INT|REAL ) : INT`**
+
+  Returns the floor of `x`.
+
+  _Example: `floor(2.71)` returns `2`._
+
+- **`floor ( x : MATRIX ) : MATRIX`**
+
+  Returns a matrix, where each element is the ceiling value of the input matrix.
+
+  _Example: `floor([1.1,2.2;4.4,5.5])` returns `[1,2;4,5]`._
+
 - **`imag ( x : COMPLEX ) : REAL`**
 
   Returns the imaginary part of a complex number.
@@ -496,6 +540,12 @@ Some function also require dimensions. These are embedded into `<...>`.
   Calculates the euclidean norm of a vector $u$, i.e. $\sqrt{u_0^2 + u_1^2 + \dots}$.
 
   _Example: `norm2([3,4])` returns `5`._
+
+- **`ode < lhs : TERM , rhs : TERM > : TERM`**
+
+  Returns an ordinary differential equation (ODE).
+
+  _Example: `let y(x) = ode( diff(y,x), - 2 * x^2/y );`_
 
 - **`ones < m : INT , n : INT > () : MATRIX`**
 
@@ -538,6 +588,18 @@ Some function also require dimensions. These are embedded into `<...>`.
   Returns the real part of a complex number.
 
   _Example: `real(3+4i)` returns 3._
+
+- **`round ( x : INT|REAL ) : INT`**
+
+  Returns the rounded value of `x`.
+
+  _Example: `round(3.14159)` returns `3`._
+
+- **`round ( x : MATRIX ) : MATRIX`**
+
+  Returns a matrix, where each element of the input matrix is rounded.
+
+  _Example: `round([1.1,2.2;4.4,5.5])` returns `[1,2;4,6]`._
 
 - **`set ( x0 : INT , x1 : INT, ... ) : SET_INT`**
 
