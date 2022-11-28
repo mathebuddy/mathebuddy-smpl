@@ -192,6 +192,11 @@ export class SMPL_Interpreter_Basic {
     return Math.floor(x);
   }
 
+  //G real(x:INT): REAL -> _int2real;
+  _int2real(x: number): number {
+    return x;
+  }
+
   //G ceil(x:INT): INT -> _ceil;
   //G ceil(x:REAL): INT -> _ceil;
   _ceil(x: number): number {
