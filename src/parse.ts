@@ -733,11 +733,15 @@ export class SMPL_Parser {
           prototypeParams.length == params.length) ||
         (prototypeParams.length == 1 &&
           (prototypeParams[0].type.base == BaseType.INT_LIST ||
+            prototypeParams[0].type.base == BaseType.COMPLEX_LIST ||
             prototypeParams[0].type.base == BaseType.VECTOR_LIST))
       ) {
         const is_int_list =
           prototypeParams.length == 1 &&
           prototypeParams[0].type.base == BaseType.INT_LIST;
+        const is_complex_list =
+          prototypeParams.length == 1 &&
+          prototypeParams[0].type.base == BaseType.COMPLEX_LIST;
         const is_vector_list =
           prototypeParams.length == 1 &&
           prototypeParams[0].type.base == BaseType.VECTOR_LIST;
@@ -753,10 +757,11 @@ export class SMPL_Parser {
         }
 
         // check parameter types
-        if (is_int_list || is_vector_list) {
+        if (is_int_list || is_complex_list || is_vector_list) {
           for (let k = 0; k < params.length; k++) {
             if (
               (is_int_list && params[k].type.base != BaseType.INT) ||
+              (is_complex_list && params[k].type.base != BaseType.COMPLEX) ||
               (is_vector_list && params[k].type.base != BaseType.VECTOR)
             ) {
               match = false;
@@ -784,7 +789,7 @@ export class SMPL_Parser {
             pos++;
           }
           // then put actual parameter
-          if (is_int_list || is_vector_list) {
+          if (is_int_list || is_complex_list || is_vector_list) {
             if (pos > 0) tc.code.str += ', ';
             tc.code.str += '[';
             for (let k = 0; k < params.length; k++) {
