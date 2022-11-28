@@ -586,6 +586,12 @@ class="math inline">\(u\)</span> and <span
 class="math inline">\(v\)</span>.</p>
 <p><em>Example: <code>dot([1,2,3],[4,5,6])</code> returns
 <code>32</code>.</em></p></li>
+<li><p><strong><code>eigenvalues_sym ( x : MATRIX ) : SET_REAL</code></strong></p>
+<p>Calculate the set of eigenvalues of a symmetric matrix
+<code>x</code>. If <code>x</code> is not symmetric, an error is
+thrown.</p>
+<p><em>Example: <code>eigenvalues_sym([[3,0],[0,4]])</code> returns
+<code>{3,4}</code>.</em></p></li>
 <li><p><strong><code>exp ( x : REAL|COMPLEX ) : REAL|COMPLEX</code></strong></p>
 <p>Calculates <span class="math inline">\(\exp(x)\)</span>.</p>
 <p><em>Examples: <code>exp(0)</code> returns <span
@@ -679,6 +685,10 @@ where each element is a randomly chosen integer value in range
 <p>Calculates the rank of matrix <span
 class="math inline">\(x\)</span>.</p>
 <p>TODO: give example(s)</p></li>
+<li><p><strong><code>real ( x : INT ) : REAL</code></strong></p>
+<p>Type casts an integer value to a real value.</p>
+<p><em>Example: <code>real(3)</code> returns
+<code>3.0</code>.</em></p></li>
 <li><p><strong><code>real ( x : COMPLEX ) : REAL</code></strong></p>
 <p>Returns the real part of a complex number.</p>
 <p><em>Example: <code>real(3+4i)</code> returns 3.</em></p></li>
@@ -700,6 +710,10 @@ rounded.</p>
 <p>Creates and returns a set of integer values.</p>
 <p><em>Example: <code>set(4, 2, 5, 2)</code> returns a set
 <code>{2,4,5}</code>.</em></p></li>
+<li><p><strong><code>set ( x0 : REAL , x1 : REAL, ... ) : SET_REAL</code></strong></p>
+<p>Creates and returns a set of real values.</p>
+<p><em>Example: <code>set(0.1, -3.4)</code> returns a set
+<code>{-3.4,0.1}</code>.</em></p></li>
 <li><p><strong><code>set ( x0 : COMPLEX , x1 : COMPLEX, ... ) : SET_COMPLEX</code></strong></p>
 <p>Creates and returns a set of complex values.</p>
 <p><em>Example: <code>set(4+2i, 2, 5i, 2)</code> returns a set
