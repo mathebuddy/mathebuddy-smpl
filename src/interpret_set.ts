@@ -45,6 +45,26 @@ export class SMPL_Interpreter_Set {
     return s;
   }
 
+  //G max(s:SET_INT): INT -> _maxSetInt;
+  _maxSetInt(s: Set_INT): number {
+    return s.max();
+  }
+
+  //G max(s:SET_REAL): REAL -> _maxSetReal;
+  _maxSetReal(s: Set_REAL): number {
+    return s.max();
+  }
+
+  //G min(s:SET_INT): INT -> _minSetInt;
+  _minSetInt(s: Set_INT): number {
+    return s.min();
+  }
+
+  //G min(s:SET_REAL): REAL -> _minSetReal;
+  _minSetReal(s: Set_REAL): number {
+    return s.min();
+  }
+
   //G len(s:SET_INT): INT -> _lenSet;
   _lenSet(s: Set_INT): number {
     return s.elements.length;
