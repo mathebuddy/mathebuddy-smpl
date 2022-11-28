@@ -7,6 +7,7 @@
  */
 
 import * as mathjs from 'mathjs';
+import { matrix } from 'mathjs';
 import { RunError, SMPL_Interpreter } from './interpret';
 
 import { Matrix } from './matrix';
@@ -223,6 +224,11 @@ export class SMPL_Interpreter_Matrix {
     return A;
   }
 
+  //G rank(A:MATRIX): INT -> _rank;
+  _rank(A: Matrix): number {
+    return A.rank();
+  }
+
   //G is_zero(x:MATRIX): BOOL -> _isMatrixZero;
   _isMatrixZero(x: Matrix): boolean {
     return x.is_zero(1e-9); // TODO: configure epsilon
@@ -232,5 +238,12 @@ export class SMPL_Interpreter_Matrix {
   _isMatrixInvertible(x: Matrix): boolean {
     const det = mathjs.det(Matrix.matrix2mathjs(x));
     return Math.abs(det) > 1e-9; // TODO: make epsilon adjustable
+  }
+
+  //G inv(x:MATRIX): MATRIX -> _invMatrix;
+  _invMatrix(x: Matrix, ERR_POS: string): Matrix {
+    if (this._isMatrixInvertible(x) == false)
+      throw new RunError(ERR_POS, 'matrix is not invertible');
+    return Matrix.mathjs2matrix(mathjs.inv(Matrix.matrix2mathjs(x)));
   }
 }
