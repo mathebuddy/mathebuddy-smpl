@@ -8,6 +8,7 @@
     "binom",
     "Decrementation",
     "ebnf",
+    "eigs",
     "eine",
     "elif",
     "esbuild",
@@ -37,6 +38,7 @@
     "Schwenk",
     "SMPL",
     "Stiftung",
-    "triu"
+    "triu",
+    "zmax"
   ]
 }
