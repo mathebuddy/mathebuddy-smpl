@@ -164,14 +164,22 @@ export class Term {
     let t: Term = null;
     let u, v: Term;
     switch (this.op) {
-      case '.-':
-        // diff(-u) = -diff(u);
-        t = Term.Op('.-', [this.o[0].diff(varId)]);
-        break;
       case '+':
         // diff(n0+n1+...) = diff(n0) + diff(n1) + ...
         t = Term.Op('+', []);
         for (const oi of this.o) t.o.push(oi.diff(varId));
+        break;
+      case '.-':
+        // diff(-u) = -diff(u);
+        t = Term.Op('.-', [this.o[0].diff(varId)]);
+        break;
+      case '-':
+        if (this.o.length > 2)
+          throw new TermError(
+            'diff(..): non-binary "-" operator is unimplemented',
+          );
+        // diff(u-v) = diff(u) - diff(v);
+        t = Term.Op('-', [this.o[0].diff(varId), this.o[1].diff(varId)]);
         break;
       case '*':
         // diff(u * v * ...) = diff(u)*(v*...) + u*diff(v*...)
@@ -197,7 +205,6 @@ export class Term {
         ]);
         break;
       case '^':
-        // TODO: check, if v is constant
         // diff(u^v) = diff(u) * v * u^(v-1);
         if (this.o[1].op !== '#') {
           throw new TermError(
