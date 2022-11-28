@@ -541,7 +541,7 @@ class="math inline">\(\binom{n}{k} = \frac{n!}{k!(n-k)!}\)</span>.</p>
 <li><p><strong><code>ceil ( x : MATRIX ) : MATRIX</code></strong></p>
 <p>Returns a matrix, where each element is the ceiling value of the
 input matrix.</p>
-<p><em>Example: <code>ceil([1.1,2.2;4.4,5.5])</code> returns
+<p><em>Example: <code>ceil([[1.1,2.2],[4.4,5.5]])</code> returns
 <code>[2,3;5,6]</code>.</em></p></li>
 <li><p><strong><code>complex ( x : INT|REAL , y : INT|REAL ) : COMPLEX</code></strong></p>
 <p>Creates a complex number from real part <code>x</code> and imaginary
@@ -549,6 +549,11 @@ part <code>y</code>, i.e. <span
 class="math inline">\(z=x+yi\)</span>.</p>
 <p><em>Example: <code>complex(2,3)</code> returns
 <code>2+3i</code></em>.</p></li>
+<li><p><strong><code>column ( x : MATRIX, c : INT ): VECTOR</code></strong></p>
+<p>Returns the <code>c</code>-th column of matrix <code>x</code> as
+vector. The first vector has index 0.</p>
+<p><em>Example: <code>column([[1,2],[3,4]], 1)</code> returns
+<code>[2,4]</code>.</em></p></li>
 <li><p><strong><code>conj ( z : COMPLEX ) : COMPLEX</code></strong></p>
 <p>Calculates <span class="math inline">\(\bar z\)</span>, i.e. the
 complex conjugate of <code>z</code>.</p>
@@ -586,6 +591,11 @@ class="math inline">\(v\)</span>.</p>
 <p><em>Examples: <code>exp(0)</code> returns <span
 class="math inline">\(1\)</span>. <code>exp(1i)</code> returns
 <code>0.54... + 0.84...i</code>.</em></p></li>
+<li><p><strong><code>eye ( n : INT ): MATRIX</code></strong></p>
+<p>Returns an <span class="math inline">\(n \times n\)</span> identity
+matrix.</p>
+<p><em>Example: <code>eye(3)</code> returns
+<code>[[1,0,0],[0,1,0],[0,0,1]]</code></em></p></li>
 <li><p><strong><code>fac ( x : INTEGER) : INTEGER</code></strong></p>
 <p>Calculates <span class="math inline">\(x!\)</span>, i.e. the faculty
 of <span class="math inline">\(x\)</span>.</p>
@@ -602,6 +612,11 @@ input matrix.</p>
 <li><p><strong><code>imag ( x : COMPLEX ) : REAL</code></strong></p>
 <p>Returns the imaginary part of a complex number.</p>
 <p><em>Example: <code>imag(3+4i)</code> returns 4.</em></p></li>
+<li><p><strong><code>int ( x : REAL ) : INT</code></strong></p>
+<p>Typecast from type real to type integer. Same behavior as function
+<code>floor</code>.</p>
+<p><em>Example: <code>int(3.0)</code> returns <code>3</code>.    
+<code>int(2.71)</code> returns <code>2</code>.</em></p></li>
 <li><p><strong><code>is_invertible ( x : MATRIX ) : BOOL</code></strong></p>
 <p>Returns true, if <span class="math inline">\(x\)</span> is
 invertible, otherwise false. Throws an exception, if <span
@@ -662,6 +677,11 @@ class="math inline">\(x\)</span>.</p>
 <li><p><strong><code>real ( x : COMPLEX ) : REAL</code></strong></p>
 <p>Returns the real part of a complex number.</p>
 <p><em>Example: <code>real(3+4i)</code> returns 3.</em></p></li>
+<li><p><strong><code>row ( x : MATRIX, r : INT ): VECTOR</code></strong></p>
+<p>Returns the <code>c</code>-th row of matrix <code>x</code> as vector.
+The first row has index 0.</p>
+<p><em>Example: <code>row([[1,2],[3,4]], 1)</code> returns
+<code>[3,4]</code>.</em></p></li>
 <li><p><strong><code>round ( x : INT|REAL ) : INT</code></strong></p>
 <p>Returns the rounded value of <code>x</code>.</p>
 <p><em>Example: <code>round(3.14159)</code> returns
