@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="" />
-  <meta name="dcterms.date" content="2022-11-25" />
+  <meta name="dcterms.date" content="2022-11-28" />
   <title>Simple Math Programming Language (SMPL)</title>
   <style>
     code{white-space: pre-wrap;}
@@ -95,7 +95,7 @@
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Simple Math Programming Language (SMPL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-25</p>
+<p class="date">2022-11-28</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -523,6 +523,17 @@ class="math inline">\(0\)</span>.</em></p></li>
 class="math inline">\(\binom{n}{k} = \frac{n!}{k!(n-k)!}\)</span>.</p>
 <p><em>Example: <code>binomial(4,2)</code> returns
 <code>6</code>.</em></p></li>
+<li><p><strong><code>complex ( x : INT|REAL , y : INT|REAL ) : COMPLEX</code></strong></p>
+<p>Creates a complex number from real part <code>x</code> and imaginary
+part <code>y</code>, i.e. <span
+class="math inline">\(z=x+yi\)</span>.</p>
+<p><em>Example: <code>complex(2,3)</code> returns
+<code>2+3i</code></em>.</p></li>
+<li><p><strong><code>conj ( z : COMPLEX ) : COMPLEX</code></strong></p>
+<p>Calculates <span class="math inline">\(\bar z\)</span>, i.e. the
+complex conjugate of <code>z</code>.</p>
+<p><em>Example: <code>conj(3+4i)</code> returns
+<code>3-4i</code>.</em></p></li>
 <li><p><strong><code>cos ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\cos(x)\)</span>.</p>
 <p><em>Example: <code>cos(PI/2)</code> returns <span
@@ -559,12 +570,15 @@ class="math inline">\(1\)</span>. <code>exp(1i)</code> returns
 <p>Calculates <span class="math inline">\(x!\)</span>, i.e. the faculty
 of <span class="math inline">\(x\)</span>.</p>
 <p><em>Example: <code>fac(3)</code> returns 6.</em></p></li>
-<li><p><strong><code>is_invertible ( x : MATRIX) : BOOL</code></strong></p>
+<li><p><strong><code>imag ( x : COMPLEX ) : REAL</code></strong></p>
+<p>Returns the imaginary part of a complex number.</p>
+<p><em>Example: <code>imag(3+4i)</code> returns 4.</em></p></li>
+<li><p><strong><code>is_invertible ( x : MATRIX ) : BOOL</code></strong></p>
 <p>Returns true, if <span class="math inline">\(x\)</span> is
 invertible, otherwise false. Throws an exception, if <span
 class="math inline">\(x\)</span> is not a square matrix.</p>
 <p>TODO: epsilon + give example(s)</p></li>
-<li><p><strong><code>is_zero ( x : VECTOR|MATRIX) : BOOL</code></strong></p>
+<li><p><strong><code>is_zero ( x : VECTOR|MATRIX ) : BOOL</code></strong></p>
 <p>Returns true, if all elements <span class="math inline">\(|x| &lt;
 \epsilon\)</span>.</p>
 <!-- TODO: specify epsilon + give example(s) --></li>
@@ -612,6 +626,9 @@ where each element is a randomly chosen integer value in range
 <p>Calculates the rank of matrix <span
 class="math inline">\(x\)</span>.</p>
 <p>TODO: give example(s)</p></li>
+<li><p><strong><code>real ( x : COMPLEX ) : REAL</code></strong></p>
+<p>Returns the real part of a complex number.</p>
+<p><em>Example: <code>real(3+4i)</code> returns 3.</em></p></li>
 <li><p><strong><code>set ( x0 : INT , x1 : INT, ... ) : SET</code></strong></p>
 <p>Creates and returns a set of integer values.</p>
 <p><em>Example: <code>set(4, 2, 5, 2)</code> returns a set
@@ -624,6 +641,20 @@ class="math inline">\(0\)</span>.</em></p></li>
 <p>Randomly reorders the elements of <code>x</code>.</p>
 <p><em>Example: <code>shuffle([3,1,4])</code> returns
 <code>[1,3,4]</code> or <code>[4,3,1]</code> or …</em></p></li>
+<li><p><strong><code>sqrt ( x : INT|REAL ) : REAL</code></strong></p>
+<p>Calculates <span class="math inline">\(\sqrt{x}\)</span> for <span
+class="math inline">\(x \geq 0\)</span>. If <span
+class="math inline">\(x&lt;0\)</span>, a runtime error is thrown.</p>
+<p>For negative or complex <code>x</code>, use function
+<code>sqrtC</code>.</p>
+<p><em>Example: <code>sqrt(4)</code> returns
+<code>2</code>.</em></p></li>
+<li><p><strong><code>sqrtC ( x : INT|REAL|COMPLEX ) : COMPLEX</code></strong></p>
+<p>Calculates <span class="math inline">\(\sqrt{x}\)</span> and returns
+the result as complex number. The result is technically a complex
+number, even if the imaginary part is zero.</p>
+<p><em>Examples: <code>sqrt(-4)</code> returns <code>2i</code>.    
+<code>sqrt(4)</code> returns <code>2+0i</code>.</em></p></li>
 <li><p><strong><code>tan ( x : REAL ) : REAL</code></strong></p>
 <p>Calculates <span class="math inline">\(\tan(x)\)</span>.</p>
 <p><em>Example: <code>tan(0)</code> returns <span
@@ -657,10 +688,11 @@ and = equal { &quot;&amp;&amp;&quot; equal };
 equal = relational [ (&quot;==&quot;|&quot;!=&quot;) relational ];
 relational = add [ (&quot;&lt;=&quot;|&quot;&gt;=&quot;|&quot;&lt;&quot;|&quot;&gt;&quot;) add ];
 add = mul { (&quot;+&quot;|&quot;-&quot;) mul };
-mul = pow { (&quot;*&quot;|&quot;/&quot;) pow };
+mul = pow { (&quot;*&quot;|&quot;/&quot;|&quot;mod&quot;) pow };
 pow = unary [ &quot;^&quot; unary ];
 unary = unaryExpression [ unaryPostfix ];
-unaryExpression = &quot;true&quot; | &quot;false&quot; | INT | IMAG | REAL | &quot;(&quot; expr &quot;)&quot; | ID | &quot;-&quot; unary | &quot;!&quot; unary;
+unaryExpression = &quot;true&quot; | &quot;false&quot; | INT | IMAG | REAL | &quot;(&quot; expr &quot;)&quot; | &quot;[&quot; matrix_row &quot;,&quot; { matrix_row } &quot;]&quot; | | ID | &quot;-&quot; unary | &quot;!&quot; unary;
+matrix_row = &quot;[&quot; expr { &quot;,&quot; expr } &quot;]&quot;;
 unaryPostfix = &quot;++&quot; | &quot;--&quot; | [ &quot;&lt;&quot; [ unary { &quot;,&quot; unary } ] &quot;&gt;&quot; ] &quot;(&quot; [ expr { &quot;,&quot; expr } ] &quot;)&quot; | &quot;[&quot; expr &quot;]&quot;;
 for = &quot;for&quot; &quot;(&quot; expression &quot;;&quot; expression &quot;;&quot; expression &quot;)&quot; block;
 if = &quot;if&quot; &quot;(&quot; expression &quot;)&quot; block [ &quot;else&quot; block ];
