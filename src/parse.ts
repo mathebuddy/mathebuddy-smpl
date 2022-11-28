@@ -397,14 +397,22 @@ export class SMPL_Parser {
     return x;
   }
 
-  //G mul = pow { ("*"|"/") pow };
+  //G mul = pow { ("*"|"/"|"mod") pow };
   private parseMul(): TypedCode {
     let x = this.parsePow();
-    while (this.lexer.isTER('*') || this.lexer.isTER('/')) {
+    while (
+      this.lexer.isTER('*') ||
+      this.lexer.isTER('/') ||
+      this.lexer.isTER('mod')
+    ) {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parsePow();
-      x = this.call(this.getSymbol(op === '*' ? '_mul' : '_div'), [], [x, y]);
+      x = this.call(
+        this.getSymbol(op === '*' ? '_mul' : op === '/' ? '_div' : '_mod'),
+        [],
+        [x, y],
+      );
     }
     return x;
   }
@@ -445,10 +453,9 @@ export class SMPL_Parser {
     return tc;
   }
 
-  //G unaryExpression = "true" | "false" | INT | IMAG | REAL | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
+  //G unaryExpression = "true" | "false" | INT ["i"] | REAL ["i"] | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
   private parseUnaryExpression(): TypedCode {
     let tc = new TypedCode();
-    // TODO: IMAG
     if (this.lexer.isTER('true')) {
       tc.code.str = ' true ';
       tc.type.base = BaseType.BOOL;
@@ -458,11 +465,23 @@ export class SMPL_Parser {
       tc.type.base = BaseType.BOOL;
       this.lexer.next();
     } else if (this.lexer.isINT()) {
-      tc.code.str = ' ' + this.lexer.INT() + ' ';
+      const value = this.lexer.INT();
+      tc.code.str = ' ' + value + ' ';
       tc.type.base = BaseType.INT;
+      if (this.lexer.isTER('i')) {
+        this.lexer.next();
+        tc.code.str = 'runtime.interpret_complex._create(0,' + value + ')';
+        tc.type.base = BaseType.COMPLEX;
+      }
     } else if (this.lexer.isREAL()) {
-      tc.code.str = ' ' + this.lexer.REAL() + ' ';
+      const value = this.lexer.REAL();
+      tc.code.str = ' ' + value + ' ';
       tc.type.base = BaseType.REAL;
+      if (this.lexer.isTER('i')) {
+        this.lexer.next();
+        tc.code.str = 'runtime.interpret_complex._create(0,' + value + ')';
+        tc.type.base = BaseType.COMPLEX;
+      }
     } else if (this.lexer.isTER('(')) {
       this.lexer.next();
       const e = this.parseExpression();
@@ -713,11 +732,15 @@ export class SMPL_Parser {
         (prototypeDims.length == dims.length &&
           prototypeParams.length == params.length) ||
         (prototypeParams.length == 1 &&
-          prototypeParams[0].type.base == BaseType.INT_LIST)
+          (prototypeParams[0].type.base == BaseType.INT_LIST ||
+            prototypeParams[0].type.base == BaseType.VECTOR_LIST))
       ) {
         const is_int_list =
           prototypeParams.length == 1 &&
           prototypeParams[0].type.base == BaseType.INT_LIST;
+        const is_vector_list =
+          prototypeParams.length == 1 &&
+          prototypeParams[0].type.base == BaseType.VECTOR_LIST;
 
         let match = true;
 
@@ -730,9 +753,12 @@ export class SMPL_Parser {
         }
 
         // check parameter types
-        if (is_int_list) {
+        if (is_int_list || is_vector_list) {
           for (let k = 0; k < params.length; k++) {
-            if (params[k].type.base != BaseType.INT) {
+            if (
+              (is_int_list && params[k].type.base != BaseType.INT) ||
+              (is_vector_list && params[k].type.base != BaseType.VECTOR)
+            ) {
               match = false;
               break;
             }
@@ -758,7 +784,7 @@ export class SMPL_Parser {
             pos++;
           }
           // then put actual parameter
-          if (is_int_list) {
+          if (is_int_list || is_vector_list) {
             if (pos > 0) tc.code.str += ', ';
             tc.code.str += '[';
             for (let k = 0; k < params.length; k++) {
