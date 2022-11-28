@@ -10,6 +10,7 @@ import * as mathjs from 'mathjs';
 import { RunError, SMPL_Interpreter } from './interpret';
 
 import { Matrix } from './matrix';
+import { Set_REAL } from './set';
 import { Vector } from './vector';
 
 export class SMPL_Interpreter_Matrix {
@@ -321,5 +322,15 @@ export class SMPL_Interpreter_Matrix {
       v.setValue(i, x.getValue(r, i));
     }
     return v;
+  }
+
+  //G eigenvalues_sym(x:MATRIX): SET_REAL -> _eigenvaluesSym;
+  _eigenvaluesSym(x: Matrix, ERR_POS: string): Set_REAL {
+    if (x.getRows() != x.getCols())
+      throw new RunError(ERR_POS, 'matrix is not symmetric');
+    const eigs = (mathjs.eigs(Matrix.matrix2mathjs(x)).values as any)._data;
+    const s = new Set_REAL();
+    for (const e of eigs) s.add(e);
+    return s;
   }
 }
