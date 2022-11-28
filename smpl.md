@@ -489,6 +489,13 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `dot([1,2,3],[4,5,6])` returns `32`._
 
+- **`eigenvalues_sym ( x : MATRIX ) : SET_REAL`**
+
+  Calculate the set of eigenvalues of a symmetric matrix `x`.
+  If `x` is not symmetric, an error is thrown.
+
+  _Example: `eigenvalues_sym([[3,0],[0,4]])` returns `{3,4}`._
+
 - **`exp ( x : REAL|COMPLEX ) : REAL|COMPLEX`**
 
   Calculates $\exp(x)$.
@@ -610,6 +617,12 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   TODO: give example(s)
 
+- **`real ( x : INT ) : REAL`**
+
+  Type casts an integer value to a real value.
+
+  _Example: `real(3)` returns `3.0`._
+
 - **`real ( x : COMPLEX ) : REAL`**
 
   Returns the real part of a complex number.
@@ -640,6 +653,12 @@ Some function also require dimensions. These are embedded into `<...>`.
   Creates and returns a set of integer values.
 
   _Example: `set(4, 2, 5, 2)` returns a set `{2,4,5}`._
+
+- **`set ( x0 : REAL , x1 : REAL, ... ) : SET_REAL`**
+
+  Creates and returns a set of real values.
+
+  _Example: `set(0.1, -3.4)` returns a set `{-3.4,0.1}`._
 
 - **`set ( x0 : COMPLEX , x1 : COMPLEX, ... ) : SET_COMPLEX`**
 
