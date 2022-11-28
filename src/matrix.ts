@@ -97,4 +97,42 @@ export class Matrix {
     }
     return true;
   }
+
+  rank(epsilon = 1e-12): number {
+    // implementation based on https://cp-algorithms.com/linear_algebra/rank-matrix.html
+    // TODO: test cases
+    const A = this.clone();
+    const m = A.rows;
+    const n = A.cols;
+    let rank = 0;
+    const row_selected: boolean[] = [];
+    for (let k = 0; k < n; k++) row_selected.push(false);
+    for (let i = 0; i < m; i++) {
+      let j;
+      for (j = 0; j < n; j++) {
+        if (!row_selected[j] && Math.abs(A.getValue(i, j)) > epsilon) {
+          break;
+        }
+      }
+      if (j != n) {
+        rank++;
+        row_selected[j] = true;
+        for (let p = i + 1; p < m; p++) {
+          A.setValue(p, j, A.getValue(p, j) / A.getValue(i, j));
+        }
+        for (let k = 0; k < n; k++) {
+          if (k != j && Math.abs(A.getValue(i, k)) > epsilon) {
+            for (let p = i + 1; p < m; p++) {
+              A.setValue(
+                p,
+                k,
+                A.getValue(p, k) - A.getValue(p, j) * A.getValue(i, k),
+              );
+            }
+          }
+        }
+      }
+    }
+    return rank;
+  }
 }
