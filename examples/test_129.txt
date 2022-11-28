@@ -1,5 +1,5 @@
 let A = rand<3,3>(0,4);
-while (is_invertible(A) == fasle) {
+while (is_invertible(A) == false) {
     A = rand<3,3>(0,4);
 }
 let q1 = true;
