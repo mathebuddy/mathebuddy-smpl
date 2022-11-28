@@ -8,6 +8,8 @@
 
 import { Complex } from './complex';
 
+// TODO: consolidate classes Set_INT and Set_REAL
+
 export class Set_INT {
   elements: number[] = [];
 
@@ -17,6 +19,22 @@ export class Set_INT {
 
   add(value: number): void {
     if (this.elements.includes(value) == false) this.elements.push(value);
+  }
+
+  min(): number {
+    let m = Infinity;
+    for (const e of this.elements) {
+      if (e < m) m = e;
+    }
+    return m;
+  }
+
+  max(): number {
+    let m = -Infinity;
+    for (const e of this.elements) {
+      if (e > m) m = e;
+    }
+    return m;
   }
 
   toString(): string {
@@ -36,6 +54,22 @@ export class Set_REAL {
 
   add(value: number): void {
     if (this.elements.includes(value) == false) this.elements.push(value);
+  }
+
+  min(): number {
+    let m = Infinity;
+    for (const e of this.elements) {
+      if (e < m) m = e;
+    }
+    return m;
+  }
+
+  max(): number {
+    let m = -Infinity;
+    for (const e of this.elements) {
+      if (e > m) m = e;
+    }
+    return m;
   }
 
   toString(): string {
