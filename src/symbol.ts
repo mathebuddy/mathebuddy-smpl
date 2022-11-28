@@ -10,7 +10,7 @@ import { Lexer } from '@multila/multila-lexer';
 import { Complex } from './complex';
 
 import { Matrix } from './matrix';
-import { Set_COMPLEX, Set_INT } from './set';
+import { Set_COMPLEX, Set_INT, Set_REAL } from './set';
 import { Term } from './term';
 import { Vector } from './vector';
 
@@ -26,8 +26,10 @@ export enum BaseType {
   MATRIX = 'MATRIX',
   FUNCTION_CALL = 'FUNCTION_CALL',
   INT_SET = 'INT_SET',
+  REAL_SET = 'REAL_SET',
   COMPLEX_SET = 'COMPLEX_SET',
   INT_LIST = 'INT_LIST',
+  REAL_LIST = 'REAL_LIST',
   COMPLEX_LIST = 'COMPLEX_LIST',
   VECTOR_LIST = 'VECTOR_LIST',
   VOID = 'VOID',
@@ -84,6 +86,7 @@ export class SymTabEntry {
     | number
     | Complex
     | Set_INT
+    | Set_REAL
     | Set_COMPLEX
     | Term
     | Vector
@@ -133,8 +136,10 @@ function getBaseType(lex: Lexer, str: string): BaseType {
   else if (str === 'TERM') return BaseType.TERM;
   else if (str === 'TERM_VAR') return BaseType.TERM_VAR;
   else if (str === 'SET_INT') return BaseType.INT_SET;
+  else if (str === 'SET_REAL') return BaseType.REAL_SET;
   else if (str === 'SET_COMPLEX') return BaseType.COMPLEX_SET;
   else if (str === 'INT_LIST') return BaseType.INT_LIST;
+  else if (str === 'REAL_LIST') return BaseType.REAL_LIST;
   else if (str === 'COMPLEX_LIST') return BaseType.COMPLEX_LIST;
   else if (str === 'VECTOR_LIST') return BaseType.VECTOR_LIST;
   else lex.error('unknown base type ' + str);
