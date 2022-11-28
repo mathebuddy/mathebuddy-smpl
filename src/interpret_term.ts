@@ -153,4 +153,9 @@ export class SMPL_Interpreter_Term {
     const d = x.diff(varId.toString());
     return d;
   }
+
+  //G ode(lhs:TERM,rhs:TERM): TERM -> _ode;
+  _ode(lhs: Term, rhs: Term): Term {
+    return Term.Op('ode', [lhs, rhs]);
+  }
 }
