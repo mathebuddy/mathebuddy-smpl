@@ -8,7 +8,7 @@
 
 import * as mathjs from 'mathjs';
 
-import { SMPL_Interpreter } from './interpret';
+import { RunError, SMPL_Interpreter } from './interpret';
 
 export class SMPL_Interpreter_Basic {
   private parent: SMPL_Interpreter = null;
@@ -58,6 +58,11 @@ export class SMPL_Interpreter_Basic {
   //G _div(x:REAL,y:REAL):REAL -> _div;
   _div(x: number, y: number): number {
     return x / y;
+  }
+
+  //G _mod(x:INT,y:INT):INT -> _mod;
+  _mod(x: number, y: number): number {
+    return x % y;
   }
 
   //G _pow(x:INT,y:INT):INT -> _pow;
@@ -134,8 +139,14 @@ export class SMPL_Interpreter_Basic {
     return Math.exp(x);
   }
 
+  //G sqrt(x:INT): REAL -> _sqrt;
   //G sqrt(x:REAL): REAL -> _sqrt;
-  _sqrt(x: number): number {
+  _sqrt(x: number, ERR_POS: string): number {
+    if (x < 0)
+      throw new RunError(
+        ERR_POS,
+        'parameter must be positive; otherwise use function "sqrtC"',
+      );
     return Math.sqrt(x);
   }
 
