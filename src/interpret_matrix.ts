@@ -34,6 +34,16 @@ export class SMPL_Interpreter_Matrix {
     return x.clone();
   }
 
+  //G _equal(x:MATRIX, y:MATRIX): BOOL -> _equalMatrices;
+  _equalMatrices(x: Matrix, y: Matrix): boolean {
+    return Matrix.equal(x, y);
+  }
+
+  //G _unequal(x:MATRIX, y:MATRIX): BOOL -> _unequalMatrices;
+  _unequalMatrices(x: Matrix, y: Matrix): boolean {
+    return Matrix.equal(x, y) == false;
+  }
+
   _getElement(x: Matrix, row: number, col: number, ERR_POS: string): number {
     if (row < 0 || row >= x.getRows())
       throw new RunError(
@@ -263,15 +273,24 @@ export class SMPL_Interpreter_Matrix {
     return x.is_zero(1e-9); // TODO: configure epsilon
   }
 
+  //G is_symmetric(x:MATRIX): BOOL -> _isMatrixSymmetric;
+  _isMatrixSymmetric(x: Matrix, ERR_POS: string): boolean {
+    if (x.getRows() != x.getCols())
+      throw new RunError(ERR_POS, 'matrix is not symmetric');
+    return x.is_symmetric();
+  }
+
   //G is_invertible(x:MATRIX): BOOL -> _isMatrixInvertible;
-  _isMatrixInvertible(x: Matrix): boolean {
+  _isMatrixInvertible(x: Matrix, ERR_POS: string): boolean {
+    if (x.getRows() != x.getCols())
+      throw new RunError(ERR_POS, 'matrix is not symmetric');
     const det = mathjs.det(Matrix.matrix2mathjs(x));
     return Math.abs(det) > 1e-9; // TODO: make epsilon adjustable
   }
 
   //G inv(x:MATRIX): MATRIX -> _invMatrix;
   _invMatrix(x: Matrix, ERR_POS: string): Matrix {
-    if (this._isMatrixInvertible(x) == false)
+    if (this._isMatrixInvertible(x, ERR_POS) == false)
       throw new RunError(ERR_POS, 'matrix is not invertible');
     return Matrix.mathjs2matrix(mathjs.inv(Matrix.matrix2mathjs(x)));
   }
