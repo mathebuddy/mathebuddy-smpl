@@ -214,7 +214,7 @@ export class SMPL_Parser {
         // has a value that is different to all other variables.
         // Note: In case that the right-hand side (expression "e") is
         // not (sufficiently) randomized, we run into an infinite loop...
-        if (e.type.base !== BaseType.INT)
+        if (e.type.base !== BaseType.INT && e.type.base !== BaseType.MATRIX)
           this.lexer.error(
             'declaration operator "/" is unimplemented for type ' + e.type.base,
           );
@@ -234,7 +234,16 @@ export class SMPL_Parser {
             let condition = '';
             for (let j = 0; j < i; j++) {
               if (condition.length > 0) condition += ' || ';
-              condition += id + ' == ' + ids[j];
+              if (e.type.base === BaseType.INT) {
+                condition += id + ' == ' + ids[j];
+              } else {
+                condition +=
+                  'runtime.interpret_matrix._equalMatrices(' +
+                  id +
+                  ',' +
+                  ids[j] +
+                  ')';
+              }
             }
             c.str += condition;
             c.str += ');\n';
@@ -324,7 +333,7 @@ export class SMPL_Parser {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseEqual();
-      if (x.type.base == BaseType.BOOL && y.type.base == BaseType.BOOL) {
+      if (x.type.base === BaseType.BOOL && y.type.base === BaseType.BOOL) {
         x.type.base = BaseType.BOOL;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
       } else
@@ -335,28 +344,16 @@ export class SMPL_Parser {
 
   //G equal = relational [ ("=="|"!=") relational ];
   private parseEqual(): TypedCode {
-    const x = this.parseRelational();
+    let x = this.parseRelational();
     if (this.lexer.isTER('==') || this.lexer.isTER('!=')) {
       const op = this.lexer.getToken().token;
       this.lexer.next();
       const y = this.parseRelational();
-      if (x.type.base == BaseType.BOOL && y.type.base == BaseType.BOOL) {
-        x.type.base = BaseType.BOOL;
-        x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
-      } else if (x.type.base == BaseType.INT && y.type.base == BaseType.INT) {
-        x.type.base = BaseType.BOOL;
-        x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
-      } else if (
-        (x.type.base == BaseType.INT || x.type.base == BaseType.REAL) &&
-        (y.type.base == BaseType.INT || y.type.base == BaseType.REAL)
-      ) {
-        x.type.base = BaseType.BOOL;
-        x.code.str =
-          op == '=='
-            ? '(Math.abs((' + x.code.str + ') - (' + y.code.str + ')) <= 1e-9)'
-            : '(Math.abs((' + x.code.str + ') - (' + y.code.str + ')) > 1e-9)';
-      } else
-        this.lexer.errorTypesInBinaryOperation(op, x.type.base, y.type.base);
+      x = this.call(
+        this.getSymbol(op === '==' ? '_equal' : '_unequal'),
+        [],
+        [x, y],
+      );
     }
     return x;
   }
@@ -374,8 +371,8 @@ export class SMPL_Parser {
       this.lexer.next();
       const y = this.parseAdd();
       if (
-        (x.type.base == BaseType.INT || x.type.base == BaseType.REAL) &&
-        (y.type.base == BaseType.INT || y.type.base == BaseType.REAL)
+        (x.type.base === BaseType.INT || x.type.base === BaseType.REAL) &&
+        (y.type.base === BaseType.INT || y.type.base === BaseType.REAL)
       ) {
         x.type.base = BaseType.BOOL;
         x.code.str = x.code.str + ' ' + op + ' ' + y.code.str;
