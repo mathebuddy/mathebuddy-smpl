@@ -68,6 +68,15 @@ export class SMPL_Interpreter_Matrix {
     x.setValue(row, col, value);
   }
 
+  //G eye(n:INT): MATRIX -> _eye;
+  _eye(n: number): Matrix {
+    const x = new Matrix(n, n);
+    for (let i = 0; i < n; i++) {
+      x.setValue(i, i, 1);
+    }
+    return x;
+  }
+
   //G _add(x:MATRIX,y:MATRIX):MATRIX -> _addMatrices;
   _addMatrices(x: Matrix, y: Matrix, ERR_POS: string): Matrix {
     let z: mathjs.Matrix;
@@ -272,5 +281,26 @@ export class SMPL_Interpreter_Matrix {
     if (x.is_integer() == false)
       throw new RunError(ERR_POS, 'matrix is not integral');
     return Matrix.mod(x, y);
+  }
+
+  //G column(x:MATRIX, c:INT): VECTOR -> _matrixColumn;
+  _matrixColumn(x: Matrix, c: number, ERR_POS: string): Vector {
+    if (c < 0 || c >= x.getCols())
+      throw new RunError(ERR_POS, 'invalid column');
+    const v = new Vector(x.getRows());
+    for (let i = 0; i < x.getRows(); i++) {
+      v.setValue(i, x.getValue(i, c));
+    }
+    return v;
+  }
+
+  //G row(x:MATRIX, r:INT): VECTOR -> _matrixRow;
+  _matrixRow(x: Matrix, r: number, ERR_POS: string): Vector {
+    if (r < 0 || r >= x.getRows()) throw new RunError(ERR_POS, 'invalid row');
+    const v = new Vector(x.getCols());
+    for (let i = 0; i < x.getCols(); i++) {
+      v.setValue(i, x.getValue(r, i));
+    }
+    return v;
   }
 }
