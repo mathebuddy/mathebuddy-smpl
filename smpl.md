@@ -576,6 +576,34 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   TODO: no, one, inf solutions.
 
+- **`max ( SET_INT ) : INT`**
+
+  Returns the maximum value from an integer set.
+  If the set is empty, then $-\infty$ is returned.
+
+  _Example: `max({1,-2,3})` returns `3`._
+
+- **`max ( SET_REAL ) : REAL`**
+
+  Returns the maximum value from a set consisting of real valued elements.
+  If the set is empty, then $-\infty$ is returned.
+
+  _Example: `max({1.1,-2.1,3.1})` returns `3.1`._
+
+- **`min ( SET_INT ) : INT`**
+
+  Returns the minimum value from an integer set.
+  If the set is empty, then $\infty$ is returned.
+
+  _Example: `min({1,-2,3})` returns `-2`._
+
+- **`min ( SET_REAL ) : REAL`**
+
+  Returns the minimum value from a set consisting of real valued elements.
+  If the set is empty, then $\infty$ is returned.
+
+  _Example: `min({1.1,-2.1,3.1})` returns `-2.1`._
+
 - **`norm2 ( u : VECTOR ) : REAL`**
 
   Calculates the euclidean norm of a vector $u$, i.e. $\sqrt{u_0^2 + u_1^2 + \dots}$.
