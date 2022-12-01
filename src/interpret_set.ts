@@ -69,4 +69,9 @@ export class SMPL_Interpreter_Set {
   _lenSet(s: Set_INT): number {
     return s.elements.length;
   }
+
+  //G rand(s:SET_INT): INT -> _randIntSet;
+  _randIntSet(s: Set_INT): number {
+    return s.elements[Math.floor(Math.random() * s.elements.length)];
+  }
 }
