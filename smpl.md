@@ -634,6 +634,10 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   Returns a $m \times n$ matrix, where each element is a randomly chosen integer value in range `[a,b]`.
 
+- **`rand ( s : SET_INT ) : INT`**
+
+  Randomly returns one of the elements of integer set `s`.
+
 - **`randZ ( a : INT , b : INT ) : INT`**
 
   Returns a random integer in range `[a,b]`, except value 0.
