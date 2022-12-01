@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="" />
-  <meta name="dcterms.date" content="2022-11-29" />
+  <meta name="dcterms.date" content="2022-12-01" />
   <title>Simple Math Programming Language (SMPL)</title>
   <style>
     code{white-space: pre-wrap;}
@@ -95,7 +95,7 @@
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Simple Math Programming Language (SMPL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-29</p>
+<p class="date">2022-12-01</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -700,6 +700,9 @@ where each element is a randomly chosen integer value in range
 <p>Returns a <span class="math inline">\(m \times n\)</span> matrix,
 where each element is a randomly chosen integer value in range
 <code>[a,b]</code>.</p></li>
+<li><p><strong><code>rand ( s : SET_INT ) : INT</code></strong></p>
+<p>Randomly returns one of the elements of integer set
+<code>s</code>.</p></li>
 <li><p><strong><code>randZ ( a : INT , b : INT ) : INT</code></strong></p>
 <p>Returns a random integer in range <code>[a,b]</code>, except value
 0.</p></li>
