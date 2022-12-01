@@ -89,6 +89,7 @@ max(s:SET_REAL): REAL -> interpret_set._maxSetReal;
 min(s:SET_INT): INT -> interpret_set._minSetInt;
 min(s:SET_REAL): REAL -> interpret_set._minSetReal;
 len(s:SET_INT): INT -> interpret_set._lenSet;
+rand(s:SET_INT): INT -> interpret_set._randIntSet;
 _unaryMinus(x:COMPLEX):COMPLEX -> interpret_complex._unaryMinusComplex;
 _add(x:COMPLEX,y:COMPLEX):COMPLEX -> interpret_complex._addComplex;
 _add(x:INT, y:COMPLEX): COMPLEX -> interpret_complex._addNumberComplex;
