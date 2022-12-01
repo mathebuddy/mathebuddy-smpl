@@ -71,9 +71,10 @@ for (const v of variables) {
 // manual test
 console.log('--- running manual test in file index_TEST.ts ---');
 const variables = SMPL.interpret(
-  `let A/B/C = rand<2,2>(0,1);
+  `/*let A/B/C = rand<2,2>(0,1);
 let d/e/f = rand(0,10);
-%let x:y:z:w:a:b:c:d:e:f:g:h:i = rand(0,1);
+%let x:y:z:w:a:b:c:d:e:f:g:h:i = rand(0,1);*/
+let y = rand(set(1,2,3));
 `,
   true,
 );
