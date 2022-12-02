@@ -52,7 +52,7 @@ export class SMPL_Interpreter_Complex {
   //G _sub(x:INT, y:COMPLEX): COMPLEX -> _subNumberComplex;
   //G _sub(x:REAL, y:COMPLEX): COMPLEX -> _subNumberComplex;
   _subNumberComplex(x: number, y: Complex): Complex {
-    return new Complex(x - y.real, y.imag);
+    return new Complex(x - y.real, -y.imag);
   }
 
   //G _sub(x:COMPLEX, y:INT): COMPLEX -> _subComplexNumber;
