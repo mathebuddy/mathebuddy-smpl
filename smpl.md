@@ -531,7 +531,7 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   Returns a matrix, where each element is the ceiling value of the input matrix.
 
-  _Example: `floor([1.1,2.2;4.4,5.5])` returns `[1,2;4,5]`._
+  _Example: `floor([[1.1,2.2],[4.4,5.5]])` returns `[[1,2],[4,5]]`._
 
 - **`imag ( x : COMPLEX ) : REAL`**
 
@@ -576,33 +576,33 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   TODO: no, one, inf solutions.
 
-- **`max ( SET_INT ) : INT`**
+- **`max ( s : SET_INT ) : INT`**
 
   Returns the maximum value from an integer set.
   If the set is empty, then $-\infty$ is returned.
 
-  _Example: `max({1,-2,3})` returns `3`._
+  _Example: `max(set(1,-2,3))` returns `3`._
 
-- **`max ( SET_REAL ) : REAL`**
+- **`max ( s : SET_REAL ) : REAL`**
 
   Returns the maximum value from a set consisting of real valued elements.
   If the set is empty, then $-\infty$ is returned.
 
-  _Example: `max({1.1,-2.1,3.1})` returns `3.1`._
+  _Example: `max(set(1.1,-2.1,3.1))` returns `3.1`._
 
-- **`min ( SET_INT ) : INT`**
+- **`min ( s : SET_INT ) : INT`**
 
   Returns the minimum value from an integer set.
   If the set is empty, then $\infty$ is returned.
 
-  _Example: `min({1,-2,3})` returns `-2`._
+  _Example: `min(set(1,-2,3))` returns `-2`._
 
-- **`min ( SET_REAL ) : REAL`**
+- **`min ( s : SET_REAL ) : REAL`**
 
   Returns the minimum value from a set consisting of real valued elements.
   If the set is empty, then $\infty$ is returned.
 
-  _Example: `min({1.1,-2.1,3.1})` returns `-2.1`._
+  _Example: `min(set(1.1,-2.1,3.1))` returns `-2.1`._
 
 - **`norm2 ( u : VECTOR ) : REAL`**
 
@@ -654,7 +654,7 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   Calculates the rank of matrix $x$.
 
-  TODO: give example(s)
+  <!-- TODO: give example(s) -->
 
 - **`real ( x : INT ) : REAL`**
 
@@ -685,25 +685,25 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   Returns a matrix, where each element of the input matrix is rounded.
 
-  _Example: `round([1.1,2.2;4.4,5.5])` returns `[1,2;4,6]`._
+  _Example: `round([[1.1,2.2],[4.4,5.5]])` returns `[[1,2],[4,6]]`._
 
 - **`set ( x0 : INT , x1 : INT, ... ) : SET_INT`**
 
   Creates and returns a set of integer values.
 
-  _Example: `set(4, 2, 5, 2)` returns a set `{2,4,5}`._
+  _Example: `set(4, 2, 5, 2)` returns a set $\{2,4,5\}$._
 
 - **`set ( x0 : REAL , x1 : REAL, ... ) : SET_REAL`**
 
   Creates and returns a set of real values.
 
-  _Example: `set(0.1, -3.4)` returns a set `{-3.4,0.1}`._
+  _Example: `set(0.1, -3.4)` returns a set $\{-3.4,0.1\}$._
 
 - **`set ( x0 : COMPLEX , x1 : COMPLEX, ... ) : SET_COMPLEX`**
 
   Creates and returns a set of complex values.
 
-  _Example: `set(4+2i, 2, 5i, 2)` returns a set `{4+2i,2,5i}`._
+  _Example: `set(4+2i, 2, 5i, 2)` returns a set $\{4+2i,2,5i\}$._
 
 - **`sin ( x : REAL ) : REAL`**
 
@@ -755,8 +755,6 @@ Some function also require dimensions. These are embedded into `<...>`.
   Returns a zero-matrix with `m` rows and `n` columns.
 
   _Example: `zero<2,3>()` returns a $2\times 3$ matrix with all elements 0._
-
-TODO: THIS LIST IS CURRENTLY WORK IN PROGRESS...
 
 ## Appendix: Grammar
 
