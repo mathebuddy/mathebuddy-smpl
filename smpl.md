@@ -638,6 +638,8 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   Randomly returns one of the elements of integer set `s`.
 
+  _Example: `rand(set(11,12,13))` returns `11` or `12` or `13`._
+
 - **`randZ ( a : INT , b : INT ) : INT`**
 
   Returns a random integer in range `[a,b]`, except value 0.
