@@ -7,7 +7,7 @@
 # */
 
 files = ['interpret_basic.ts', 'interpret_set.ts', 'interpret_complex.ts', \
-  'interpret_vector.ts', 'interpret_matrix.ts', 'interpret_term.ts']
+  'interpret_vector.ts', 'interpret_matrix.ts', 'interpret_term.ts', 'interpret_plot.ts']
 
 prototypes = ''
 
