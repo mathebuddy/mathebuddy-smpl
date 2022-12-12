@@ -521,6 +521,34 @@ Some function also require dimensions. These are embedded into `<...>`.
 
   _Example: `fac(3)` returns 6._
 
+- **`figure2d() : FIGURE_2D`**
+
+  Creates a new 2D-figure instance.
+
+- **`figure_x_range( fig : FIGURE_2D, min : REAL , max : REAL ) : VOID`**
+
+  Defines the range of the $x$-axis for figure `fig`.
+
+- **`figure_y_range( fig : FIGURE_2D, min : REAL , max : REAL ) : VOID`**
+
+  Defines the range of the $y$-axis for figure `fig`.
+
+- **`figure_x_label( fig : FIGURE_2D, label : STRING ) : VOID`**
+
+  Sets the label of the $x$-axis for figure `fig`.
+
+- **`figure_y_label( fig : FIGURE_2D, label : STRING ) : VOID`**
+
+  Sets the label of the $y$-axis for figure `fig`.
+
+- **`figure_color( fig : FIGURE_2D, key : INT ) : VOID`**
+
+  Sets the color for figure `fig`.
+
+- **`figure_plot( fig : FIGURE_2D, x : VECTOR|TERM ) : VOID`**
+
+  Plots a 2D-point or a function term into figure `fig`.
+
 - **`floor ( x : INT|REAL ) : INT`**
 
   Returns the floor of `x`.
@@ -776,7 +804,7 @@ add = mul { ("+"|"-") mul };
 mul = pow { ("*"|"/"|"mod") pow };
 pow = unary [ "^" unary ];
 unary = unaryExpression [ unaryPostfix ];
-unaryExpression = "PI" | "true" | "false" | INT | IMAG | REAL | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
+unaryExpression = "PI" | "true" | "false" | INT ["i"] | REAL ["i"] | "(" expr ")" | "[" matrix_row { "," matrix_row } "]" | "[" expr { "," expr } "]" | | ID | "-" unary | "!" unary | STR;
 matrix_row = "[" expr { "," expr } "]";
 unaryPostfix = "++" | "--" | [ "<" [ unary { "," unary } ] ">" ] "(" [ expr { "," expr } ] ")" | "[" expr "]";
 for = "for" "(" expression ";" expression ";" expression ")" block;
