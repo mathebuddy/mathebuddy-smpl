@@ -200,6 +200,20 @@ tan(x:TERM): TERM -> interpret_term._tanTerm;
 exp(x:TERM): TERM -> interpret_term._expTerm;
 diff(x:TERM, varId:TERM): TERM -> interpret_term._diffTerm;
 ode(lhs:TERM,rhs:TERM): TERM -> interpret_term._ode;
+figure2d(): FIGURE_2D -> interpret_plot._create_figure2d;
+figure_color(fig:FIGURE_2D,color_key:INT):VOID -> interpret_plot._figure_color;
+figure_x_range(fig:FIGURE_2D,min:INT,max:INT):VOID -> interpret_plot._figure_x_range;
+figure_x_range(fig:FIGURE_2D,min:INT,max:REAL):VOID -> interpret_plot._figure_x_range;
+figure_x_range(fig:FIGURE_2D,min:REAL,max:INT):VOID -> interpret_plot._figure_x_range;
+figure_x_range(fig:FIGURE_2D,min:REAL,max:REAL):VOID -> interpret_plot._figure_x_range;
+figure_y_range(fig:FIGURE_2D,min:INT,max:INT):VOID -> interpret_plot._figure_y_range;
+figure_y_range(fig:FIGURE_2D,min:INT,max:REAL):VOID -> interpret_plot._figure_y_range;
+figure_y_range(fig:FIGURE_2D,min:REAL,max:INT):VOID -> interpret_plot._figure_y_range;
+figure_y_range(fig:FIGURE_2D,min:INT,max:INT):VOID -> interpret_plot._figure_y_range;
+figure_x_label(fig:FIGURE_2D,label:STRING):VOID -> interpret_plot._figure_x_label;
+figure_y_label(fig:FIGURE_2D,label:STRING):VOID -> interpret_plot._figure_y_label;
+figure_plot(fig:FIGURE_2D,term:TERM):VOID -> interpret_plot._figure_plot_term;
+figure_plot(fig:FIGURE_2D,point2d:VECTOR):VOID -> interpret_plot._figure_plot_point;
 
 `;
 
