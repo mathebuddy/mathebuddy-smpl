@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@multila/multila-lexer": "^0.9.0",
+    "buffer": "^6.0.3",
     "mathjs": "^11.0.1"
   }
 }
