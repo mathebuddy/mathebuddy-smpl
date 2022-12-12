@@ -22,6 +22,8 @@ import { SMPL_Interpreter_Set } from './interpret_set';
 import { Set_COMPLEX, Set_INT, Set_REAL } from './set';
 import { Vector } from './vector';
 import { Complex } from './complex';
+import { SMPL_Interpreter_Plot } from './interpret_plot';
+import { Figure2d } from './figure';
 
 export class RunError extends Error {
   constructor(srcPos: string, msg: string) {
@@ -37,6 +39,7 @@ export class SMPL_Interpreter {
   interpret_basic: SMPL_Interpreter_Basic = null;
   interpret_term: SMPL_Interpreter_Term = null;
   interpret_set: SMPL_Interpreter_Set = null;
+  interpret_plot: SMPL_Interpreter_Plot = null;
 
   public constructor() {
     this.interpret_vector = new SMPL_Interpreter_Vector(this);
@@ -45,6 +48,7 @@ export class SMPL_Interpreter {
     this.interpret_basic = new SMPL_Interpreter_Basic(this);
     this.interpret_term = new SMPL_Interpreter_Term(this);
     this.interpret_set = new SMPL_Interpreter_Set(this);
+    this.interpret_plot = new SMPL_Interpreter_Plot(this);
   }
 
   public interpret(code: string, locals: SymTabEntry[]): void {
@@ -70,6 +74,7 @@ export class SMPL_Interpreter {
         | Term
         | Vector
         | Matrix
+        | Figure2d
       )[] = f(this);
       for (let i = 0; i < locals.length; i++) {
         const local = locals[i];
@@ -101,6 +106,9 @@ export class SMPL_Interpreter {
             break;
           case BaseType.COMPLEX_SET:
             local.value = values[i] as Set_COMPLEX;
+            break;
+          case BaseType.FIGURE_2D:
+            local.value = values[i] as Figure2d;
             break;
           default:
             throw new RunError(
