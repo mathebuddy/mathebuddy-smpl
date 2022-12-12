@@ -450,7 +450,7 @@ export class SMPL_Parser {
     return tc;
   }
 
-  //G unaryExpression = "PI" | "true" | "false" | INT ["i"] | REAL ["i"] | "(" expr ")" | "[" matrix_row "," { matrix_row } "]" | | ID | "-" unary | "!" unary;
+  //G unaryExpression = "PI" | "true" | "false" | INT ["i"] | REAL ["i"] | "(" expr ")" | "[" matrix_row { "," matrix_row } "]" | "[" expr { "," expr } "]" | | ID | "-" unary | "!" unary | STR;
   private parseUnaryExpression(): TypedCode {
     let tc = new TypedCode();
     if (this.lexer.isTER('PI')) {
@@ -491,38 +491,67 @@ export class SMPL_Parser {
       tc.type = e.type;
     } else if (this.lexer.isTER('[')) {
       this.lexer.next();
-      let i = 0;
-      let m = -1; // num rows
-      let n = -1; // num cols
-      const elements: TypedCode[] = []; // matrix elements in row major order
-      while (this.lexer.isNotTER(']')) {
-        if (i > 0) this.lexer.TER(',');
-        const row = this.parseMatrixRow();
-        if (i == 0) n = row.length;
-        else if (n != row.length)
-          this.lexer.error('inconsistent number of matrix columns');
-        for (const r of row) elements.push(r);
-        i++;
+      if (this.lexer.isTER('[')) {
+        // matrix
+        let i = 0;
+        let m = -1; // num rows
+        let n = -1; // num cols
+        const elements: TypedCode[] = []; // matrix elements in row major order
+        while (this.lexer.isNotTER(']')) {
+          if (i > 0) this.lexer.TER(',');
+          const row = this.parseMatrixRow();
+          if (i == 0) n = row.length;
+          else if (n != row.length)
+            this.lexer.error('inconsistent number of matrix columns');
+          for (const r of row) elements.push(r);
+          i++;
+        }
+        m = i;
+        this.lexer.TER(']');
+        let elementsCode = '[';
+        let k = 0;
+        for (const e of elements) {
+          if (k > 0) elementsCode += ', ';
+          elementsCode += e.code.str;
+          k++;
+        }
+        elementsCode += ']';
+        tc.code.str =
+          'runtime.interpret_matrix._create(' +
+          m +
+          ', ' +
+          n +
+          ', ' +
+          elementsCode +
+          ')';
+        tc.type.base = BaseType.MATRIX;
+      } else {
+        // vector
+        let i = 0;
+        let n = 0; // num entries
+        const elements: TypedCode[] = []; // matrix elements in row major order
+        while (this.lexer.isNotTER(']')) {
+          if (i > 0) this.lexer.TER(',');
+          const e = this.parseExpression();
+          if (e.type.base !== BaseType.INT && e.type.base !== BaseType.REAL)
+            this.lexer.error('matrix element must be of type INT or REAL.');
+          elements.push(e);
+          n++;
+          i++;
+        }
+        this.lexer.TER(']');
+        let elementsCode = '[';
+        let k = 0;
+        for (const e of elements) {
+          if (k > 0) elementsCode += ', ';
+          elementsCode += e.code.str;
+          k++;
+        }
+        elementsCode += ']';
+        tc.code.str =
+          'runtime.interpret_vector._create(' + n + ', ' + elementsCode + ')';
+        tc.type.base = BaseType.VECTOR;
       }
-      m = i;
-      this.lexer.TER(']');
-      let elementsCode = '[';
-      let k = 0;
-      for (const e of elements) {
-        if (k > 0) elementsCode += ', ';
-        elementsCode += e.code.str;
-        k++;
-      }
-      elementsCode += ']';
-      tc.code.str =
-        'runtime.interpret_matrix._create(' +
-        m +
-        ', ' +
-        n +
-        ', ' +
-        elementsCode +
-        ')';
-      tc.type.base = BaseType.MATRIX;
     } else if (this.lexer.isID()) {
       const id = this.lexer.ID();
       tc.sym = this.getSymbol(id);
@@ -542,7 +571,12 @@ export class SMPL_Parser {
       this.lexer.next();
       const x = this.parseUnary();
       tc = this.call(this.getSymbol('_unaryNot'), [], [x]);
-    } else this.lexer.errorExpected(['INT', 'IMAG', 'REAL', '(', 'ID']);
+    } else if (this.lexer.isSTR()) {
+      const str = this.lexer.STR();
+      tc.code.str = ' "' + str + '" ';
+      tc.type.base = BaseType.STRING;
+    } else
+      this.lexer.errorExpected(['INT', 'IMAG', 'REAL', '(', 'ID', 'STRING']);
     return tc;
   }
 
