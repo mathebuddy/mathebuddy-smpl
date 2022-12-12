@@ -41,6 +41,10 @@
     "SMPL",
     "Stiftung",
     "triu",
+    "xaxis",
+    "xlabel",
+    "yaxis",
+    "ylabel",
     "zmax"
   ]
 }
