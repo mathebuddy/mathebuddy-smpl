@@ -123,7 +123,6 @@ export class Figure2d {
           ${code}
       </svg>
     `;
-    console.log(svg);
     const data =
       'data:image/svg+xml;base64,' + buffer.Buffer.from(svg).toString('base64');
     return data;
