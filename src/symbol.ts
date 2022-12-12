@@ -8,6 +8,7 @@
 
 import { Lexer } from '@multila/multila-lexer';
 import { Complex } from './complex';
+import { Figure2d } from './figure';
 
 import { Matrix } from './matrix';
 import { Set_COMPLEX, Set_INT, Set_REAL } from './set';
@@ -32,6 +33,8 @@ export enum BaseType {
   REAL_LIST = 'REAL_LIST',
   COMPLEX_LIST = 'COMPLEX_LIST',
   VECTOR_LIST = 'VECTOR_LIST',
+  STRING = 'STRING',
+  FIGURE_2D = 'FIGURE_2D',
   VOID = 'VOID',
 }
 
@@ -90,7 +93,8 @@ export class SymTabEntry {
     | Set_COMPLEX
     | Term
     | Vector
-    | Matrix = null;
+    | Matrix
+    | Figure2d = null;
 
   constructor(
     id: string,
@@ -126,7 +130,8 @@ export class SymTabEntry {
 }
 
 function getBaseType(lex: Lexer, str: string): BaseType {
-  if (str === 'ID') return BaseType.ID;
+  if (str === 'VOID') return BaseType.VOID;
+  else if (str === 'ID') return BaseType.ID;
   else if (str === 'BOOL') return BaseType.BOOL;
   else if (str === 'INT') return BaseType.INT;
   else if (str === 'REAL') return BaseType.REAL;
@@ -142,6 +147,8 @@ function getBaseType(lex: Lexer, str: string): BaseType {
   else if (str === 'REAL_LIST') return BaseType.REAL_LIST;
   else if (str === 'COMPLEX_LIST') return BaseType.COMPLEX_LIST;
   else if (str === 'VECTOR_LIST') return BaseType.VECTOR_LIST;
+  else if (str === 'FIGURE_2D') return BaseType.FIGURE_2D;
+  else if (str === 'STRING') return BaseType.STRING;
   else lex.error('unknown base type ' + str);
 }
 
