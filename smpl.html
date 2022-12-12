@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="" />
-  <meta name="dcterms.date" content="2022-12-02" />
+  <meta name="dcterms.date" content="2022-12-12" />
   <title>Simple Math Programming Language (SMPL)</title>
   <style>
     code{white-space: pre-wrap;}
@@ -95,7 +95,7 @@
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Simple Math Programming Language (SMPL)</h1>
 <p class="author"></p>
-<p class="date">2022-12-02</p>
+<p class="date">2022-12-12</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -614,6 +614,25 @@ matrix.</p>
 <p>Calculates <span class="math inline">\(x!\)</span>, i.e. the faculty
 of <span class="math inline">\(x\)</span>.</p>
 <p><em>Example: <code>fac(3)</code> returns 6.</em></p></li>
+<li><p><strong><code>figure2d() : FIGURE_2D</code></strong></p>
+<p>Creates a new 2D-figure instance.</p></li>
+<li><p><strong><code>figure_x_range( fig : FIGURE_2D, min : REAL , max : REAL ) : VOID</code></strong></p>
+<p>Defines the range of the <span class="math inline">\(x\)</span>-axis
+for figure <code>fig</code>.</p></li>
+<li><p><strong><code>figure_y_range( fig : FIGURE_2D, min : REAL , max : REAL ) : VOID</code></strong></p>
+<p>Defines the range of the <span class="math inline">\(y\)</span>-axis
+for figure <code>fig</code>.</p></li>
+<li><p><strong><code>figure_x_label( fig : FIGURE_2D, label : STRING ) : VOID</code></strong></p>
+<p>Sets the label of the <span class="math inline">\(x\)</span>-axis for
+figure <code>fig</code>.</p></li>
+<li><p><strong><code>figure_y_label( fig : FIGURE_2D, label : STRING ) : VOID</code></strong></p>
+<p>Sets the label of the <span class="math inline">\(y\)</span>-axis for
+figure <code>fig</code>.</p></li>
+<li><p><strong><code>figure_color( fig : FIGURE_2D, key : INT ) : VOID</code></strong></p>
+<p>Sets the color for figure <code>fig</code>.</p></li>
+<li><p><strong><code>figure_plot( fig : FIGURE_2D, x : VECTOR|TERM ) : VOID</code></strong></p>
+<p>Plots a 2D-point or a function term into figure
+<code>fig</code>.</p></li>
 <li><p><strong><code>floor ( x : INT|REAL ) : INT</code></strong></p>
 <p>Returns the floor of <code>x</code>.</p>
 <p><em>Example: <code>floor(2.71)</code> returns
