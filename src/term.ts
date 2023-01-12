@@ -19,6 +19,7 @@ export class TermError extends Error {
  * Operations:
  *   $     variable
  *   #     scalar
+ *   #i    imaginary scalar
  *   +     add (n-ary)
  *   -     sub (n-ary)
  *   *     mul (n-ary)
@@ -63,6 +64,18 @@ export class Term {
   public static Const(value: number): Term {
     const t = new Term();
     t.op = '#';
+    t.value = value;
+    return t;
+  }
+
+  /**
+   * Creates a constant imaginary term (scalar)
+   * @param value constant value (e.g. 3 for 3i)
+   * @returns a new term
+   */
+  public static Imaginary(value: number): Term {
+    const t = new Term();
+    t.op = '#i';
     t.value = value;
     return t;
   }
@@ -342,6 +355,9 @@ export class Term {
       case '#':
       case '$':
         s = '' + this.value;
+        break;
+      case '#i':
+        s = '' + this.value + 'i';
         break;
       case '.-':
         s += '-(' + this.o[0].toString() + ')'; // TODO: test!!
